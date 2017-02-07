@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">Meryenda To Go</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_save">Save</string>
+
+    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_user_registration">User Registration</string>
+    <string name="title_activity_customer_registration">Customer Registration</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_login">Incorrect username/password. Please try again.</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <!-- Text fields name -->
+    <string name="first_name">First Name</string>
+    <string name="middle_name">Middle Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="email_address">Email Address</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="remarks">Remarks</string>
+    <string name="referral_code">Referral Code</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="user_role">User Role</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- error messages -->
+    <string name="error_first_name">First Name is required. \n</string>
+    <string name="error_middle_name">Middle Name is required. \n</string>
+    <string name="error_last_name">Last Name is required. \n</string>
+    <string name="error_birth_date">Birth Date is required. \n</string>
+    <string name="error_user_name">Username is required. \n</string>
+    <string name="error_password">Password is required. \n</string>
+    <string name="error_user_level">User Role is required. \n</string>
+    <string name="failed_to_add">Failed to add new customer. Please try again.</string>
+
+    <!-- Successful messages -->
+    <string name="success_add_customer">Successfully added new customer.</string>
+    <string name="success_add_user">Successfully added new user.</string>
+
+    <string name="no_records_found">No records found.</string>
+
+    <!-- button text -->
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_add_customer">Add Customer</string>
+
+    <!-- User Roles text -->
+    <string-array name="user_role_array">
+        <item>Select User Role</item>
+        <item>Admin</item>
+        <item>Processor</item>
+    </string-array>
+    <string name="admin_code">Adm</string>
+    <string name="processor_code">Pro</string>
+</resources>
