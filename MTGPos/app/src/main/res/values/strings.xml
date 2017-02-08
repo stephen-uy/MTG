@@ -21,9 +21,8 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_login">Incorrect username/password. Please try again.</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="permission_rationale">Contacts permissions are needed for providing email completions.</string>
+    <string name="permission_rationale_camera">Camera permissions are needed for customer registration.</string>
 
     <!-- Text fields name -->
     <string name="first_name">First Name</string>
@@ -49,6 +48,7 @@
     <string name="error_user_name">Username is required. \n</string>
     <string name="error_password">Password is required. \n</string>
     <string name="error_user_level">User Role is required. \n</string>
+    <string name="error_picture">Picture is required. \n</string>
     <string name="failed_to_add">Failed to add new customer. Please try again.</string>
 
     <!-- Successful messages -->
@@ -70,4 +70,15 @@
     </string-array>
     <string name="admin_code">Adm</string>
     <string name="processor_code">Pro</string>
+
+    <!-- Image text -->
+    <string name="add_image_text">Click camera icon below to add/change customer photo.</string>
+
+    <!-- permission -->
+    <string name="camera_permission">Please enable camera in app permission.</string>
+
+    <!-- Customer List texts -->
+    <string name="cust_id">ID: </string>
+    <string name="cust_name">Name: </string>
+    <string name="cust_bday">BirthDate: </string>
 </resources>

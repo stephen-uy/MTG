@@ -83,7 +83,7 @@ public class CustomerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_customer_list, container, false);
         // Set the adapter
         if (view instanceof RecyclerView) {
-            customerModelLinkedList = CustomerHandler.getInstance(getActivity()).getAllCustomer();
+            customerModelLinkedList = getCustomerList();
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
@@ -95,6 +95,14 @@ public class CustomerFragment extends Fragment {
             recyclerView.setAdapter(myCustomerRecyclerViewAdapter);
         }
         return view;
+    }
+
+    private LinkedList<CustomerModel> getCustomerList(){
+        LinkedList<CustomerModel> allCustomer = CustomerHandler.getInstance(getActivity()).getAllCustomer();
+        for(int i = 0; i < allCustomer.size(); i++) {
+            allCustomer.get(i).setPicture(CustomerHandler.getInstance(getActivity()).getCustomerPictureByCustomerID(allCustomer.get(i).getCustomerID()));
+        }
+        return allCustomer;
     }
 
     @Override
@@ -130,7 +138,7 @@ public class CustomerFragment extends Fragment {
     }
 
     public void loadCustomer(){
-        customerModelLinkedList = CustomerHandler.getInstance(getActivity()).getAllCustomer();
+        customerModelLinkedList = getCustomerList();
         myCustomerRecyclerViewAdapter.swap(customerModelLinkedList);
     }
 }

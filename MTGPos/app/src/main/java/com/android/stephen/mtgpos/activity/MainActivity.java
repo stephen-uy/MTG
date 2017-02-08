@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
     CustomerFragment customerFragment;
     UserFragment userFragment;
     private String username;
-    private String franID;
+    private String storeID;
     private String level;
 
     @Override
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             username = bundle.getString("user");
-            franID = bundle.getString("franID");
+            storeID = bundle.getString("storeID");
             level = bundle.getString("level");
         }
     }
@@ -126,11 +126,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.action_add){
             if (customerFragment.isVisible()) {
                 Intent i = new Intent(this, CustomerRegistration.class);
-                i.putExtra("franID", franID);
+                i.putExtra("storeID", storeID);
                 startActivityForResult(i, GlobalVariables.ADD_CUSTOMER);
             } else if (userFragment.isVisible()) {
                 Intent i = new Intent(this, UserRegistration.class);
-                i.putExtra("franID", franID);
+                i.putExtra("storeID", storeID);
                 i.putExtra("userID", username);
                 startActivityForResult(i, GlobalVariables.ADD_USER);
             }

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.android.stephen.mtgpos.model.LookUpModel;
 
@@ -38,7 +39,7 @@ public class LookUpHandler extends SQLiteDBHandler {
         values.put(DBModels.enumItem.IsActive.toString(), lookUpModel.getIsActive());
         // Inserting Row
         db.insert(DBModels.enumTables.Item.toString(), null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void addProduct(LookUpModel lookUpModel){
@@ -55,7 +56,7 @@ public class LookUpHandler extends SQLiteDBHandler {
         values.put(DBModels.enumProduct.IsActive.toString(), lookUpModel.getIsActive());
         // Inserting Row
         db.insert(DBModels.enumTables.Product.toString(), null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void addProductItem(LookUpModel lookUpModel){
@@ -69,7 +70,7 @@ public class LookUpHandler extends SQLiteDBHandler {
         values.put(DBModels.enumProductItem.IsActive.toString(), lookUpModel.getIsActive());
         // Inserting Row
         db.insert(DBModels.enumTables.ProductItem.toString(), null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public LinkedList<LookUpModel> getAllItems() {
@@ -160,5 +161,18 @@ public class LookUpHandler extends SQLiteDBHandler {
         db.close();
         // return contact list
         return lookUpModelList;
+    }
+
+    // Getting table row count
+    public int getRowCounts(String table) {
+        String countQuery = "SELECT  * FROM " + table;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+
+        // return count
+        Log.d("getRowCounts","" + count);
+        return count;
     }
 }

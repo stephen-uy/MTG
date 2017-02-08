@@ -24,7 +24,7 @@ import java.util.Locale;
 public class UserRegistration extends AppCompatActivity {
 
     ActivityUserRegistrationBinding activityUserRegistrationBinding;
-    private String franchiseID;
+    private String storeID;
     private String userID;
     private String userRole;
     StoreModel storeModel;
@@ -41,7 +41,7 @@ public class UserRegistration extends AppCompatActivity {
         activityUserRegistrationBinding = DataBindingUtil.setContentView(this, R.layout.activity_user_registration);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            franchiseID = bundle.getString("franID");
+            storeID = bundle.getString("storeID");
             userID = bundle.getString("userID");
         }
     }
@@ -162,7 +162,7 @@ public class UserRegistration extends AppCompatActivity {
         }
 
         if (TextUtils.isEmpty(message)){
-            storeModel.setStoreID(franchiseID);
+            storeModel.setStoreID(storeID);
             storeModel.setRegBy(userID);
             storeModel.setRegDate(regDate);
             storeModel.setRemarks(activityUserRegistrationBinding.etRemarks.getText().toString());

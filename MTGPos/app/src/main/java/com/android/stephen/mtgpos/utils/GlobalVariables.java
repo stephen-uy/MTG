@@ -8,4 +8,5 @@ public class GlobalVariables {
 
     public static final int ADD_CUSTOMER = 1;
     public static final int ADD_USER = 2;
+    public static final int ADD_PHOTO = 3;
 }

@@ -4,11 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.stephen.mtgpos.R;
 import com.android.stephen.mtgpos.fragment.CustomerFragment.OnListFragmentInteractionListener;
 import com.android.stephen.mtgpos.model.CustomerModel;
+import com.android.stephen.mtgpos.utils.Helper;
 
 import java.util.LinkedList;
 
@@ -32,8 +34,10 @@ public class MyCustomerRecyclerViewAdapter extends RecyclerView.Adapter<MyCustom
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getCustomerID());
-        holder.mContentView.setText(mValues.get(position).getFirstName() + " " + mValues.get(position).getLastName());
+        holder.custPic.setImageBitmap(Helper.decodeBase64(mValues.get(position).getPicture()));
+        holder.custID.setText(mValues.get(position).getCustomerID());
+        holder.custName.setText(mValues.get(position).getFirstName() + " " + mValues.get(position).getMiddleName() + " " + mValues.get(position).getLastName());
+        holder.custBday.setText(mValues.get(position).getBirthDate());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,20 +69,24 @@ public class MyCustomerRecyclerViewAdapter extends RecyclerView.Adapter<MyCustom
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView custID;
+        public final TextView custName;
+        public final TextView custBday;
+        public final ImageView custPic;
         public CustomerModel mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            custID = (TextView) view.findViewById(R.id.customerIDValue);
+            custName = (TextView) view.findViewById(R.id.customerNameValue);
+            custBday = (TextView) view.findViewById(R.id.customerBirthDateValue);
+            custPic = (ImageView) view.findViewById(R.id.imgPicture);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + custName.getText() + "'";
         }
     }
 }

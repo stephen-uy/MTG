@@ -77,8 +77,11 @@ public class LoginActivity extends AppCompatActivity {
         mProgressView = findViewById(R.id.login_progress);
 
         SQLiteDBHandler.getInstance(this);
-        Helper.insertFranchiseeData(this);
+        Helper.insertStoreData(this);
         Helper.insertCustomerData(this);
+        Helper.insertItemData(this);
+        Helper.insertProductData(this);
+        Helper.insertProductItemData(this);
     }
 
     private boolean mayRequestContacts() {
@@ -270,7 +273,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     i.putExtra("user", mEmail);
                     i.putExtra("level", storeModel.getLevel());
-                    i.putExtra("franID", storeModel.getStoreID());
+                    i.putExtra("storeID", storeModel.getStoreID());
                     startActivity(i);
                     finish();
                 } else {

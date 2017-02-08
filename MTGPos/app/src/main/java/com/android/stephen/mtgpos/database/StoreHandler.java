@@ -56,7 +56,7 @@ public class StoreHandler extends SQLiteDBHandler {
         // Inserting Row
         long result = db.insert(DBModels.enumTables.Store.toString(), null, values);
         Log.d("addStore-result","" + result);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
         if (result != -1)
             return true;
         else
@@ -82,7 +82,7 @@ public class StoreHandler extends SQLiteDBHandler {
 
         // Inserting Row
         db.insert(DBModels.enumTables.StoreUser.toString(), null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void addStoreAccount(StoreModel storeModel) {
@@ -96,7 +96,7 @@ public class StoreHandler extends SQLiteDBHandler {
 
         // Inserting Row
         db.insert(DBModels.enumTables.StoreAccount.toString(), null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void addStorePointsHistory(StoreModel storeModel) {
@@ -116,7 +116,7 @@ public class StoreHandler extends SQLiteDBHandler {
 
         // Inserting Row
         db.insert(DBModels.enumTables.StorePointsHistory.toString(), null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void addStoreStocksReg(StoreModel storeModel) {
@@ -133,7 +133,7 @@ public class StoreHandler extends SQLiteDBHandler {
 
         // Inserting Row
         db.insert(DBModels.enumTables.StoreStocksReg.toString(), null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void addStoreStocks(StoreModel storeModel) {
@@ -149,7 +149,7 @@ public class StoreHandler extends SQLiteDBHandler {
 
         // Inserting Row
         db.insert(DBModels.enumTables.StoreStocks.toString(), null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void addStoreLogs(StoreModel storeModel) {
@@ -167,7 +167,7 @@ public class StoreHandler extends SQLiteDBHandler {
 
         // Inserting Row
         db.insert(DBModels.enumTables.StoreLogs.toString(), null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void addStorePurchased(StoreModel storeModel) {
@@ -188,7 +188,7 @@ public class StoreHandler extends SQLiteDBHandler {
 
         // Inserting Row
         db.insert(DBModels.enumTables.StorePurchased.toString(), null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void addStorePurchasedDetails(StoreModel storeModel) {
@@ -204,7 +204,7 @@ public class StoreHandler extends SQLiteDBHandler {
 
         // Inserting Row
         db.insert(DBModels.enumTables.StorePurchasedDetails.toString(), null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public LinkedList<StoreModel> getStore() {

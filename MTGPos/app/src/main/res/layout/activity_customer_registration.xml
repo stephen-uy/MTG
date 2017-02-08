@@ -18,6 +18,7 @@
             android:layout_height="?attr/actionBarSize" />
 
         <ScrollView
+            android:id="@+id/scrollCustomer"
             android:layout_below="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,8 +31,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:focusable="false">
+                <TextView
+                    android:id="@+id/tvPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="@string/add_image_text"/>
+
+                <ImageView
+                    android:layout_below="@+id/tvPhoto"
+                    android:id="@+id/imgPicture"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_camera" />
 
                 <android.support.design.widget.TextInputLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_below="@+id/imgPicture"
                     android:id="@+id/tiReferral"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -94,6 +112,20 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_below="@+id/tiLastName"
+                    android:id="@+id/tiPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:hint="@string/password" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_below="@+id/tiPassword"
                     android:id="@+id/tiBirthdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -122,6 +154,7 @@
                     android:id="@+id/tiMobileNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/etMobileNumber"
                         android:layout_width="match_parent"

@@ -22,6 +22,38 @@ public class LookUpModel implements Serializable{
     private String qtyPerServe;
     private String isActive;
 
+    public LookUpModel (){
+
+    }
+
+    public LookUpModel (String storeID, String itemID, String itemDesc, String qtyPerPack, String isActive){
+        this.storeID = storeID;
+        this.itemID = itemID;
+        this.itemDesc = itemDesc;
+        this.qtyPerPack = qtyPerPack;
+        this.isActive = isActive;
+    }
+
+    public LookUpModel (String storeID, String productID, String itemID, String qtyPerServe, String isActive, String picture){
+        this.storeID = storeID;
+        this.productID = productID;
+        this.itemID = itemID;
+        this.qtyPerServe = qtyPerServe;
+        this.isActive = isActive;
+    }
+
+    public LookUpModel (String storeID, String productID, String productDesc, String sellingPrice, String rebatePoints,
+                        String sharePoints, String picture, String isActive){
+        this.storeID = storeID;
+        this.productID = productID;
+        this.productDesc = productDesc;
+        this.sellingPrice = sellingPrice;
+        this.rebatePoints = rebatePoints;
+        this.sharePoints = sharePoints;
+        this.picture = picture;
+        this.isActive = isActive;
+    }
+
     public String getRecID() {
         return recID;
     }
