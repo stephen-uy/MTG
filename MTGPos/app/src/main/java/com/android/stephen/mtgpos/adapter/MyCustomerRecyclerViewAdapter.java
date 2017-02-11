@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.stephen.mtgpos.R;
-import com.android.stephen.mtgpos.fragment.CustomerFragment.OnListFragmentInteractionListener;
+import com.android.stephen.mtgpos.fragment.CustomerFragment.OnListCustomerFragmentInteractionListener;
 import com.android.stephen.mtgpos.model.CustomerModel;
 import com.android.stephen.mtgpos.utils.Helper;
 
@@ -17,9 +17,9 @@ import java.util.LinkedList;
 public class MyCustomerRecyclerViewAdapter extends RecyclerView.Adapter<MyCustomerRecyclerViewAdapter.ViewHolder> {
 
     private LinkedList<CustomerModel> mValues;
-    private OnListFragmentInteractionListener mListener;
+    private OnListCustomerFragmentInteractionListener mListener;
 
-    public MyCustomerRecyclerViewAdapter(LinkedList<CustomerModel> items, OnListFragmentInteractionListener listener) {
+    public MyCustomerRecyclerViewAdapter(LinkedList<CustomerModel> items, OnListCustomerFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -45,7 +45,7 @@ public class MyCustomerRecyclerViewAdapter extends RecyclerView.Adapter<MyCustom
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.OnListCustomerFragmentInteractionListener(holder.mItem);
                 }
             }
         });

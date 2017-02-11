@@ -3,32 +3,28 @@ package com.android.stephen.mtgpos.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.stephen.mtgpos.R;
-import com.android.stephen.mtgpos.adapter.MyUserRecyclerViewAdapter;
+import com.android.stephen.mtgpos.adapter.MyTransactionRecyclerViewAdapter;
 import com.android.stephen.mtgpos.database.StoreHandler;
 import com.android.stephen.mtgpos.model.StoreModel;
 
 import java.util.LinkedList;
 
-public class UserFragment extends Fragment {
+public class TransactionFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListUserFragmentInteractionListener mListener;
-    private MyUserRecyclerViewAdapter myUserRecyclerViewAdapter;
-    private LinkedList<StoreModel> userModelLinkedList;
+    private OnListTransactionFragmentInteractionListener mListener;
+    private MyTransactionRecyclerViewAdapter myTransactionRecyclerViewAdapter;
+    private LinkedList<StoreModel> storeModelLinkedList;
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
 
@@ -36,13 +32,13 @@ public class UserFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public UserFragment() {
+    public TransactionFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static UserFragment newInstance(int columnCount) {
-        UserFragment fragment = new UserFragment();
+    public static TransactionFragment newInstance(int columnCount) {
+        TransactionFragment fragment = new TransactionFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -56,47 +52,36 @@ public class UserFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem item;
-        item = menu.findItem(R.id.action_save);
-        item.setVisible(false);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO Add your menu entries here
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getActivity().setTitle(getResources().getString(R.string.title_user));
-        View view = inflater.inflate(R.layout.fragment_user_list, container, false);
+        getActivity().setTitle(getResources().getString(R.string.title_transaction));
+        View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
         setUpList(view);
         return view;
     }
 
     private void setUpList(View view){
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
-        userModelLinkedList = new LinkedList<>();
-        userModelLinkedList.addAll(StoreHandler.getInstance(getActivity()).getAllStoreUser());
+        storeModelLinkedList = new LinkedList<>();
+        storeModelLinkedList.addAll(StoreHandler.getInstance(getActivity()).getAllStorePurchased());
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
-        myUserRecyclerViewAdapter = new MyUserRecyclerViewAdapter(userModelLinkedList, mListener);
-        recyclerView.setAdapter(myUserRecyclerViewAdapter);
+        myTransactionRecyclerViewAdapter = new MyTransactionRecyclerViewAdapter(storeModelLinkedList, mListener);
+        recyclerView.setAdapter(myTransactionRecyclerViewAdapter);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListUserFragmentInteractionListener) {
-            mListener = (OnListUserFragmentInteractionListener) context;
+        if (context instanceof OnListTransactionFragmentInteractionListener) {
+            mListener = (OnListTransactionFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
         }
     }
 
@@ -106,13 +91,13 @@ public class UserFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnListUserFragmentInteractionListener {
+    public interface OnListTransactionFragmentInteractionListener {
         // TODO: Update argument type and name
-        void OnListUserFragmentInteractionListener(StoreModel item);
+        void OnListTransactionFragmentInteractionListener(StoreModel item);
     }
 
-    public void loadUser(){
-        userModelLinkedList = StoreHandler.getInstance(getActivity()).getAllStoreUser();
-        myUserRecyclerViewAdapter.swap(userModelLinkedList);
+    public void loadTransaction(){
+        storeModelLinkedList = StoreHandler.getInstance(getActivity()).getAllStorePurchased();
+        myTransactionRecyclerViewAdapter.swap(storeModelLinkedList);
     }
 }

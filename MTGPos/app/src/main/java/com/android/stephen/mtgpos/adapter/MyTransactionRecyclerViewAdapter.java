@@ -7,17 +7,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.stephen.mtgpos.R;
-import com.android.stephen.mtgpos.fragment.UserFragment.OnListUserFragmentInteractionListener;
+import com.android.stephen.mtgpos.fragment.TransactionFragment.OnListTransactionFragmentInteractionListener;
 import com.android.stephen.mtgpos.model.StoreModel;
 
 import java.util.LinkedList;
 
-public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecyclerViewAdapter.ViewHolder> {
+public class MyTransactionRecyclerViewAdapter extends RecyclerView.Adapter<MyTransactionRecyclerViewAdapter.ViewHolder> {
 
     private LinkedList<StoreModel> mValues;
-    private OnListUserFragmentInteractionListener mListener;
+    private OnListTransactionFragmentInteractionListener mListener;
 
-    public MyUserRecyclerViewAdapter(LinkedList<StoreModel> items, OnListUserFragmentInteractionListener listener) {
+    public MyTransactionRecyclerViewAdapter(LinkedList<StoreModel> items, OnListTransactionFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -25,17 +25,17 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_user, parent, false);
+                .inflate(R.layout.fragment_transaction, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mUserView.setText(mValues.get(position).getUserName());
-        holder.mNameView.setText(mValues.get(position).getFirstName() + " " + mValues.get(position).getMiddleName()
-                + " " + mValues.get(position).getLastName());
-        holder.mLevelView.setText(mValues.get(position).getLevel());
+        holder.mIdView.setText(mValues.get(position).getPurchaseRef());
+        holder.mDateView.setText(mValues.get(position).getPurchaseDate());
+        holder.mAmountView.setText(mValues.get(position).getTotalAmt());
+        holder.mQuantityView.setText(mValues.get(position).getTotalQty());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,13 +43,18 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.OnListUserFragmentInteractionListener(holder.mItem);
+                    mListener.OnListTransactionFragmentInteractionListener(holder.mItem);
                 }
             }
         });
     }
 
-    public void swap(LinkedList<StoreModel> list){
+    @Override
+    public int getItemCount() {
+        return mValues.size();
+    }
+
+    public void swap(LinkedList<StoreModel> list) {
         if (mValues != null) {
             mValues.clear();
             mValues = list;
@@ -60,29 +65,26 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
         notifyDataSetChanged();
     }
 
-    @Override
-    public int getItemCount() {
-        return mValues.size();
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mUserView;
-        public final TextView mNameView;
-        public final TextView mLevelView;
+        public final TextView mIdView;
+        public final TextView mDateView;
+        public final TextView mAmountView;
+        public final TextView mQuantityView;
         public StoreModel mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mUserView = (TextView) view.findViewById(R.id.username);
-            mNameView = (TextView) view.findViewById(R.id.name);
-            mLevelView = (TextView) view.findViewById(R.id.level);
+            mIdView = (TextView) view.findViewById(R.id.id);
+            mDateView = (TextView) view.findViewById(R.id.date);
+            mAmountView = (TextView) view.findViewById(R.id.amount);
+            mQuantityView = (TextView) view.findViewById(R.id.quantity);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mNameView.getText() + "'";
+            return super.toString() + " '" + mDateView.getText() + "'";
         }
     }
 }

@@ -29,6 +29,7 @@ import com.android.stephen.mtgpos.database.SQLiteDBHandler;
 import com.android.stephen.mtgpos.model.StoreModel;
 import com.android.stephen.mtgpos.utils.Helper;
 
+import static android.Manifest.permission.INTERNET;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -37,6 +38,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity {
 
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final int REQUEST_INTERNET = 1;
     private UserLoginTask mAuthTask = null;
 
     private static StoreModel storeModel;
@@ -82,26 +84,27 @@ public class LoginActivity extends AppCompatActivity {
         Helper.insertItemData(this);
         Helper.insertProductData(this);
         Helper.insertProductItemData(this);
+        mayRequestConnectivity();
     }
 
-    private boolean mayRequestContacts() {
+    private boolean mayRequestConnectivity() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
         }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(INTERNET) == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
+        if (shouldShowRequestPermissionRationale(INTERNET)) {
             Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
                         public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
+                            requestPermissions(new String[]{INTERNET}, REQUEST_INTERNET);
                         }
                     });
         } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
+            requestPermissions(new String[]{INTERNET}, REQUEST_INTERNET);
         }
         return false;
     }

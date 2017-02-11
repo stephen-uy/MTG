@@ -175,4 +175,34 @@ public class LookUpHandler extends SQLiteDBHandler {
         Log.d("getRowCounts","" + count);
         return count;
     }
+
+    public LinkedList<LookUpModel> getProductItemDetails(String productID){
+        LinkedList<LookUpModel> lookUpModelList = new LinkedList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT * FROM "+ DBModels.enumTables.ProductItem + " a INNER JOIN "+
+                DBModels.enumTables.Item + " b ON a."+ DBModels.enumProductItem.ItemID + "=b." +
+                DBModels.enumItem.ItemID + " WHERE b." + DBModels.enumProductItem.ProductID + "=?";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(productID)});
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                LookUpModel lookUpModel = new LookUpModel();
+                lookUpModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
+                lookUpModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumProductItem.StoreID.toString())));
+                lookUpModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumProductItem.ItemID.toString())));
+                lookUpModel.setItemDesc(cursor.getString(cursor.getColumnIndex(DBModels.enumItem.ItemDesc.toString())));
+                lookUpModel.setProductID(cursor.getString(cursor.getColumnIndex(DBModels.enumProductItem.ProductID.toString())));
+                lookUpModel.setQtyPerServe(cursor.getString(cursor.getColumnIndex(DBModels.enumProductItem.QtyPerServe.toString())));
+                lookUpModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumProductItem.IsActive.toString())));
+                // Adding contact to list
+                lookUpModelList.add(lookUpModel);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        // return contact list
+        return lookUpModelList;
+    }
 }

@@ -5,5 +5,5 @@ package com.android.stephen.mtgpos.utils;
  */
 
 public enum FragmentTag {
-    POS, CUSTOMER, INVENTORY, REPORTS, USERMAINTENACE
+    POS, CUSTOMER, INVENTORY, USERMAINTENACE, PRODUCT, TRANSACTION, REGISTER_STOCKS
 }

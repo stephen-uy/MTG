@@ -32,7 +32,7 @@ public class CustomerFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private OnListCustomerFragmentInteractionListener mListener;
     private MyCustomerRecyclerViewAdapter myCustomerRecyclerViewAdapter;
     LinkedList<CustomerModel> customerModelLinkedList;
 
@@ -80,6 +80,7 @@ public class CustomerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().setTitle(getResources().getString(R.string.title_customer));
         View view = inflater.inflate(R.layout.fragment_customer_list, container, false);
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -109,7 +110,7 @@ public class CustomerFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 //        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+            mListener = (OnListCustomerFragmentInteractionListener) context;
 //        } else {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnListFragmentInteractionListener");
@@ -132,9 +133,9 @@ public class CustomerFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
+    public interface OnListCustomerFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(CustomerModel item);
+        void OnListCustomerFragmentInteractionListener(CustomerModel item);
     }
 
     public void loadCustomer(){

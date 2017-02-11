@@ -3,7 +3,6 @@ package com.android.stephen.mtgpos.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -12,7 +11,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.IdRes;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -36,6 +34,14 @@ import com.android.stephen.mtgpos.model.StoreModel;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,7 +49,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
 
-import static android.Manifest.permission.CAMERA;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 /**
  * Created by Stephen Uy on 1/11/2017.
@@ -139,6 +147,34 @@ public class Helper {
         alertDialog = builder.show();
     }
 
+    public static SSLSocketFactory getSSLSocketFactory(Context context) throws CertificateException, KeyStoreException, IOException, NoSuchAlgorithmException, KeyManagementException {
+        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        InputStream caInput = context.getResources().getAssets().open(GlobalVariables.CERTIFICATE_PATH); // this cert file stored in \app\src\main\res\raw folder path
+
+        Certificate ca = cf.generateCertificate(caInput);
+        caInput.close();
+
+        // Create a KeyStore containing our trusted CAs
+        String keyStoreType = KeyStore.getDefaultType();
+        KeyStore keyStore = null;
+        try {
+            keyStore = KeyStore.getInstance(keyStoreType);
+            keyStore.load(null, null);
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+        keyStore.setCertificateEntry("ca", ca);
+
+        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+        tmf.init(keyStore);
+
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, tmf.getTrustManagers(), null);
+
+        return sslContext.getSocketFactory();
+    }
+
     public static void alertDialogCancel(){
         alertDialog.cancel();
     }
@@ -190,15 +226,15 @@ public class Helper {
             storeModel.setRegDate("02/01/2017 01:30:35");
             storeHandler.addStoreUser(storeModel);
 
-//            storeModel.setUserName("sai");
-//            storeModel.setPassword("123456");
-//            storeModel.setFirstName("Sayre");
-//            storeModel.setMiddleName("R");
-//            storeModel.setLastName("Collado");
-//            storeModel.setLevel("Adm");
-//            storeModel.setRegBy("stephen");
-//            storeModel.setRegDate("02/02/2017 01:40:35");
-//            storeHandler.addStoreUser(storeModel);
+            storeModel.setUserName("sai");
+            storeModel.setPassword("123456");
+            storeModel.setFirstName("Sayre");
+            storeModel.setMiddleName("R");
+            storeModel.setLastName("Collado");
+            storeModel.setLevel("Adm");
+            storeModel.setRegBy("stephen");
+            storeModel.setRegDate("02/02/2017 01:40:35");
+            storeHandler.addStoreUser(storeModel);
         }
     }
 
@@ -254,7 +290,7 @@ public class Helper {
         int rowCount = lookUpHandler.getRowCounts(DBModels.enumTables.Product.toString());
         if (rowCount == 0) {
             for(LookUpModel model : lookUpModelLinkedList){
-                lookUpHandler.addItem(model);
+                lookUpHandler.addProduct(model);
             }
         }
     }
@@ -266,7 +302,7 @@ public class Helper {
         int rowCount = lookUpHandler.getRowCounts(DBModels.enumTables.ProductItem.toString());
         if (rowCount == 0) {
             for(LookUpModel model : lookUpModelLinkedList){
-                lookUpHandler.addItem(model);
+                lookUpHandler.addProductItem(model);
             }
         }
     }

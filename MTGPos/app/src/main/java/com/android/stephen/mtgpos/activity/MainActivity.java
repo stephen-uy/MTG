@@ -2,6 +2,7 @@ package com.android.stephen.mtgpos.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,24 +17,40 @@ import android.widget.Toast;
 
 import com.android.stephen.mtgpos.R;
 import com.android.stephen.mtgpos.callback.FragmentCallback;
+import com.android.stephen.mtgpos.callback.VolleyCallback;
 import com.android.stephen.mtgpos.database.CustomerHandler;
 import com.android.stephen.mtgpos.fragment.CustomerFragment;
+import com.android.stephen.mtgpos.fragment.InventoryFragment;
 import com.android.stephen.mtgpos.fragment.POSFragment;
+import com.android.stephen.mtgpos.fragment.ProductsFragment;
+import com.android.stephen.mtgpos.fragment.TransactionFragment;
 import com.android.stephen.mtgpos.fragment.UserFragment;
 import com.android.stephen.mtgpos.model.CustomerModel;
+import com.android.stephen.mtgpos.model.LookUpModel;
+import com.android.stephen.mtgpos.utils.API;
 import com.android.stephen.mtgpos.utils.FragmentTag;
 import com.android.stephen.mtgpos.utils.GlobalVariables;
 import com.android.stephen.mtgpos.utils.Helper;
 import com.android.stephen.mtgpos.model.StoreModel;
+import com.android.stephen.mtgpos.utils.HttpVolleyConnector;
+import com.android.stephen.mtgpos.utils.Task;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback,
-        CustomerFragment.OnListFragmentInteractionListener, UserFragment.OnListFragmentInteractionListener {
+        CustomerFragment.OnListCustomerFragmentInteractionListener, UserFragment.OnListUserFragmentInteractionListener,
+        InventoryFragment.OnListInventoryFragmentInteractionListener, ProductsFragment.OnListProductsFragmentInteractionListener,
+        TransactionFragment.OnListTransactionFragmentInteractionListener, VolleyCallback{
 
     private NavigationView navigationView;
     POSFragment posFragment;
     CustomerFragment customerFragment;
     UserFragment userFragment;
+    InventoryFragment inventoryFragment;
+    ProductsFragment productsFragment;
+    TransactionFragment transactionFragment;
     private String username;
     private String storeID;
     private String level;
@@ -50,6 +67,9 @@ public class MainActivity extends AppCompatActivity
         posFragment = new POSFragment();
         customerFragment = new CustomerFragment();
         userFragment = new UserFragment();
+        inventoryFragment = new InventoryFragment();
+        productsFragment = new ProductsFragment();
+        transactionFragment = new TransactionFragment();
         Helper.addFragment(this, posFragment, R.id.content_main, FragmentTag.POS.toString());
     }
 
@@ -81,10 +101,20 @@ public class MainActivity extends AppCompatActivity
             navMenu.findItem(R.id.nav_user).setVisible(false);
             navMenu.findItem(R.id.nav_upload).setVisible(false);
             navMenu.findItem(R.id.nav_inventory).setVisible(false);
+            navMenu.findItem(R.id.nav_transactions).setVisible(false);
+            navMenu.findItem(R.id.nav_products).setVisible(false);
+            navMenu.findItem(R.id.nav_register_stocks).setVisible(false);
+            navMenu.findItem(R.id.nav_upload).setVisible(false);
+            navMenu.findItem(R.id.nav_download).setVisible(false);
         } else{
             navMenu.findItem(R.id.nav_user).setVisible(true);
             navMenu.findItem(R.id.nav_upload).setVisible(true);
             navMenu.findItem(R.id.nav_inventory).setVisible(true);
+            navMenu.findItem(R.id.nav_transactions).setVisible(true);
+            navMenu.findItem(R.id.nav_products).setVisible(true);
+            navMenu.findItem(R.id.nav_register_stocks).setVisible(true);
+            navMenu.findItem(R.id.nav_upload).setVisible(true);
+            navMenu.findItem(R.id.nav_download).setVisible(true);
         }
 
         View view = navigationView.getHeaderView(0);
@@ -148,15 +178,20 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_pos) {
             Helper.replaceFragment(this, posFragment, R.id.content_main, FragmentTag.POS.toString());
         } else if (id == R.id.nav_inventory) {
-
-        } else if (id == R.id.nav_purchases) {
-
+            Helper.replaceFragment(this, inventoryFragment, R.id.content_main, FragmentTag.INVENTORY.toString());
+        } else if (id == R.id.nav_transactions) {
+            Helper.replaceFragment(this, transactionFragment, R.id.content_main, FragmentTag.TRANSACTION.toString());
+        } else if (id == R.id.nav_products) {
+            Helper.replaceFragment(this, productsFragment, R.id.content_main, FragmentTag.PRODUCT.toString());
+        } else if (id == R.id.nav_register_stocks) {
+//            Helper.replaceFragment(this, productsFragment, R.id.content_main, FragmentTag.PRODUCT.toString());
         } else if (id == R.id.nav_customer) {
             Helper.replaceFragment(this, customerFragment, R.id.content_main, FragmentTag.CUSTOMER.toString());
         } else if (id == R.id.nav_user) {
             Helper.replaceFragment(this, userFragment, R.id.content_main, FragmentTag.USERMAINTENACE.toString());
         }  else if (id == R.id.nav_upload) {
-
+//            HttpVolleyConnector con = new HttpVolleyConnector();
+//            con.wGet(this, this, API.API, Task.ITEMS);
         } else if (id == R.id.nav_logout) {
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
@@ -171,14 +206,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentCallback() {
 
-    }
-
-    @Override
-    public void onListFragmentInteraction(CustomerModel item) {
-        CustomerModel custUpline;
-        custUpline = CustomerHandler.getInstance(this).getCustomerUplines(item.getCustomerID(), item.getStoreID());
-        Toast.makeText(this, custUpline.getCustomerID() + "," + custUpline.getCustomerUpID1() + "," + custUpline.getCustomerUpID2()
-                + "," + custUpline.getCustomerUpID3() + "," + custUpline.getCustomerUpID4(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -197,8 +224,41 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(StoreModel item) {
+    public void OnListUserFragmentInteractionListener(StoreModel item) {
         Toast.makeText(this, item.getLevel() + "," + item.getUserName() + "," + item.getPassword()
                 + "," + item.getRegBy() + "," + item.getRegDate(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void OnListInventoryFragmentInteractionListener(LookUpModel lookUpModel) {
+
+    }
+
+    @Override
+    public void OnListCustomerFragmentInteractionListener(CustomerModel item) {
+        CustomerModel custUpline;
+        custUpline = CustomerHandler.getInstance(this).getCustomerUplines(item.getCustomerID(), item.getStoreID());
+        Toast.makeText(this, custUpline.getCustomerID() + "," + custUpline.getCustomerUpID1() + "," + custUpline.getCustomerUpID2()
+                + "," + custUpline.getCustomerUpID3() + "," + custUpline.getCustomerUpID4(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void OnListProductsFragmentInteractionListener(LookUpModel item) {
+
+    }
+
+    @Override
+    public void OnListTransactionFragmentInteractionListener(StoreModel item) {
+
+    }
+
+    @Override
+    public void onResponseReady(Task task, HashMap<String, String> response) {
+        Log.i("volley", "response : "+  task.getValue().toString() + response.toString());
+    }
+
+    @Override
+    public void onResponseReady(Task task, List<HashMap<String, String>> response) {
+        Log.i("volley", "response : "+  task.getValue().toString() + response.get(0).toString());
     }
 }

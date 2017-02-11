@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:name="com.android.stephen.mtgpos.fragment.UserFragment" >
+    android:name="com.android.stephen.mtgpos.fragment.InventoryFragment" >
 
     <LinearLayout
         android:id="@+id/llTitle"
@@ -11,32 +11,31 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:orientation="horizontal">
-
         <TextView
-            android:id="@+id/username"
+            android:id="@+id/id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="textStart"
-            android:text="@string/user_username"
+            android:text="@string/item_id"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:text="@string/user_fullname"
+            android:text="@string/item_desc"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
-            android:id="@+id/level"
+            android:id="@+id/qty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/user_level"
             android:textAlignment="textEnd"
+            android:text="@string/item_qty"
             android:textAppearance="?attr/textAppearanceListItem" />
     </LinearLayout>
     <android.support.v7.widget.RecyclerView

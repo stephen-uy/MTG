@@ -57,6 +57,7 @@ public class POSFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle(getResources().getString(R.string.title_pos));
         return inflater.inflate(R.layout.fragment_pos, container, false);
     }
 
