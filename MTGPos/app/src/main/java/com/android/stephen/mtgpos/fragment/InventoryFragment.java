@@ -3,7 +3,6 @@ package com.android.stephen.mtgpos.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -64,7 +63,7 @@ public class InventoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getActivity().setTitle(getResources().getString(R.string.title_inventory));
+        getActivity().setTitle(getResources().getString(R.string.title_items));
         View view = inflater.inflate(R.layout.fragment_inventory_list, container, false);
         setUpList(view);
         return view;

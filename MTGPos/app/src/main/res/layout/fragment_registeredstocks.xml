@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,7 +12,7 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:text="@string/tran_pur_ref"
+            android:text="@string/reg_stock_id"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/id"
@@ -28,7 +29,7 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:text="@string/tran_date"
+            android:text="@string/reg_stock_desc"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/content"
@@ -44,10 +45,10 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:text="@string/tran_amount"
+            android:text="@string/reg_stock_qty"
             android:textStyle="bold" />
         <TextView
-            android:id="@+id/amount"
+            android:id="@+id/qty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -60,10 +61,10 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:text="@string/tran_qty"
+            android:text="@string/reg_stock_date"
             android:textStyle="bold" />
         <TextView
-            android:id="@+id/qty"
+            android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

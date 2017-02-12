@@ -69,6 +69,8 @@ public class CustomerFragment extends Fragment {
         MenuItem item;
         item = menu.findItem(R.id.action_save);
         item.setVisible(false);
+        item = menu.findItem(R.id.action_search);
+        item.setVisible(false);
     }
 
     @Override

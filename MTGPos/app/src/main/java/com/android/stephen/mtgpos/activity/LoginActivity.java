@@ -29,6 +29,7 @@ import com.android.stephen.mtgpos.database.SQLiteDBHandler;
 import com.android.stephen.mtgpos.model.StoreModel;
 import com.android.stephen.mtgpos.utils.Helper;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.INTERNET;
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -84,6 +85,8 @@ public class LoginActivity extends AppCompatActivity {
         Helper.insertItemData(this);
         Helper.insertProductData(this);
         Helper.insertProductItemData(this);
+        Helper.insertStoreStocksData(this);
+        Helper.insertStoreStocksRegData(this);
         mayRequestConnectivity();
     }
 
@@ -91,20 +94,20 @@ public class LoginActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
         }
-        if (checkSelfPermission(INTERNET) == PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
-        if (shouldShowRequestPermissionRationale(INTERNET)) {
+        if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
             Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
                         public void onClick(View v) {
-                            requestPermissions(new String[]{INTERNET}, REQUEST_INTERNET);
+                            requestPermissions(new String[]{ACCESS_FINE_LOCATION}, REQUEST_INTERNET);
                         }
                     });
         } else {
-            requestPermissions(new String[]{INTERNET}, REQUEST_INTERNET);
+            requestPermissions(new String[]{ACCESS_FINE_LOCATION}, REQUEST_INTERNET);
         }
         return false;
     }

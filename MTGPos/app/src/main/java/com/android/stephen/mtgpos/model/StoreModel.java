@@ -55,6 +55,30 @@ public class StoreModel implements Serializable{
     private String itemID;
     private String rebatePoints;
     private String sharePoints;
+    private String itemDesc;
+
+    public StoreModel (){
+
+    }
+
+    public StoreModel (String storeID, String itemID, String quantity, String remarks, String isActive, String isUploaded){
+        this.storeID = storeID;
+        this.itemID = itemID;
+        this.quantity = quantity;
+        this.remarks = remarks;
+        this.isActive = isActive;
+        this.isUploaded = isUploaded;
+    }
+
+    public StoreModel (String storeID, String stocksRef, String itemID, String quantity, String dateReg, String remarks, String isActive){
+        this.storeID = storeID;
+        this.stocksRef = stocksRef;
+        this.itemID = itemID;
+        this.quantity = quantity;
+        this.dateReg = dateReg;
+        this.remarks = remarks;
+        this.isActive = isActive;
+    }
 
     public String getRecID() {
         return recID;
@@ -430,5 +454,13 @@ public class StoreModel implements Serializable{
 
     public void setSharePoints(String sharePoints) {
         this.sharePoints = sharePoints;
+    }
+
+    public String getItemDesc() {
+        return itemDesc;
+    }
+
+    public void setItemDesc(String itemDesc) {
+        this.itemDesc = itemDesc;
     }
 }

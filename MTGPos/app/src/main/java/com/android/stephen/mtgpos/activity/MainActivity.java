@@ -23,6 +23,8 @@ import com.android.stephen.mtgpos.fragment.CustomerFragment;
 import com.android.stephen.mtgpos.fragment.InventoryFragment;
 import com.android.stephen.mtgpos.fragment.POSFragment;
 import com.android.stephen.mtgpos.fragment.ProductsFragment;
+import com.android.stephen.mtgpos.fragment.RegisteredStocksFragment;
+import com.android.stephen.mtgpos.fragment.StocksFragment;
 import com.android.stephen.mtgpos.fragment.TransactionFragment;
 import com.android.stephen.mtgpos.fragment.UserFragment;
 import com.android.stephen.mtgpos.model.CustomerModel;
@@ -42,7 +44,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback,
         CustomerFragment.OnListCustomerFragmentInteractionListener, UserFragment.OnListUserFragmentInteractionListener,
         InventoryFragment.OnListInventoryFragmentInteractionListener, ProductsFragment.OnListProductsFragmentInteractionListener,
-        TransactionFragment.OnListTransactionFragmentInteractionListener, VolleyCallback{
+        TransactionFragment.OnListTransactionFragmentInteractionListener, StocksFragment.OnListStocksFragmentInteractionListener,
+        RegisteredStocksFragment.OnListRegisteredStocksFragmentInteractionListener, VolleyCallback{
 
     private NavigationView navigationView;
     POSFragment posFragment;
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity
     InventoryFragment inventoryFragment;
     ProductsFragment productsFragment;
     TransactionFragment transactionFragment;
+    StocksFragment stocksFragment;
+    RegisteredStocksFragment registeredStocksFragment;
     private String username;
     private String storeID;
     private String level;
@@ -70,6 +75,8 @@ public class MainActivity extends AppCompatActivity
         inventoryFragment = new InventoryFragment();
         productsFragment = new ProductsFragment();
         transactionFragment = new TransactionFragment();
+        stocksFragment = new StocksFragment();
+        registeredStocksFragment = new RegisteredStocksFragment();
         Helper.addFragment(this, posFragment, R.id.content_main, FragmentTag.POS.toString());
     }
 
@@ -99,20 +106,20 @@ public class MainActivity extends AppCompatActivity
         Menu navMenu = navigationView.getMenu();
         if (level.equalsIgnoreCase("Pro")){
             navMenu.findItem(R.id.nav_user).setVisible(false);
-            navMenu.findItem(R.id.nav_upload).setVisible(false);
             navMenu.findItem(R.id.nav_inventory).setVisible(false);
             navMenu.findItem(R.id.nav_transactions).setVisible(false);
             navMenu.findItem(R.id.nav_products).setVisible(false);
-            navMenu.findItem(R.id.nav_register_stocks).setVisible(false);
+            navMenu.findItem(R.id.nav_stocks).setVisible(false);
+            navMenu.findItem(R.id.nav_registered_stocks).setVisible(false);
             navMenu.findItem(R.id.nav_upload).setVisible(false);
             navMenu.findItem(R.id.nav_download).setVisible(false);
         } else{
             navMenu.findItem(R.id.nav_user).setVisible(true);
-            navMenu.findItem(R.id.nav_upload).setVisible(true);
             navMenu.findItem(R.id.nav_inventory).setVisible(true);
             navMenu.findItem(R.id.nav_transactions).setVisible(true);
             navMenu.findItem(R.id.nav_products).setVisible(true);
-            navMenu.findItem(R.id.nav_register_stocks).setVisible(true);
+            navMenu.findItem(R.id.nav_stocks).setVisible(true);
+            navMenu.findItem(R.id.nav_registered_stocks).setVisible(true);
             navMenu.findItem(R.id.nav_upload).setVisible(true);
             navMenu.findItem(R.id.nav_download).setVisible(true);
         }
@@ -132,6 +139,7 @@ public class MainActivity extends AppCompatActivity
                 finish();
             } else {
                 super.onBackPressed();
+                Helper.replaceFragment(this, posFragment, R.id.content_main, FragmentTag.POS.toString());
             }
         }
     }
@@ -183,8 +191,10 @@ public class MainActivity extends AppCompatActivity
             Helper.replaceFragment(this, transactionFragment, R.id.content_main, FragmentTag.TRANSACTION.toString());
         } else if (id == R.id.nav_products) {
             Helper.replaceFragment(this, productsFragment, R.id.content_main, FragmentTag.PRODUCT.toString());
-        } else if (id == R.id.nav_register_stocks) {
-//            Helper.replaceFragment(this, productsFragment, R.id.content_main, FragmentTag.PRODUCT.toString());
+        } else if (id == R.id.nav_stocks) {
+            Helper.replaceFragment(this, stocksFragment, R.id.content_main, FragmentTag.STOCKS.toString());
+        } else if (id == R.id.nav_registered_stocks) {
+            Helper.replaceFragment(this, registeredStocksFragment, R.id.content_main, FragmentTag.REGISTER_STOCKS.toString());
         } else if (id == R.id.nav_customer) {
             Helper.replaceFragment(this, customerFragment, R.id.content_main, FragmentTag.CUSTOMER.toString());
         } else if (id == R.id.nav_user) {
@@ -244,7 +254,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void OnListProductsFragmentInteractionListener(LookUpModel item) {
-
+        Intent i = new Intent(this, ProductItems.class);
+        i.putExtra("product", item.getProductDesc());
+        i.putExtra("id", item.getProductID());
+        startActivity(i);
     }
 
     @Override
@@ -260,5 +273,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResponseReady(Task task, List<HashMap<String, String>> response) {
         Log.i("volley", "response : "+  task.getValue().toString() + response.get(0).toString());
+    }
+
+    @Override
+    public void OnListStocksFragmentInteractionListener(StoreModel item) {
+
+    }
+
+    @Override
+    public void OnListRegisteredStocksFragmentInteractionListener(StoreModel item) {
+
     }
 }

@@ -411,6 +411,61 @@ public class StoreHandler extends SQLiteDBHandler {
         return storeModelLinkedList;
     }
 
+    public LinkedList<StoreModel> getAllStoreStocksRegWithItems() {
+        LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
+        // Select All Query
+        String selectQuery = "SELECT * FROM "+ DBModels.enumTables.StoreStocksReg + " a INNER JOIN "+
+                DBModels.enumTables.Item + " b ON a."+ DBModels.enumStoreStocksReg.ItemID + "=b." +
+                DBModels.enumItem.ItemID;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                StoreModel storeModel = new StoreModel();
+                storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
+                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.StoreID.toString())));
+                storeModel.setStocksRef(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.StocksRef.toString())));
+                storeModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.ItemID.toString())));
+                storeModel.setItemDesc(cursor.getString(cursor.getColumnIndex(DBModels.enumItem.ItemDesc.toString())));
+                storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.Quantity.toString())));
+                storeModel.setDateReg(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.DateReg.toString())));
+                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.Remarks.toString())));
+                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.IsActive.toString())));
+                // Adding contact to list
+                storeModelLinkedList.add(storeModel);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        // return contact list
+        return storeModelLinkedList;
+    }
+
+    public String getStoreStocksRef() {
+        String stocksRef;
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StoreStocksReg.toString() + " ORDER BY "
+                + DBModels.enumStoreStocksReg.StocksRef + " DESC";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        stocksRef = cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.StocksRef.toString()));
+
+        cursor.close();
+        db.close();
+        // return contact list
+        return stocksRef;
+    }
+
     public LinkedList<StoreModel> getAllStoreStocks() {
         LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
         // Select All Query
@@ -426,6 +481,39 @@ public class StoreHandler extends SQLiteDBHandler {
                 storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
                 storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.StoreID.toString())));
                 storeModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.ItemID.toString())));
+                storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.Quantity.toString())));
+                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.Remarks.toString())));
+                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.IsActive.toString())));
+                storeModel.setIsUploaded(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.IsUploaded.toString())));
+                // Adding contact to list
+                storeModelLinkedList.add(storeModel);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        // return contact list
+        return storeModelLinkedList;
+    }
+
+    public LinkedList<StoreModel> getAllStoreStocksWithItems() {
+        LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
+        // Select All Query
+        String selectQuery = "SELECT * FROM "+ DBModels.enumTables.StoreStocks + " a INNER JOIN "+
+                DBModels.enumTables.Item + " b ON a."+ DBModels.enumStoreStocks.ItemID + "=b." +
+                DBModels.enumItem.ItemID;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                StoreModel storeModel = new StoreModel();
+                storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
+                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.StoreID.toString())));
+                storeModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.ItemID.toString())));
+                storeModel.setItemDesc(cursor.getString(cursor.getColumnIndex(DBModels.enumItem.ItemDesc.toString())));
                 storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.Quantity.toString())));
                 storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.Remarks.toString())));
                 storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.IsActive.toString())));

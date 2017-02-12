@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -88,10 +89,10 @@ public class Helper {
         return newDate;
     }
 
-    public static String getDateWithFormat(String format){
+    public static String getDateWithFormat(){
         Calendar calendar = Calendar.getInstance();
         String date;
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(GlobalVariables.dateFormat, Locale.US);
         date = sdf.format(calendar.getTime());
         return date;
     }
@@ -192,6 +193,18 @@ public class Helper {
         }
         Log.d("generateCustomerID", custID);
         return custID.toUpperCase();
+    }
+
+    public static String generateStocksRef(Context context) {
+        String stocksRef;
+        stocksRef = StoreHandler.getInstance(context).getStoreStocksRef();
+        if (!TextUtils.isEmpty(stocksRef)) {
+            stocksRef = String.valueOf(Integer.parseInt(stocksRef) + 1);
+            Log.d("generateStocksRef", stocksRef);
+        } else {
+            stocksRef = "1";
+        }
+        return stocksRef;
     }
 
     public static void insertStoreData(Context context) {
@@ -307,6 +320,30 @@ public class Helper {
         }
     }
 
+    public static void insertStoreStocksData(Context context){
+        LinkedList<StoreModel> storeModelLinkedList;
+        StoreHandler storeHandler = new StoreHandler(context);
+        storeModelLinkedList = setUpStoreStocksData();
+        int rowCount = storeHandler.getRowCounts(DBModels.enumTables.StoreStocks.toString());
+        if (rowCount == 0) {
+            for(StoreModel model : storeModelLinkedList){
+                storeHandler.addStoreStocks(model);
+            }
+        }
+    }
+
+    public static void insertStoreStocksRegData(Context context){
+        LinkedList<StoreModel> storeModelLinkedList;
+        StoreHandler storeHandler = new StoreHandler(context);
+        storeModelLinkedList = setUpStoreStocksRegData(context);
+        int rowCount = storeHandler.getRowCounts(DBModels.enumTables.StoreStocksReg.toString());
+        if (rowCount == 0) {
+            for(StoreModel model : storeModelLinkedList){
+                storeHandler.addStoreStocksReg(model);
+            }
+        }
+    }
+
     private static LinkedList<LookUpModel> setUpItemsData() {
         LinkedList<LookUpModel> lookUpModelLinkedList = new LinkedList<>();
         //Items
@@ -410,6 +447,48 @@ public class Helper {
 
         Log.d("setUpProductItem-size","" + lookUpModelLinkedList.size());
         return lookUpModelLinkedList;
+    }
+
+    private static LinkedList<StoreModel> setUpStoreStocksData() {
+        LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
+        //Items
+        storeModelLinkedList.add(new StoreModel("1","1","100","","Y", "N"));
+        storeModelLinkedList.add(new StoreModel("1","2","100","","Y", "N"));
+        storeModelLinkedList.add(new StoreModel("1","3","100","","Y", "N"));
+        storeModelLinkedList.add(new StoreModel("1","4","225","","Y", "N"));
+        storeModelLinkedList.add(new StoreModel("1","5","70","","Y", "N"));
+        storeModelLinkedList.add(new StoreModel("1","6","800","","Y", "N"));
+        storeModelLinkedList.add(new StoreModel("1","7","450","","Y", "N"));
+        storeModelLinkedList.add(new StoreModel("1","8","600","","Y", "N"));
+        storeModelLinkedList.add(new StoreModel("1","9","225","","Y", "N"));
+        storeModelLinkedList.add(new StoreModel("1","10","5000","","Y", "N"));
+        storeModelLinkedList.add(new StoreModel("1","11","40","","Y", "N"));
+        storeModelLinkedList.add(new StoreModel("1","12","5","","Y", "N"));
+        storeModelLinkedList.add(new StoreModel("1","13","225","","Y", "N"));
+
+        Log.d("setUpStoreStocks-size","" + storeModelLinkedList.size());
+        return storeModelLinkedList;
+    }
+
+    private static LinkedList<StoreModel> setUpStoreStocksRegData(Context context) {
+        LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
+        //Items
+        storeModelLinkedList.add(new StoreModel("1", "1","1","100",getDateWithFormat(),"", "Y"));
+        storeModelLinkedList.add(new StoreModel("1", "2","2","100",getDateWithFormat(),"", "Y"));
+        storeModelLinkedList.add(new StoreModel("1", "3","3","100",getDateWithFormat(),"", "Y"));
+        storeModelLinkedList.add(new StoreModel("1", "4","4","5",getDateWithFormat(),"", "Y"));
+        storeModelLinkedList.add(new StoreModel("1", "5","5","5",getDateWithFormat(),"", "Y"));
+        storeModelLinkedList.add(new StoreModel("1", "6","6","5",getDateWithFormat(),"", "Y"));
+        storeModelLinkedList.add(new StoreModel("1", "7","7","5",getDateWithFormat(),"", "Y"));
+        storeModelLinkedList.add(new StoreModel("1", "8","8","5",getDateWithFormat(),"", "Y"));
+        storeModelLinkedList.add(new StoreModel("1", "9","9","5",getDateWithFormat(),"", "Y"));
+        storeModelLinkedList.add(new StoreModel("1", "10","10","5",getDateWithFormat(),"", "Y"));
+        storeModelLinkedList.add(new StoreModel("1", "11","11","5",getDateWithFormat(),"", "Y"));
+        storeModelLinkedList.add(new StoreModel("1", "12","12","5",getDateWithFormat(),"", "Y"));
+        storeModelLinkedList.add(new StoreModel("1", "13","13","5",getDateWithFormat(),"", "Y"));
+
+        Log.d("setUpStocksReg-size","" + storeModelLinkedList.size());
+        return storeModelLinkedList;
     }
 
     public static void captureImage(Activity activity) {

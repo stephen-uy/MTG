@@ -10,8 +10,7 @@ public class DBModels {
     // Table names
     public enum enumTables{ Product, Store, StoreUser, StoreAccount, StorePointsHistory, StoreStocksReg, StoreStocks, StoreLogs,
         StorePurchased, StorePurchasedDetails, Customer, CustomerUpline, CustomerPoints, CustomerBonusPoints,
-        CustomerPicture, CustomerPictureHistory, Item, ProductItem,
-        StoreStocksRegMTG, StoreStocksMTG, StorePurchasedMTG, StorePurchasedDetailsMTG}
+        CustomerPicture, CustomerPictureHistory, Item, ProductItem}
 
     //Look Up tables
     public enum enumProduct{ StoreID, ProductID, ProductDesc, SellingPrice, RebatePoints, SharePoints, Picture, IsActive}

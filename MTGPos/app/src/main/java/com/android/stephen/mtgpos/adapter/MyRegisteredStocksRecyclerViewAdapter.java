@@ -7,17 +7,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.stephen.mtgpos.R;
-import com.android.stephen.mtgpos.fragment.TransactionFragment.OnListTransactionFragmentInteractionListener;
+import com.android.stephen.mtgpos.fragment.RegisteredStocksFragment;
 import com.android.stephen.mtgpos.model.StoreModel;
 
 import java.util.LinkedList;
 
-public class MyTransactionRecyclerViewAdapter extends RecyclerView.Adapter<MyTransactionRecyclerViewAdapter.ViewHolder> {
+public class MyRegisteredStocksRecyclerViewAdapter extends RecyclerView.Adapter<MyRegisteredStocksRecyclerViewAdapter.ViewHolder> {
 
     private LinkedList<StoreModel> mValues;
-    private OnListTransactionFragmentInteractionListener mListener;
+    private RegisteredStocksFragment.OnListRegisteredStocksFragmentInteractionListener mListener;
 
-    public MyTransactionRecyclerViewAdapter(LinkedList<StoreModel> items, OnListTransactionFragmentInteractionListener listener) {
+    public MyRegisteredStocksRecyclerViewAdapter(LinkedList<StoreModel> items, RegisteredStocksFragment.OnListRegisteredStocksFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -25,17 +25,17 @@ public class MyTransactionRecyclerViewAdapter extends RecyclerView.Adapter<MyTra
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_transaction, parent, false);
+                .inflate(R.layout.fragment_registeredstocks, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getPurchaseRef());
-        holder.mDateView.setText(mValues.get(position).getPurchaseDate());
-        holder.mAmountView.setText(mValues.get(position).getTotalAmt());
-        holder.mQuantityView.setText(mValues.get(position).getTotalQty());
+        holder.mIdView.setText(mValues.get(position).getItemID());
+        holder.mContentView.setText(mValues.get(position).getItemDesc());
+        holder.mQuantityView.setText(mValues.get(position).getQuantity());
+        holder.mDateView.setText(mValues.get(position).getDateReg());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +43,7 @@ public class MyTransactionRecyclerViewAdapter extends RecyclerView.Adapter<MyTra
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.OnListTransactionFragmentInteractionListener(holder.mItem);
+                    mListener.OnListRegisteredStocksFragmentInteractionListener(holder.mItem);
                 }
             }
         });
@@ -68,23 +68,23 @@ public class MyTransactionRecyclerViewAdapter extends RecyclerView.Adapter<MyTra
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
-        public final TextView mDateView;
-        public final TextView mAmountView;
+        public final TextView mContentView;
         public final TextView mQuantityView;
+        public final TextView mDateView;
         public StoreModel mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.id);
-            mDateView = (TextView) view.findViewById(R.id.date);
-            mAmountView = (TextView) view.findViewById(R.id.amount);
+            mContentView = (TextView) view.findViewById(R.id.content);
             mQuantityView = (TextView) view.findViewById(R.id.qty);
+            mDateView = (TextView) view.findViewById(R.id.date);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mDateView.getText() + "'";
+            return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
 }

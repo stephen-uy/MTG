@@ -181,7 +181,7 @@ public class LookUpHandler extends SQLiteDBHandler {
         SQLiteDatabase db = this.getWritableDatabase();
         String selectQuery = "SELECT * FROM "+ DBModels.enumTables.ProductItem + " a INNER JOIN "+
                 DBModels.enumTables.Item + " b ON a."+ DBModels.enumProductItem.ItemID + "=b." +
-                DBModels.enumItem.ItemID + " WHERE b." + DBModels.enumProductItem.ProductID + "=?";
+                DBModels.enumItem.ItemID + " WHERE a." + DBModels.enumProductItem.ProductID + "=?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(productID)});
         // looping through all rows and adding to list

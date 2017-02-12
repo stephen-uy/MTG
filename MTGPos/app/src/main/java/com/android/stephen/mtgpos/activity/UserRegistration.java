@@ -99,6 +99,8 @@ public class UserRegistration extends AppCompatActivity {
         MenuItem item;
         item = menu.findItem(R.id.action_add);
         item.setVisible(false);
+        item = menu.findItem(R.id.action_search);
+        item.setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 

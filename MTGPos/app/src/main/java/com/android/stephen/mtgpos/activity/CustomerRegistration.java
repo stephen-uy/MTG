@@ -45,7 +45,6 @@ public class CustomerRegistration extends AppCompatActivity implements View.OnCl
     CustomerModel customerModel;
     CustomerHandler customerHandler;
     private String format = "MMM dd, yyyy";
-    private String dateCaptureformat = "yyyy-MM-dd HH:mm:ss";
     private String storeID = "";
     private String pictureByteString = "";
     private String picFileName = "";
@@ -98,7 +97,6 @@ public class CustomerRegistration extends AppCompatActivity implements View.OnCl
         activityCustomerRegistrationBinding.imgPicture.setOnClickListener(this);
 
         mayRequestCamera();
-//        mayRequestExternalStorage();
     }
 
     @Override
@@ -112,6 +110,8 @@ public class CustomerRegistration extends AppCompatActivity implements View.OnCl
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item;
         item = menu.findItem(R.id.action_add);
+        item.setVisible(false);
+        item = menu.findItem(R.id.action_search);
         item.setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -193,7 +193,7 @@ public class CustomerRegistration extends AppCompatActivity implements View.OnCl
             customerModel.setCustomerID(Helper.generateCustomerID(customerModel));
             if (customerHandler.addCustomer(customerModel)) {
                 updateCustomerUpLine(customerModel);
-                customerModel.setDateCaptured(Helper.getDateWithFormat(dateCaptureformat));
+                customerModel.setDateCaptured(Helper.getDateWithFormat());
                 if (customerHandler.addCustomerPicture(customerModel)) {
                     customerHandler.addCustomerPictureHistory(customerModel);
                     Helper.showDialog(this, "", getResources().getString(R.string.success_add_customer), new View.OnClickListener() {
@@ -345,33 +345,11 @@ public class CustomerRegistration extends AppCompatActivity implements View.OnCl
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
                         public void onClick(View v) {
-                            requestPermissions(new String[]{CAMERA}, REQUEST_CAMERA);
+                            requestPermissions(new String[]{CAMERA, WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA);
                         }
                     });
         } else {
-            requestPermissions(new String[]{CAMERA}, REQUEST_CAMERA);
-        }
-        return false;
-    }
-
-    private boolean mayRequestExternalStorage() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) {
-            Snackbar.make(activityCustomerRegistrationBinding.scrollCustomer, R.string.permission_rationale_camera, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL);
+            requestPermissions(new String[]{CAMERA, WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA);
         }
         return false;
     }
