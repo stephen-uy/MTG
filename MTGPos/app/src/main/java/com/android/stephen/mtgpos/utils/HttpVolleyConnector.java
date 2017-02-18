@@ -28,7 +28,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
@@ -54,7 +54,7 @@ public class HttpVolleyConnector {
     private static int timeoutSocket = 500000;
     private static Context context;
     public HashMap<String, String> map;
-    public List<HashMap<String, String>> hashMapList;
+    public LinkedList<HashMap<String, String>> hashMapList;
     private String error_response = "{\"response_code\":\"2\",\"response_message\":\"No Internet\"}";
     private RequestQueue requestQueue;
 
@@ -146,8 +146,10 @@ public class HttpVolleyConnector {
                     @Override
                     public void onResponse(String response) {
                         Log.i("HTTPConnect_volley","Response: "+response);
-                        JSONObject obj = null;
-                        JSONArray jsonArray = null;
+                        JSONObject obj;
+                        JSONArray jsonArray;
+                        map = new HashMap<>();
+                        hashMapList = new LinkedList<>();
                         try {
                             jsonArray = new JSONArray(response);
                             for(int i=0;i<jsonArray.length();i++) {
@@ -184,7 +186,7 @@ public class HttpVolleyConnector {
             {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Content-Type", "application/x-www-form-urlencoded");
-//                headers.put("Authorization", GlobalVariables.BASIC_AUTH);
+                headers.put("Authorization", GlobalVariables.BASIC_AUTH);
                 return headers;
             }
 

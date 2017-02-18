@@ -1,11 +1,10 @@
 package com.android.stephen.mtgpos.fragment;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,16 +15,11 @@ import android.view.ViewGroup;
 import com.android.stephen.mtgpos.R;
 import com.android.stephen.mtgpos.adapter.MyCustomerRecyclerViewAdapter;
 import com.android.stephen.mtgpos.database.CustomerHandler;
+import com.android.stephen.mtgpos.databinding.FragmentCustomerListBinding;
 import com.android.stephen.mtgpos.model.CustomerModel;
 
 import java.util.LinkedList;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
 public class CustomerFragment extends Fragment {
 
     // TODO: Customize parameter argument names
@@ -35,11 +29,9 @@ public class CustomerFragment extends Fragment {
     private OnListCustomerFragmentInteractionListener mListener;
     private MyCustomerRecyclerViewAdapter myCustomerRecyclerViewAdapter;
     LinkedList<CustomerModel> customerModelLinkedList;
+    private LinearLayoutManager mLayoutManager;
+    FragmentCustomerListBinding fragmentCustomerListBinding;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public CustomerFragment() {
     }
 
@@ -83,29 +75,25 @@ public class CustomerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getActivity().setTitle(getResources().getString(R.string.title_customer));
-        View view = inflater.inflate(R.layout.fragment_customer_list, container, false);
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            customerModelLinkedList = getCustomerList();
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            myCustomerRecyclerViewAdapter = new MyCustomerRecyclerViewAdapter(customerModelLinkedList, mListener);
-            recyclerView.setAdapter(myCustomerRecyclerViewAdapter);
-        }
-        return view;
+        fragmentCustomerListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_customer_list,
+                container, false);
+        setUpList();
+        return fragmentCustomerListBinding.getRoot();
     }
 
-    private LinkedList<CustomerModel> getCustomerList(){
-        LinkedList<CustomerModel> allCustomer = CustomerHandler.getInstance(getActivity()).getAllCustomer();
-        for(int i = 0; i < allCustomer.size(); i++) {
-            allCustomer.get(i).setPicture(CustomerHandler.getInstance(getActivity()).getCustomerPictureByCustomerID(allCustomer.get(i).getCustomerID()));
+    private void setUpList(){
+        customerModelLinkedList = new LinkedList<>();
+        customerModelLinkedList = CustomerHandler.getInstance(getActivity()).getAllCustomerWithPicture();
+        if (customerModelLinkedList.size() > 0) {
+            fragmentCustomerListBinding.tvEmpty.setVisibility(View.GONE);
+            fragmentCustomerListBinding.list.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(getActivity());
+            fragmentCustomerListBinding.list.setLayoutManager(mLayoutManager);
+            myCustomerRecyclerViewAdapter = new MyCustomerRecyclerViewAdapter(customerModelLinkedList, mListener);
+            fragmentCustomerListBinding.list.setAdapter(myCustomerRecyclerViewAdapter);
+        } else {
+            fragmentCustomerListBinding.tvEmpty.setVisibility(View.VISIBLE);
         }
-        return allCustomer;
     }
 
     @Override
@@ -141,7 +129,11 @@ public class CustomerFragment extends Fragment {
     }
 
     public void loadCustomer(){
-        customerModelLinkedList = getCustomerList();
-        myCustomerRecyclerViewAdapter.swap(customerModelLinkedList);
+        customerModelLinkedList = CustomerHandler.getInstance(getActivity()).getAllCustomerWithPicture();
+        if (customerModelLinkedList.size() <= 1){
+            setUpList();
+        } else {
+            myCustomerRecyclerViewAdapter.swap(customerModelLinkedList);
+        }
     }
 }

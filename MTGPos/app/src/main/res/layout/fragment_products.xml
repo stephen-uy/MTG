@@ -2,89 +2,54 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="12dp"
     android:orientation="vertical">
 
     <LinearLayout
+        android:layout_margin="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/prod_id"
-            android:textStyle="bold" />
-        <TextView
+            android:visibility="gone"
             android:id="@+id/id"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
-    </LinearLayout>
+            android:textAlignment="textStart"
+            android:text="@string/prod_id" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/prod_desc"
-            android:textStyle="bold" />
         <TextView
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/prod_price"
-            android:textStyle="bold" />
+            android:textAlignment="textStart"
+            android:text="@string/prod_desc" />
         <TextView
             android:id="@+id/price"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/prod_rebate"
-            android:textStyle="bold" />
+            android:textAlignment="textEnd"
+            android:text="@string/prod_price" />
         <TextView
             android:id="@+id/rebate_points"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/prod_share"
-            android:textStyle="bold" />
+            android:textAlignment="textEnd"
+            android:text="@string/prod_rebate" />
         <TextView
             android:id="@+id/share_points"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
+            android:textAlignment="textEnd"
+            android:text="@string/prod_share" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 </LinearLayout>

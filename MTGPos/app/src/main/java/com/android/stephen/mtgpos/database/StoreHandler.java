@@ -85,6 +85,28 @@ public class StoreHandler extends SQLiteDBHandler {
 //        db.close(); // Closing database connection
     }
 
+    public int updateStoreUser(StoreModel storeModel) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DBModels.enumStoreUser.StoreID.toString(), storeModel.getStoreID());
+        values.put(DBModels.enumStoreUser.UserName.toString(), storeModel.getUserName());
+        values.put(DBModels.enumStoreUser.Password.toString(), storeModel.getPassword());
+        values.put(DBModels.enumStoreUser.Fname.toString(), storeModel.getFirstName());
+        values.put(DBModels.enumStoreUser.Mname.toString(), storeModel.getMiddleName());
+        values.put(DBModels.enumStoreUser.Lname.toString(), storeModel.getLastName());
+        values.put(DBModels.enumStoreUser.Level.toString(), storeModel.getLevel());
+        values.put(DBModels.enumStoreUser.RegBy.toString(), storeModel.getRegBy());
+        values.put(DBModels.enumStoreUser.RegDate.toString(), storeModel.getRegDate());
+        values.put(DBModels.enumStoreUser.Remarks.toString(), storeModel.getRemarks());
+        values.put(DBModels.enumStoreUser.IsActive.toString(), storeModel.getIsActive());
+        values.put(DBModels.enumStoreUser.IsUploaded.toString(), storeModel.getIsUploaded());
+
+//        db.close(); // Closing database connection
+        return db.update(DBModels.enumTables.StoreUser.toString(), values, DBModels.recID.toString() + " = ?",
+                new String[] { storeModel.getRecID() });
+    }
+
     public void addStoreAccount(StoreModel storeModel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -637,5 +659,13 @@ public class StoreHandler extends SQLiteDBHandler {
         // return count
         Log.d("getRowCounts","" + count);
         return count;
+    }
+
+//     Deleting single row
+    public void deleteStoreUser(StoreModel storeModel) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DBModels.enumTables.StoreUser.toString(), DBModels.recID + " = ?",
+                new String[] { storeModel.getRecID() });
+        db.close();
     }
 }

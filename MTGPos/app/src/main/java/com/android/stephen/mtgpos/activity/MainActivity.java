@@ -1,7 +1,10 @@
 package com.android.stephen.mtgpos.activity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,6 +22,7 @@ import com.android.stephen.mtgpos.R;
 import com.android.stephen.mtgpos.callback.FragmentCallback;
 import com.android.stephen.mtgpos.callback.VolleyCallback;
 import com.android.stephen.mtgpos.database.CustomerHandler;
+import com.android.stephen.mtgpos.database.StoreHandler;
 import com.android.stephen.mtgpos.fragment.CustomerFragment;
 import com.android.stephen.mtgpos.fragment.InventoryFragment;
 import com.android.stephen.mtgpos.fragment.POSFragment;
@@ -170,6 +174,7 @@ public class MainActivity extends AppCompatActivity
                 Intent i = new Intent(this, UserRegistration.class);
                 i.putExtra("storeID", storeID);
                 i.putExtra("userID", username);
+                i.putExtra("isAdd", true);
                 startActivityForResult(i, GlobalVariables.ADD_USER);
             }
         }
@@ -200,8 +205,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_user) {
             Helper.replaceFragment(this, userFragment, R.id.content_main, FragmentTag.USERMAINTENACE.toString());
         }  else if (id == R.id.nav_upload) {
-//            HttpVolleyConnector con = new HttpVolleyConnector();
-//            con.wGet(this, this, API.API, Task.ITEMS);
+            HttpVolleyConnector con = new HttpVolleyConnector();
+            con.wGet(this, this, API.API, Task.ITEMS);
         } else if (id == R.id.nav_logout) {
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
@@ -235,8 +240,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void OnListUserFragmentInteractionListener(StoreModel item) {
-        Toast.makeText(this, item.getLevel() + "," + item.getUserName() + "," + item.getPassword()
-                + "," + item.getRegBy() + "," + item.getRegDate(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, item.getLevel() + "," + item.getUserName() + "," + item.getPassword()
+//                + "," + item.getRegBy() + "," + item.getRegDate(), Toast.LENGTH_SHORT).show();
+        showUserListMenu(item.getUserName(), item).show();
     }
 
     @Override
@@ -246,10 +252,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void OnListCustomerFragmentInteractionListener(CustomerModel item) {
-        CustomerModel custUpline;
-        custUpline = CustomerHandler.getInstance(this).getCustomerUplines(item.getCustomerID(), item.getStoreID());
-        Toast.makeText(this, custUpline.getCustomerID() + "," + custUpline.getCustomerUpID1() + "," + custUpline.getCustomerUpID2()
-                + "," + custUpline.getCustomerUpID3() + "," + custUpline.getCustomerUpID4(), Toast.LENGTH_SHORT).show();
+//        CustomerModel custUpline;
+//        custUpline = CustomerHandler.getInstance(this).getCustomerUplines(item.getCustomerID(), item.getStoreID());
+        Toast.makeText(this, "Customer's promo code: " + item.getCustomerID(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -283,5 +288,43 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void OnListRegisteredStocksFragmentInteractionListener(StoreModel item) {
 
+    }
+
+    public Dialog showUserListMenu(String title, final StoreModel storeModel) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setItems(R.array.dialog_menu, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        if (which == 0){
+                            Intent i = new Intent(MainActivity.this, UserRegistration.class);
+                            i.putExtra("storeID", storeID);
+                            i.putExtra("userID", username);
+                            i.putExtra("isAdd", false);
+                            i.putExtra("model", storeModel);
+                            startActivityForResult(i, GlobalVariables.ADD_USER);
+                        } else {
+                            Helper.showDialog(MainActivity.this, "", getString(R.string.delete_user), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Helper.alertDialogCancel();
+                                    if (username.equalsIgnoreCase(storeModel.getUserName())){
+                                        Helper.showDialog(MainActivity.this, "", "Cannot delete logged in user.");
+                                    } else {
+                                        StoreHandler.getInstance(MainActivity.this).deleteStoreUser(storeModel);
+                                    }
+                                    userFragment.loadUser();
+                                }
+                            }, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Helper.alertDialogCancel();
+                                }
+                            });
+                        }
+                    }
+                });
+        return builder.create();
     }
 }

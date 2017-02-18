@@ -67,12 +67,18 @@
     <!-- Successful messages -->
     <string name="success_add_customer">Successfully added new customer.</string>
     <string name="success_add_user">Successfully added new user.</string>
+    <string name="success_update_user">Successfully updated user.</string>
 
     <string name="no_records_found">No records found.</string>
 
+    <!-- delete text -->
+    <string name="delete_user">Delete user?</string>
+
     <!-- button text -->
     <string name="btn_ok">OK</string>
+    <string name="btn_yes">Yes</string>
     <string name="btn_cancel">Cancel</string>
+    <string name="btn_no">No</string>
     <string name="btn_add_customer">Add Customer</string>
 
     <!-- User Roles text -->
@@ -83,6 +89,12 @@
     </string-array>
     <string name="admin_code">Adm</string>
     <string name="processor_code">Pro</string>
+
+    <!-- dialog menus -->
+    <string-array name="dialog_menu">
+        <item>Edit</item>
+        <item>Delete</item>
+    </string-array>
 
     <!-- Image text -->
     <string name="add_image_text">Click camera icon below to add/change customer photo.</string>
@@ -102,17 +114,17 @@
 
     <!-- Product List text -->
     <string name="prod_id">Product ID: </string>
-    <string name="prod_desc">Product Desc.: </string>
-    <string name="prod_price">Selling Price: </string>
-    <string name="prod_rebate">Rebate Points: </string>
-    <string name="prod_share">Share Points: </string>
+    <string name="prod_desc">Desc</string>
+    <string name="prod_price">Price</string>
+    <string name="prod_rebate">RP</string>
+    <string name="prod_share">SP</string>
     <string name="prod_item">Items: </string>
 
     <!-- Transaction List text -->
-    <string name="tran_pur_ref">Purchase Ref.:</string>
-    <string name="tran_date">Date:</string>
-    <string name="tran_amount">Amount:</string>
-    <string name="tran_qty">Quantity:</string>
+    <string name="tran_pur_ref">Purchase Ref.</string>
+    <string name="tran_date">Date</string>
+    <string name="tran_amount">Amount</string>
+    <string name="tran_qty">Qty</string>
 
     <!-- User List text -->
     <string name="user_username">Username</string>
@@ -121,12 +133,12 @@
 
     <!-- Stocks List text -->
     <string name="stock_id">Item ID</string>
-    <string name="stock_desc">Item Description</string>
+    <string name="stock_desc">Desc</string>
     <string name="stock_qty">Qty</string>
 
     <!-- Registered Stocks List text -->
-    <string name="reg_stock_id">Item ID: </string>
-    <string name="reg_stock_desc">Item Desc.: </string>
-    <string name="reg_stock_qty">Quantity: </string>
-    <string name="reg_stock_date">Date: </string>
+    <string name="reg_stock_id">Item ID</string>
+    <string name="reg_stock_desc">Desc</string>
+    <string name="reg_stock_qty">Qty</string>
+    <string name="reg_stock_date">Date</string>
 </resources>

@@ -193,10 +193,11 @@ public class CustomerRegistration extends AppCompatActivity implements View.OnCl
             customerModel.setCustomerID(Helper.generateCustomerID(customerModel));
             if (customerHandler.addCustomer(customerModel)) {
                 updateCustomerUpLine(customerModel);
-                customerModel.setDateCaptured(Helper.getDateWithFormat());
+                customerModel.setDateCaptured(Helper.getDateTimeWithFormat());
                 if (customerHandler.addCustomerPicture(customerModel)) {
                     customerHandler.addCustomerPictureHistory(customerModel);
-                    Helper.showDialog(this, "", getResources().getString(R.string.success_add_customer), new View.OnClickListener() {
+                    Helper.showDialog(this, "", getResources().getString(R.string.success_add_customer)
+                            + "\n\n Customer's Promo Code: " + customerModel.getCustomerID(), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             Helper.alertDialogCancel();

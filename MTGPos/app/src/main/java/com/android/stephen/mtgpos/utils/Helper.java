@@ -97,6 +97,14 @@ public class Helper {
         return date;
     }
 
+    public static String getDateTimeWithFormat(){
+        Calendar calendar = Calendar.getInstance();
+        String date;
+        SimpleDateFormat sdf = new SimpleDateFormat(GlobalVariables.dateTimeFormat, Locale.US);
+        date = sdf.format(calendar.getTime());
+        return date;
+    }
+
     public static void showDialog(final Context activity, String title, String message, View.OnClickListener onClickListener){
         // Get the layout inflater
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -115,6 +123,29 @@ public class Helper {
 //                alertDialog.cancel();
 //            }
 //        });
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(activity);
+        builder.setView(layout);
+        builder.create();
+        builder.setCancelable(false);
+        alertDialog = builder.show();
+    }
+
+    public static void showDialog(final Context activity, String title, String message,
+                                  View.OnClickListener okClickListener, View.OnClickListener cancelClickListener){
+        // Get the layout inflater
+        LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layout = inflater.inflate(R.layout.custom_dialog, null);
+
+        TextView tvMessage = (TextView) layout.findViewById(R.id.tvMessage);
+        Button btnCancel = (Button) layout.findViewById(R.id.btnCancel);
+        Button btnOK = (Button) layout.findViewById(R.id.btnOK);
+
+        tvMessage.setText(message);
+        btnOK.setText(activity.getString(R.string.btn_yes));
+        btnCancel.setText(activity.getString(R.string.btn_no));
+        btnOK.setOnClickListener(okClickListener);
+        btnCancel.setOnClickListener(cancelClickListener);
 
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(activity);
         builder.setView(layout);

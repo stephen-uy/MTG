@@ -16,8 +16,10 @@ import com.android.stephen.mtgpos.database.StoreHandler;
 import com.android.stephen.mtgpos.databinding.ActivityUserRegistrationBinding;
 import com.android.stephen.mtgpos.model.StoreModel;
 import com.android.stephen.mtgpos.utils.Helper;
+import com.android.stephen.mtgpos.utils.LayoutSettings;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -27,6 +29,7 @@ public class UserRegistration extends AppCompatActivity {
     private String storeID;
     private String userID;
     private String userRole;
+    private boolean isAdd;
     StoreModel storeModel;
 
     @Override
@@ -43,6 +46,13 @@ public class UserRegistration extends AppCompatActivity {
         if (bundle != null) {
             storeID = bundle.getString("storeID");
             userID = bundle.getString("userID");
+            isAdd = bundle.getBoolean("isAdd");
+            storeModel = new StoreModel();
+            if (!isAdd)
+                storeModel = (StoreModel) bundle.getSerializable("model");
+        }
+        if (!isAdd) {
+            activityUserRegistrationBinding.setStoreModel(storeModel);
         }
     }
 
@@ -63,11 +73,9 @@ public class UserRegistration extends AppCompatActivity {
         activityUserRegistrationBinding.spnrLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                userRole = adapterView.getItemAtPosition(i).toString();
+                userRole = adapterView.getItemAtPosition(i).toString().substring(0,3);
                 if (i <= 0)
                     userRole = "";
-                else
-                    userRole = getUserLevelCode(i);
 
                 Log.i("userRole", userRole);
             }
@@ -84,7 +92,10 @@ public class UserRegistration extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item,
                 this.getResources().getStringArray(R.array.user_role_array));
         activityUserRegistrationBinding.spnrLevel.setAdapter(arrayAdapter);
-        activityUserRegistrationBinding.spnrLevel.setSelection(0);
+        if (!isAdd)
+            activityUserRegistrationBinding.spnrLevel.setSelection(getUserLevelID(storeModel.getLevel()));
+        else
+            activityUserRegistrationBinding.spnrLevel.setSelection(0);
     }
 
     @Override
@@ -125,7 +136,7 @@ public class UserRegistration extends AppCompatActivity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss", Locale.US);
         String regDate = simpleDateFormat.format(calendar.getTime());
         String message = "";
-        storeModel = new StoreModel();
+        String content;
 
         if (!TextUtils.isEmpty(activityUserRegistrationBinding.etUsername.getText())) {
             storeModel.setUserName(activityUserRegistrationBinding.etUsername.getText().toString());
@@ -171,8 +182,14 @@ public class UserRegistration extends AppCompatActivity {
             storeModel.setIsActive("N");
             storeModel.setIsUploaded("N");
 
-            StoreHandler.getInstance(this).addStoreUser(storeModel);
-            Helper.showDialog(this, "", getResources().getString(R.string.success_add_user), new View.OnClickListener() {
+            if (isAdd) {
+                StoreHandler.getInstance(this).addStoreUser(storeModel);
+                content = getResources().getString(R.string.success_add_user);
+            } else {
+                StoreHandler.getInstance(this).updateStoreUser(storeModel);
+                content = getResources().getString(R.string.success_update_user);
+            }
+            Helper.showDialog(this, "", content, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Helper.alertDialogCancel();
@@ -186,14 +203,15 @@ public class UserRegistration extends AppCompatActivity {
         }
     }
 
-    private String getUserLevelCode(int index){
-        String userLevelCode = "";
-        if (index == 1)
-            userLevelCode = getResources().getString(R.string.admin_code);
-        else if (index == 2)
-            userLevelCode = getResources().getString(R.string.processor_code);
+    private int getUserLevelID(String level){
+        return Arrays.asList(getResources().getStringArray(R.array.user_role_array)).indexOf(getUserLevelValue(level));
+    }
 
-        return userLevelCode;
+    private String getUserLevelValue(String level){
+        if (level.equalsIgnoreCase("Adm"))
+            return "Admin";
+        else
+            return "Processor";
     }
 
     private void clearData() {

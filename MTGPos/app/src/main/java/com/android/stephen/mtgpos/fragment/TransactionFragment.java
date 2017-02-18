@@ -1,6 +1,7 @@
 package com.android.stephen.mtgpos.fragment;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import com.android.stephen.mtgpos.R;
 import com.android.stephen.mtgpos.adapter.MyTransactionRecyclerViewAdapter;
 import com.android.stephen.mtgpos.database.StoreHandler;
+import com.android.stephen.mtgpos.databinding.FragmentTransactionListBinding;
 import com.android.stephen.mtgpos.model.StoreModel;
 
 import java.util.LinkedList;
@@ -25,8 +27,8 @@ public class TransactionFragment extends Fragment {
     private OnListTransactionFragmentInteractionListener mListener;
     private MyTransactionRecyclerViewAdapter myTransactionRecyclerViewAdapter;
     private LinkedList<StoreModel> storeModelLinkedList;
-    private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
+    FragmentTransactionListBinding fragmentTransactionListBinding;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -58,20 +60,27 @@ public class TransactionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getActivity().setTitle(getResources().getString(R.string.title_transaction));
-        View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
-        setUpList(view);
-        return view;
+        fragmentTransactionListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_transaction_list,
+                container, false);
+        setUpList();
+        return fragmentTransactionListBinding.getRoot();
     }
 
-    private void setUpList(View view){
-        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+    private void setUpList(){
         storeModelLinkedList = new LinkedList<>();
         storeModelLinkedList.addAll(StoreHandler.getInstance(getActivity()).getAllStorePurchased());
-        recyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(mLayoutManager);
-        myTransactionRecyclerViewAdapter = new MyTransactionRecyclerViewAdapter(storeModelLinkedList, mListener);
-        recyclerView.setAdapter(myTransactionRecyclerViewAdapter);
+        if (storeModelLinkedList.size() > 0) {
+            fragmentTransactionListBinding.list.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(getActivity());
+            fragmentTransactionListBinding.list.setLayoutManager(mLayoutManager);
+            myTransactionRecyclerViewAdapter = new MyTransactionRecyclerViewAdapter(storeModelLinkedList, mListener);
+            fragmentTransactionListBinding.list.setAdapter(myTransactionRecyclerViewAdapter);
+            fragmentTransactionListBinding.tvEmpty.setVisibility(View.GONE);
+            fragmentTransactionListBinding.llTitle.setVisibility(View.VISIBLE);
+        } else {
+            fragmentTransactionListBinding.tvEmpty.setVisibility(View.VISIBLE);
+            fragmentTransactionListBinding.llTitle.setVisibility(View.GONE);
+        }
     }
 
     @Override

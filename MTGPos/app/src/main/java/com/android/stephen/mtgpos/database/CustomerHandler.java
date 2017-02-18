@@ -230,6 +230,48 @@ public class CustomerHandler extends SQLiteDBHandler{
         return customerModelList;
     }
 
+    public LinkedList<CustomerModel> getAllCustomerWithPicture() {
+        LinkedList<CustomerModel> customerModelList = new LinkedList<>();
+        // Select All Query
+//        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.Customer.toString() + " WHERE "
+//                + DBModels.enumCustomer.IsStoreOwner.toString() + "='N';";
+        String selectQuery = "SELECT * FROM "+ DBModels.enumTables.Customer + " a INNER JOIN "+
+                DBModels.enumTables.CustomerPicture + " b ON a."+ DBModels.enumCustomer.CustID + "=b." +
+                DBModels.enumCustomerPicture.CustID + " WHERE " + DBModels.enumCustomer.IsStoreOwner.toString() + "='N';";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                CustomerModel customerModel = new CustomerModel();
+                customerModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
+                customerModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.StoreID.toString())));
+                customerModel.setCustomerID(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.CustID.toString())));
+                customerModel.setUpCustomerID(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.UpCustID.toString())));
+                customerModel.setFirstName(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.Fname.toString())));
+                customerModel.setMiddleName(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.Mname.toString())));
+                customerModel.setLastName(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.Lname.toString())));
+                customerModel.setBirthDate(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.BirthDate.toString())));
+                customerModel.setEmailAddress(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.Email.toString())));
+                customerModel.setMobileNumber(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.Mobile.toString())));
+                customerModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.Remarks.toString())));
+                customerModel.setPassword(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.Password.toString())));
+                customerModel.setIsStoreOwner(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.IsStoreOwner.toString())));
+                customerModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.IsActive.toString())));
+                customerModel.setIsUploaded(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomer.IsUploaded.toString())));
+                customerModel.setPicture(cursor.getString(cursor.getColumnIndex(DBModels.enumCustomerPicture.Picture.toString())));
+                // Adding contact to list
+                customerModelList.add(customerModel);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        // return contact list
+        return customerModelList;
+    }
+
     public LinkedList<CustomerModel> getAllCustomerUpline() {
         LinkedList<CustomerModel> customerModelList = new LinkedList<>();
         // Select All Query

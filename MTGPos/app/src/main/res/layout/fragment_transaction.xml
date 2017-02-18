@@ -2,71 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="12dp"
     android:orientation="vertical">
     <LinearLayout
+        android:layout_margin="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/tran_pur_ref"
-            android:textStyle="bold" />
         <TextView
             android:id="@+id/id"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/tran_date"
-            android:textStyle="bold" />
+            android:textAlignment="textStart"
+            android:text="@string/tran_pur_ref" />
         <TextView
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/tran_amount"
-            android:textStyle="bold" />
+            android:textAlignment="center"
+            android:text="@string/tran_date" />
         <TextView
             android:id="@+id/amount"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/tran_qty"
-            android:textStyle="bold" />
+            android:textAlignment="textEnd"
+            android:text="@string/tran_amount" />
         <TextView
             android:id="@+id/qty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
+            android:textAlignment="textEnd"
+            android:text="@string/tran_qty" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 </LinearLayout>

@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.android.stephen.mtgpos.activity.CustomerRegistration">
-
+    <data>
+        <variable
+            name="storeModel"
+            type="com.android.stephen.mtgpos.model.StoreModel"/>
+        <import name="view" type="android.view.View"/>
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -46,6 +51,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
+                        android:text="@{storeModel.userName}"
                         android:hint="@string/username" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -60,6 +66,7 @@
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:inputType="textPassword"
+                        android:text="@{storeModel.password}"
                         android:hint="@string/password" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -76,6 +83,7 @@
                         android:maxLength="60"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                         android:maxLines="1"
+                        android:text="@{storeModel.firstName}"
                         android:hint="@string/first_name" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -93,6 +101,7 @@
                         android:maxLength="60"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                         android:maxLines="1"
+                        android:text="@{storeModel.middleName}"
                         android:hint="@string/middle_name" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -109,6 +118,7 @@
                         android:maxLength="60"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                         android:maxLines="1"
+                        android:text="@{storeModel.lastName}"
                         android:hint="@string/last_name" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -121,6 +131,7 @@
                         android:id="@+id/etRemarks"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="@{storeModel.remarks}"
                         android:hint="@string/remarks" />
                 </android.support.design.widget.TextInputLayout>
 

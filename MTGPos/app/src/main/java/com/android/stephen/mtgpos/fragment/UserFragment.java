@@ -1,9 +1,12 @@
 package com.android.stephen.mtgpos.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import android.view.ViewGroup;
 import com.android.stephen.mtgpos.R;
 import com.android.stephen.mtgpos.adapter.MyUserRecyclerViewAdapter;
 import com.android.stephen.mtgpos.database.StoreHandler;
+import com.android.stephen.mtgpos.databinding.FragmentUserListBinding;
 import com.android.stephen.mtgpos.model.StoreModel;
 
 import java.util.LinkedList;
@@ -29,8 +33,8 @@ public class UserFragment extends Fragment {
     private OnListUserFragmentInteractionListener mListener;
     private MyUserRecyclerViewAdapter myUserRecyclerViewAdapter;
     private LinkedList<StoreModel> userModelLinkedList;
-    private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
+    FragmentUserListBinding fragmentUserListBinding;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -78,20 +82,25 @@ public class UserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getActivity().setTitle(getResources().getString(R.string.title_user));
-        View view = inflater.inflate(R.layout.fragment_user_list, container, false);
-        setUpList(view);
-        return view;
+        fragmentUserListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_list,
+                container, false);
+        setUpList();
+        return fragmentUserListBinding.getRoot();
     }
 
-    private void setUpList(View view){
-        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+    private void setUpList(){
         userModelLinkedList = new LinkedList<>();
         userModelLinkedList.addAll(StoreHandler.getInstance(getActivity()).getAllStoreUser());
-        recyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(mLayoutManager);
-        myUserRecyclerViewAdapter = new MyUserRecyclerViewAdapter(userModelLinkedList, mListener);
-        recyclerView.setAdapter(myUserRecyclerViewAdapter);
+        if (userModelLinkedList.size() > 0) {
+            fragmentUserListBinding.tvEmpty.setVisibility(View.GONE);
+            fragmentUserListBinding.list.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(getActivity());
+            fragmentUserListBinding.list.setLayoutManager(mLayoutManager);
+            myUserRecyclerViewAdapter = new MyUserRecyclerViewAdapter(userModelLinkedList, mListener);
+            fragmentUserListBinding.list.setAdapter(myUserRecyclerViewAdapter);
+        } else {
+            fragmentUserListBinding.tvEmpty.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -2,72 +2,45 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="12dp"
     android:orientation="vertical">
-
     <LinearLayout
+        android:layout_margin="6dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
         <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/reg_stock_id"
-            android:textStyle="bold" />
-        <TextView
+            android:visibility="gone"
             android:id="@+id/id"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/reg_stock_desc"
-            android:textStyle="bold" />
+            android:textAlignment="textStart"
+            android:text="@string/reg_stock_id" />
         <TextView
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/reg_stock_qty"
-            android:textStyle="bold" />
+            android:textAlignment="textStart"
+            android:text="@string/reg_stock_desc" />
         <TextView
             android:id="@+id/qty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:text="@string/reg_stock_date"
-            android:textStyle="bold" />
+            android:textAlignment="center"
+            android:text="@string/reg_stock_qty" />
         <TextView
             android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="" />
+            android:textAlignment="textEnd"
+            android:text="@string/reg_stock_date" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 </LinearLayout>
