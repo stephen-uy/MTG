@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,10 +25,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.stephen.mtgpos.R;
+import com.android.stephen.mtgpos.callback.VolleyCallback;
 import com.android.stephen.mtgpos.database.StoreHandler;
 import com.android.stephen.mtgpos.database.SQLiteDBHandler;
 import com.android.stephen.mtgpos.model.StoreModel;
 import com.android.stephen.mtgpos.utils.Helper;
+import com.android.stephen.mtgpos.utils.StoreAPI;
+import com.android.stephen.mtgpos.utils.Task;
+
+import java.util.HashMap;
+import java.util.List;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.INTERNET;
@@ -36,7 +43,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements VolleyCallback {
 
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final int REQUEST_INTERNET = 1;
@@ -240,6 +247,20 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResponseReady(Task task, HashMap<String, String> response) {
+        Log.d("response"+task.getValue(),""+ response.toString());
+    }
+
+    @Override
+    public void onResponseReady(Task task, List<HashMap<String, String>> response) {
+        Log.d("response"+task.getValue(),""+ response.toString());
+    }
+
+    public void callAPIs(StoreModel storeModel){
+        StoreAPI storeAPI = new StoreAPI(LoginActivity.this);
+//        storeAPI.getItemTypeLookUp(LoginActivity.this);
+    }
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
@@ -276,6 +297,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if (success) {
                 if (storeModel != null) {
+                    callAPIs(storeModel);
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     i.putExtra("user", mEmail);
                     i.putExtra("level", storeModel.getLevel());

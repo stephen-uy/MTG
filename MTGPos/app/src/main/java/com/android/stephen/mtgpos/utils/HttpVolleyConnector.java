@@ -234,7 +234,7 @@ public class HttpVolleyConnector {
     private String assembleUrlForGet(ContentValues params) {
         String getParams = "";
         if(params==null) {
-            return null;
+            return "";
         }
         for(String key : params.keySet()) {
             getParams += key + "/" + params.getAsString(key) + "/";

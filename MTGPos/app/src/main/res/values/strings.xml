@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Meryenda To Go</string>
+    <string name="login_title">Store Online - UPoints</string>
+    <string name="login_footer">Powered By Technogosyo</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

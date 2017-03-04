@@ -1,12 +1,22 @@
 package com.android.stephen.mtgpos.utils;
 
 public enum Task {
-    ITEMS("itemmtg"),
-    AGENTS("agents"),
-    UPDATEAGENT("update_agent_record"),
-    ADDAGENT("add_agent"),
-    FORGOT_PASSWORD("forgot_password"),
-    CHANGE_PASSWORD("change_password");
+    STORE_DETAILS("getstoredetails"),
+    ITEMS("getstoreitems"),
+    PRODUCTS("getstoreproduct"),
+    PRODUCT_ITEM("getstoreproductitem"),
+    STOCKS("getstorestock"),
+    ITEM_TYPE("getitemtypelookup"),
+    UPOINTS_HISTORY("getupointshistory"),
+    STORE_UPOINTS("getstoreupoints"),
+    STOCKS_LIST("getlistofallstocks"),
+    PRODUCT_LIST("getlistofallproducts"),
+    PRODUCT_CATEGORY_LIST("getlistofallprocat"),
+    STORE_STOCKS_LIST("getlistofallstorestocks"),
+    SAVE_NEW_STOCK("savenewstock"),
+    GENERATE_CUSTOMER_ID("generatecustomerid"),
+    GET_UPLINE("getupline"),
+    SAVE_NEW_CUSTOMER("savenewcustomer");
 
     private String value;
 

@@ -1,8 +1,10 @@
 package com.android.stephen.mtgpos.utils;
 
 public enum API {
-    API("api"),
-    USER("User_Api");
+    STORE("store"),
+    ITEM("item"),
+    PROCAT("procat"),
+    CUSTOMER("customer");
 
     private String api;
 

@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.android.stephen.mtgpos.R;
 import com.android.stephen.mtgpos.callback.FragmentCallback;
 import com.android.stephen.mtgpos.callback.VolleyCallback;
-import com.android.stephen.mtgpos.database.CustomerHandler;
 import com.android.stephen.mtgpos.database.StoreHandler;
 import com.android.stephen.mtgpos.fragment.CustomerFragment;
 import com.android.stephen.mtgpos.fragment.InventoryFragment;
@@ -188,7 +187,9 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_pos) {
+        if (id == R.id.nav_dashboard) {
+
+        } else if (id == R.id.nav_pos) {
             Helper.replaceFragment(this, posFragment, R.id.content_main, FragmentTag.POS.toString());
         } else if (id == R.id.nav_inventory) {
             Helper.replaceFragment(this, inventoryFragment, R.id.content_main, FragmentTag.INVENTORY.toString());
@@ -204,9 +205,12 @@ public class MainActivity extends AppCompatActivity
             Helper.replaceFragment(this, customerFragment, R.id.content_main, FragmentTag.CUSTOMER.toString());
         } else if (id == R.id.nav_user) {
             Helper.replaceFragment(this, userFragment, R.id.content_main, FragmentTag.USERMAINTENACE.toString());
-        }  else if (id == R.id.nav_upload) {
-            HttpVolleyConnector con = new HttpVolleyConnector();
-            con.wGet(this, this, API.API, Task.ITEMS);
+        } else if (id == R.id.nav_upload) {
+
+        } else if (id == R.id.nav_upoints_history) {
+
+        } else if (id == R.id.nav_update_upoints) {
+
         } else if (id == R.id.nav_logout) {
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
