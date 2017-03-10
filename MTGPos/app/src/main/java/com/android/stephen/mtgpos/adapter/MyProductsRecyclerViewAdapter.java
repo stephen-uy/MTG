@@ -37,6 +37,7 @@ public class MyProductsRecyclerViewAdapter extends RecyclerView.Adapter<MyProduc
         holder.mPriceView.setText(mValues.get(position).getSellingPrice());
         holder.mRebateView.setText(mValues.get(position).getRebatePoints());
         holder.mShareView.setText(mValues.get(position).getSharePoints());
+        holder.mServingView.setText(mValues.get(position).getNoOfServing());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +74,7 @@ public class MyProductsRecyclerViewAdapter extends RecyclerView.Adapter<MyProduc
         public final TextView mPriceView;
         public final TextView mRebateView;
         public final TextView mShareView;
+        public final TextView mServingView;
         public LookUpModel mItem;
 
         public ViewHolder(View view) {
@@ -83,6 +85,7 @@ public class MyProductsRecyclerViewAdapter extends RecyclerView.Adapter<MyProduc
             mPriceView = (TextView) view.findViewById(R.id.price);
             mRebateView = (TextView) view.findViewById(R.id.rebate_points);
             mShareView = (TextView) view.findViewById(R.id.share_points);
+            mServingView = (TextView) view.findViewById(R.id.serving);
         }
 
         @Override

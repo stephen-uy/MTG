@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:name="com.android.stephen.mtgpos.fragment.ProductsFragment" >
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/llTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

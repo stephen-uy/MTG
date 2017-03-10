@@ -6,6 +6,7 @@
         android:orderInCategory="100"
         android:icon="@drawable/ic_save_white_24dp"
         android:title="@string/action_save"
+        android:visible="false"
         app:showAsAction="always" />
 
     <item
@@ -13,6 +14,7 @@
         android:orderInCategory="100"
         android:icon="@drawable/ic_add"
         android:title="@string/action_add"
+        android:visible="false"
         app:showAsAction="always" />
 
     <item
@@ -20,5 +22,14 @@
         android:orderInCategory="100"
         android:icon="@drawable/ic_search"
         android:title="@string/action_search"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_update"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_update"
+        android:title="@string/action_update"
+        android:visible="false"
         app:showAsAction="always" />
 </menu>

@@ -35,6 +35,7 @@ public class MyStocksRecyclerViewAdapter extends RecyclerView.Adapter<MyStocksRe
         holder.mIdView.setText(mValues.get(position).getItemID());
         holder.mContentView.setText(mValues.get(position).getItemDesc());
         holder.mQuantityView.setText(mValues.get(position).getQuantity());
+        holder.mTypeView.setText(mValues.get(position).getItemType());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +70,7 @@ public class MyStocksRecyclerViewAdapter extends RecyclerView.Adapter<MyStocksRe
         public final TextView mIdView;
         public final TextView mContentView;
         public final TextView mQuantityView;
+        public final TextView mTypeView;
         public StoreModel mItem;
 
         public ViewHolder(View view) {
@@ -77,6 +79,7 @@ public class MyStocksRecyclerViewAdapter extends RecyclerView.Adapter<MyStocksRe
             mIdView = (TextView) view.findViewById(R.id.id);
             mContentView = (TextView) view.findViewById(R.id.content);
             mQuantityView = (TextView) view.findViewById(R.id.qty);
+            mTypeView = (TextView) view.findViewById(R.id.type);
         }
 
         @Override

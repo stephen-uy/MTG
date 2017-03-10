@@ -1,4 +1,4 @@
-package com.android.stephen.mtgpos.adapter;
+package com.android.stephen.mtgpos.fragment;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,18 +6,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.stephen.mtgpos.R;
-import com.android.stephen.mtgpos.fragment.InventoryFragment;
-import com.android.stephen.mtgpos.model.LookUpModel;
+import com.android.stephen.mtgpos.fragment.ItemFragment.OnListFragmentInteractionListener;
+import com.android.stephen.mtgpos.fragment.dummy.DummyContent.DummyItem;
 
-import java.util.LinkedList;
+import java.util.List;
 
-public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInventoryRecyclerViewAdapter.ViewHolder> {
+/**
+ * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * specified {@link OnListFragmentInteractionListener}.
+ * TODO: Replace the implementation with code for your data type.
+ */
+public class MyUPointsHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyUPointsHistoryRecyclerViewAdapter.ViewHolder> {
 
-    private LinkedList<LookUpModel> mValues;
-    private InventoryFragment.OnListInventoryFragmentInteractionListener mListener;
+    private final List<DummyItem> mValues;
+    private final OnListFragmentInteractionListener mListener;
 
-    public MyInventoryRecyclerViewAdapter(LinkedList<LookUpModel> items, InventoryFragment.OnListInventoryFragmentInteractionListener listener) {
+    public MyUPointsHistoryRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -25,17 +29,15 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_inventory, parent, false);
+                .inflate(R.layout.fragment_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getItemID());
-        holder.mContentView.setText(mValues.get(position).getItemDesc());
-        holder.mQtyView.setText(mValues.get(position).getQtyPerItemType());
-        holder.mTypeView.setText(mValues.get(position).getItemType());
+        holder.mIdView.setText(mValues.get(position).id);
+        holder.mContentView.setText(mValues.get(position).content);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +45,7 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.OnListInventoryFragmentInteractionListener(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
         });
@@ -54,32 +56,17 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         return mValues.size();
     }
 
-    public void swap(LinkedList<LookUpModel> list) {
-        if (mValues != null) {
-            mValues.clear();
-            mValues = list;
-        }
-        else {
-            mValues = list;
-        }
-        notifyDataSetChanged();
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public final TextView mQtyView;
-        public final TextView mTypeView;
-        public LookUpModel mItem;
+        public DummyItem mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.id);
             mContentView = (TextView) view.findViewById(R.id.content);
-            mQtyView = (TextView) view.findViewById(R.id.qty);
-            mTypeView = (TextView) view.findViewById(R.id.type);
         }
 
         @Override

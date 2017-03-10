@@ -97,6 +97,11 @@ public class CustomerRegistration extends AppCompatActivity implements View.OnCl
         activityCustomerRegistrationBinding.imgPicture.setOnClickListener(this);
 
         mayRequestCamera();
+        showReferralDialog();
+    }
+
+    private void showReferralDialog() {
+
     }
 
     @Override
@@ -109,10 +114,8 @@ public class CustomerRegistration extends AppCompatActivity implements View.OnCl
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item;
-        item = menu.findItem(R.id.action_add);
-        item.setVisible(false);
-        item = menu.findItem(R.id.action_search);
-        item.setVisible(false);
+        item = menu.findItem(R.id.action_save);
+        item.setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -195,7 +198,7 @@ public class CustomerRegistration extends AppCompatActivity implements View.OnCl
                 updateCustomerUpLine(customerModel);
                 customerModel.setDateCaptured(Helper.getDateTimeWithFormat());
                 if (customerHandler.addCustomerPicture(customerModel)) {
-                    customerHandler.addCustomerPictureHistory(customerModel);
+//                    customerHandler.addCustomerPictureHistory(customerModel);
                     Helper.showDialog(this, "", getResources().getString(R.string.success_add_customer)
                             + "\n\n Customer's Promo Code: " + customerModel.getCustomerID(), new View.OnClickListener() {
                         @Override
@@ -222,16 +225,16 @@ public class CustomerRegistration extends AppCompatActivity implements View.OnCl
     private void updateCustomerUpLine(CustomerModel custModel){
         CustomerModel custUpline;
         custModel.setCustomerUpID1(custModel.getUpCustomerID());
-        custUpline = CustomerHandler.getInstance(this).getCustomerUplines(custModel.getUpCustomerID(), custModel.getStoreID());
-        if (!TextUtils.isEmpty(custUpline.getCustomerUpID1())) {
-            custModel.setCustomerUpID2(custUpline.getCustomerUpID1());
-        }
-        if (!TextUtils.isEmpty(custUpline.getCustomerUpID2())) {
-            custModel.setCustomerUpID3(custUpline.getCustomerUpID2());
-        }
-        if (!TextUtils.isEmpty(custUpline.getCustomerUpID3())) {
-            custModel.setCustomerUpID4(custUpline.getCustomerUpID3());
-        }
+//        custUpline = CustomerHandler.getInstance(this).getCustomerUplines(custModel.getUpCustomerID(), custModel.getStoreID());
+//        if (!TextUtils.isEmpty(custUpline.getCustomerUpID1())) {
+//            custModel.setCustomerUpID2(custUpline.getCustomerUpID1());
+//        }
+//        if (!TextUtils.isEmpty(custUpline.getCustomerUpID2())) {
+//            custModel.setCustomerUpID3(custUpline.getCustomerUpID2());
+//        }
+//        if (!TextUtils.isEmpty(custUpline.getCustomerUpID3())) {
+//            custModel.setCustomerUpID4(custUpline.getCustomerUpID3());
+//        }
 
         Log.d("customerUplines",custModel.getCustomerUpID1() + "," + custModel.getCustomerUpID2() + ","
                 + custModel.getCustomerUpID3() + "," + custModel.getCustomerUpID4());

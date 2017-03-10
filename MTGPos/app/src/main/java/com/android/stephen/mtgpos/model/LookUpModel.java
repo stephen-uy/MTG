@@ -21,20 +21,44 @@ public class LookUpModel implements Serializable{
     private String picture;
     private String qtyPerServe;
     private String isActive;
+    private String catID;
+    private String catDesc;
+    private String qtyPerItemType;
+    private String type;
+    private String itemType;
+    private String description;
+    private String dateLastUpdated;
+    private String noOfServing;
+    private String quantity;
 
     public LookUpModel (){
 
     }
 
-    public LookUpModel (String storeID, String itemID, String itemDesc, String qtyPerPack, String isActive){
-        this.storeID = storeID;
-        this.itemID = itemID;
-        this.itemDesc = itemDesc;
-        this.qtyPerPack = qtyPerPack;
+    public LookUpModel (String type, String description, String isActive){
+        this.type = type;
+        this.description = description;
         this.isActive = isActive;
     }
 
-    public LookUpModel (String storeID, String productID, String itemID, String qtyPerServe, String isActive, String picture){
+    public LookUpModel (String catID, String catDesc, String isActive, String extra){
+        this.catID = catID;
+        this.catDesc = catDesc;
+        this.isActive = isActive;
+    }
+
+    public LookUpModel (String storeID, String itemID, String itemDesc, String qtyPerItemType, String itemType, String isActive,
+                        String dateLastUpdated){
+        this.storeID = storeID;
+        this.itemID = itemID;
+        this.itemDesc = itemDesc;
+        this.qtyPerItemType = qtyPerItemType;
+        this.itemType = itemType;
+        this.isActive = isActive;
+        this.dateLastUpdated = dateLastUpdated;
+    }
+
+    public LookUpModel (String storeID, String productID, String itemID, String qtyPerServe, String isActive){
         this.storeID = storeID;
         this.productID = productID;
         this.itemID = itemID;
@@ -43,7 +67,7 @@ public class LookUpModel implements Serializable{
     }
 
     public LookUpModel (String storeID, String productID, String productDesc, String sellingPrice, String rebatePoints,
-                        String sharePoints, String picture, String isActive){
+                        String sharePoints, String picture, String noOfServing, String isActive){
         this.storeID = storeID;
         this.productID = productID;
         this.productDesc = productDesc;
@@ -51,6 +75,7 @@ public class LookUpModel implements Serializable{
         this.rebatePoints = rebatePoints;
         this.sharePoints = sharePoints;
         this.picture = picture;
+        this.noOfServing = noOfServing;
         this.isActive = isActive;
     }
 
@@ -156,5 +181,77 @@ public class LookUpModel implements Serializable{
 
     public void setQtyPerServe(String qtyPerServe) {
         this.qtyPerServe = qtyPerServe;
+    }
+
+    public String getCatID() {
+        return catID;
+    }
+
+    public void setCatID(String catID) {
+        this.catID = catID;
+    }
+
+    public String getCatDesc() {
+        return catDesc;
+    }
+
+    public void setCatDesc(String catDesc) {
+        this.catDesc = catDesc;
+    }
+
+    public String getQtyPerItemType() {
+        return qtyPerItemType;
+    }
+
+    public void setQtyPerItemType(String qtyPerItemType) {
+        this.qtyPerItemType = qtyPerItemType;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDateLastUpdated() {
+        return dateLastUpdated;
+    }
+
+    public void setDateLastUpdated(String dateLastUpdated) {
+        this.dateLastUpdated = dateLastUpdated;
+    }
+
+    public String getNoOfServing() {
+        return noOfServing;
+    }
+
+    public void setNoOfServing(String noOfServing) {
+        this.noOfServing = noOfServing;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 }

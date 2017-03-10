@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +67,7 @@ public class TransactionFragment extends Fragment {
 
     private void setUpList(){
         storeModelLinkedList = new LinkedList<>();
-        storeModelLinkedList.addAll(StoreHandler.getInstance(getActivity()).getAllStorePurchased());
+        storeModelLinkedList.addAll(StoreHandler.getInstance(getActivity()).getAllPurchased());
         if (storeModelLinkedList.size() > 0) {
             fragmentTransactionListBinding.list.setHasFixedSize(true);
             mLayoutManager = new LinearLayoutManager(getActivity());
@@ -106,7 +105,7 @@ public class TransactionFragment extends Fragment {
     }
 
     public void loadTransaction(){
-        storeModelLinkedList = StoreHandler.getInstance(getActivity()).getAllStorePurchased();
+        storeModelLinkedList = StoreHandler.getInstance(getActivity()).getAllPurchased();
         myTransactionRecyclerViewAdapter.swap(storeModelLinkedList);
     }
 }

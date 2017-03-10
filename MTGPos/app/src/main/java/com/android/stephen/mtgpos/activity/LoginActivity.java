@@ -26,19 +26,21 @@ import android.widget.TextView;
 
 import com.android.stephen.mtgpos.R;
 import com.android.stephen.mtgpos.callback.VolleyCallback;
+import com.android.stephen.mtgpos.database.DBModels;
 import com.android.stephen.mtgpos.database.StoreHandler;
 import com.android.stephen.mtgpos.database.SQLiteDBHandler;
 import com.android.stephen.mtgpos.model.StoreModel;
+import com.android.stephen.mtgpos.utils.APIHelper;
 import com.android.stephen.mtgpos.utils.Helper;
 import com.android.stephen.mtgpos.utils.StoreAPI;
 import com.android.stephen.mtgpos.utils.Task;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.Manifest.permission.INTERNET;
-import static android.Manifest.permission.READ_CONTACTS;
+import static android.Manifest.permission.ACCESS_WIFI_STATE;
 
 /**
  * A login screen that offers login via email/password.
@@ -87,13 +89,14 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
         mProgressView = findViewById(R.id.login_progress);
 
         SQLiteDBHandler.getInstance(this);
-        Helper.insertStoreData(this);
-        Helper.insertCustomerData(this);
-        Helper.insertItemData(this);
-        Helper.insertProductData(this);
-        Helper.insertProductItemData(this);
-        Helper.insertStoreStocksData(this);
-        Helper.insertStoreStocksRegData(this);
+//        APIHelper.insertStoreUser(this);
+//        APIHelper.insertStoreDetails(this);
+//        APIHelper.insertCustomerData(this);
+//        APIHelper.insertItemData(this);
+//        APIHelper.insertProductData(this);
+//        APIHelper.insertProductItemData(this);
+//        APIHelper.insertStoreStocksData(this);
+//        APIHelper.insertStoreStocksRegData(this);
         mayRequestConnectivity();
     }
 
@@ -110,11 +113,11 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
                         public void onClick(View v) {
-                            requestPermissions(new String[]{ACCESS_FINE_LOCATION}, REQUEST_INTERNET);
+                            requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_WIFI_STATE, ACCESS_COARSE_LOCATION}, REQUEST_INTERNET);
                         }
                     });
         } else {
-            requestPermissions(new String[]{ACCESS_FINE_LOCATION}, REQUEST_INTERNET);
+            requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_WIFI_STATE, ACCESS_COARSE_LOCATION}, REQUEST_INTERNET);
         }
         return false;
     }
@@ -248,19 +251,50 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
     }
 
     @Override
-    public void onResponseReady(Task task, HashMap<String, String> response) {
+    public void onResponseReady(Task task, LinkedHashMap<String, String> response) {
+        if (task.getValue().equalsIgnoreCase(Task.STORE_DETAILS.getValue()))
+            parseStoreDetails(response);
+
         Log.d("response"+task.getValue(),""+ response.toString());
+    }
+
+    private void parseStoreDetails(LinkedHashMap<String, String> response) {
+        StoreModel model;
+        model = APIHelper.setUpStoreDetails(response);
+        if (!TextUtils.isEmpty(model.getStoreID())){
+            showProgress(false);
+//            model.setUserName(mEmailView.getText().toString());
+            model.setPass(mPasswordView.getText().toString());
+            APIHelper.insertStoreDetails(this, model);
+            APIHelper.insertStoreUser(this, model);
+            APIHelper.insertStoreUPoints(this, model);
+            goToNext(model, true);
+        } else {
+            showProgress(false);
+            showErrorMessage();
+        }
     }
 
     @Override
-    public void onResponseReady(Task task, List<HashMap<String, String>> response) {
+    public void onResponseReady(Task task, LinkedList<LinkedHashMap<String, String>> response) {
         Log.d("response"+task.getValue(),""+ response.toString());
     }
 
-    public void callAPIs(StoreModel storeModel){
-        StoreAPI storeAPI = new StoreAPI(LoginActivity.this);
-//        storeAPI.getItemTypeLookUp(LoginActivity.this);
+    private void goToNext(StoreModel model, boolean isFirstTime){
+        Intent i;
+        if (isFirstTime)
+            i = new Intent(LoginActivity.this, SplashScreen.class);
+        else
+            i = new Intent(LoginActivity.this, MainActivity.class);
+        i.putExtra("user", model.getUserName());
+        i.putExtra("password", model.getPass());
+        i.putExtra("level", model.getLevel());
+        i.putExtra("storeID", model.getStoreID());
+        i.putExtra("macaddress", Helper.getMacAddress(LoginActivity.this));
+        startActivity(i);
+        finish();
     }
+
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
@@ -269,6 +303,7 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
 
         private final String mEmail;
         private final String mPassword;
+        private int rowCount;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -279,35 +314,31 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(1000);
+            rowCount = StoreHandler.getInstance(LoginActivity.this).getRowCounts(DBModels.enumTables.StoreUser.toString());
+            if (rowCount == 0){
+                StoreAPI storeAPI = new StoreAPI(LoginActivity.this);
+                storeAPI.getStoreDetails(LoginActivity.this, mEmail, mPassword, Helper.getMacAddress(LoginActivity.this));
+            } else {
+//                LinkedList<StoreModel> storeModelList = StoreHandler.getInstance(LoginActivity.this).getAllStoreUser();
                 storeModel = StoreHandler.getInstance(LoginActivity.this).getLoginDetailsByUsernamePassword(mEmail, mPassword);
-            } catch (InterruptedException e) {
-                return false;
             }
-
             return true;
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
 
             if (success) {
+                showProgress(false);
                 if (storeModel != null) {
-                    callAPIs(storeModel);
-                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                    i.putExtra("user", mEmail);
-                    i.putExtra("level", storeModel.getLevel());
-                    i.putExtra("storeID", storeModel.getStoreID());
-                    startActivity(i);
-                    finish();
+                    goToNext(storeModel, false);
                 } else {
-                    showErrorMessage();
+                    if (rowCount > 0)
+                        showErrorMessage();
                 }
             } else {
+                showProgress(false);
 //                mPasswordView.setError(getString(R.string.error_incorrect_password));
 //                mPasswordView.requestFocus();
                 showErrorMessage();

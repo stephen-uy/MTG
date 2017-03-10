@@ -66,8 +66,8 @@
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:inputType="textPassword"
-                        android:text="@{storeModel.password}"
-                        android:hint="@string/password" />
+                        android:text="@{storeModel.pass}"
+                        android:hint="@string/pass" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout

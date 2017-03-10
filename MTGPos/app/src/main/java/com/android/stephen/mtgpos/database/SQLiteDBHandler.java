@@ -24,24 +24,30 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(DBModels.createTableProduct);
-        sqLiteDatabase.execSQL(DBModels.createTableItem);
         sqLiteDatabase.execSQL(DBModels.createTableProductItem);
+        sqLiteDatabase.execSQL(DBModels.createTableProductCategory);
+
+        sqLiteDatabase.execSQL(DBModels.createTableItem);
+        sqLiteDatabase.execSQL(DBModels.createTableItemTypeLookUp);
+
+        sqLiteDatabase.execSQL(DBModels.createTableStocks);
+        sqLiteDatabase.execSQL(DBModels.createTableStocksRegistration);
 
         sqLiteDatabase.execSQL(DBModels.createTableStore);
         sqLiteDatabase.execSQL(DBModels.createTableStoreUser);
-        sqLiteDatabase.execSQL(DBModels.createTableStoreAccount);
-        sqLiteDatabase.execSQL(DBModels.createTableStorePointsHistory);
-        sqLiteDatabase.execSQL(DBModels.createTableStoreStocksReg);
-        sqLiteDatabase.execSQL(DBModels.createTableStoreStocks);
-        sqLiteDatabase.execSQL(DBModels.createTableStoreLogs);
-        sqLiteDatabase.execSQL(DBModels.createTableStorePurchased);
-        sqLiteDatabase.execSQL(DBModels.createTableStorePurchasedDetails);
+        sqLiteDatabase.execSQL(DBModels.createTableStoreUPoints);
+        sqLiteDatabase.execSQL(DBModels.createTableStoreUPointsHistory);
+        sqLiteDatabase.execSQL(DBModels.createTablePurchased);
+        sqLiteDatabase.execSQL(DBModels.createTablePurchasedProductDetails);
+        sqLiteDatabase.execSQL(DBModels.createTablePurchasedItemDetails);
+
+        sqLiteDatabase.execSQL(DBModels.createTableAuditLogs);
 
         sqLiteDatabase.execSQL(DBModels.createTableCustomer);
         sqLiteDatabase.execSQL(DBModels.createTableCustomerPicture);
-        sqLiteDatabase.execSQL(DBModels.createTableCustomerPictureHistory);
-        sqLiteDatabase.execSQL(DBModels.createTableCustomerPoints);
-        sqLiteDatabase.execSQL(DBModels.createTableCustomerBonusPoints);
+//        sqLiteDatabase.execSQL(DBModels.createTableCustomerPictureHistory);
+        sqLiteDatabase.execSQL(DBModels.createTableCustomerUPoints);
+        sqLiteDatabase.execSQL(DBModels.createTableCustomerReceivedUPoints);
         sqLiteDatabase.execSQL(DBModels.createTableCustomerUpline);
     }
 

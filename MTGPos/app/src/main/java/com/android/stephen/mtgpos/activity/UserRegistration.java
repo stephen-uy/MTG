@@ -16,7 +16,6 @@ import com.android.stephen.mtgpos.database.StoreHandler;
 import com.android.stephen.mtgpos.databinding.ActivityUserRegistrationBinding;
 import com.android.stephen.mtgpos.model.StoreModel;
 import com.android.stephen.mtgpos.utils.Helper;
-import com.android.stephen.mtgpos.utils.LayoutSettings;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -73,7 +72,7 @@ public class UserRegistration extends AppCompatActivity {
         activityUserRegistrationBinding.spnrLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                userRole = adapterView.getItemAtPosition(i).toString().substring(0,3);
+                userRole = adapterView.getItemAtPosition(i).toString();
                 if (i <= 0)
                     userRole = "";
 
@@ -108,10 +107,8 @@ public class UserRegistration extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item;
-        item = menu.findItem(R.id.action_add);
-        item.setVisible(false);
-        item = menu.findItem(R.id.action_search);
-        item.setVisible(false);
+        item = menu.findItem(R.id.action_save);
+        item.setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -145,7 +142,7 @@ public class UserRegistration extends AppCompatActivity {
         }
 
         if (!TextUtils.isEmpty(activityUserRegistrationBinding.etPassword.getText())) {
-            storeModel.setPassword(activityUserRegistrationBinding.etPassword.getText().toString());
+            storeModel.setPass(activityUserRegistrationBinding.etPassword.getText().toString());
         } else {
             message += getResources().getString(R.string.error_password);
         }
@@ -177,7 +174,7 @@ public class UserRegistration extends AppCompatActivity {
         if (TextUtils.isEmpty(message)){
             storeModel.setStoreID(storeID);
             storeModel.setRegBy(userID);
-            storeModel.setRegDate(regDate);
+            storeModel.setDateReg(regDate);
             storeModel.setRemarks(activityUserRegistrationBinding.etRemarks.getText().toString());
             storeModel.setIsActive("N");
             storeModel.setIsUploaded("N");

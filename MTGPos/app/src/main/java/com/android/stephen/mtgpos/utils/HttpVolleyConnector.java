@@ -28,6 +28,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -53,9 +54,9 @@ public class HttpVolleyConnector {
     //    private static int timeoutConnection = 15000;
     private static int timeoutSocket = 500000;
     private static Context context;
-    public HashMap<String, String> map;
-    public LinkedList<HashMap<String, String>> hashMapList;
-    private String error_response = "{\"response_code\":\"2\",\"response_message\":\"No Internet\"}";
+    public LinkedHashMap<String, String> map;
+    public LinkedList<LinkedHashMap<String, String>> hashMapList;
+    private String error_response = "{\"response_code\":\"2\",\"response_message\":\"Server Error\"}";
     private RequestQueue requestQueue;
 
     private boolean isHttps = false;
@@ -79,8 +80,8 @@ public class HttpVolleyConnector {
      * @param task
      * @param params
      */
-    public void wPost(Context c, VolleyCallback callback, API api, Task task, ContentValues params) {
-        createRequest(c, callback, api, Request.Method.POST , task, params);
+    public void wPost(Context c, VolleyCallback callback, API api, Task task, ContentValues params, boolean isArray) {
+        createRequest(c, callback, api, Request.Method.POST , task, params, isArray);
     }
 
     /**
@@ -91,8 +92,8 @@ public class HttpVolleyConnector {
      * @param task
      * @param params
      */
-    public void wGet(Context c, VolleyCallback callback, API api, Task task, ContentValues params) {
-        createRequest(c, callback, api, Request.Method.GET , task, params);
+    public void wGet(Context c, VolleyCallback callback, API api, Task task, ContentValues params, boolean isArray) {
+        createRequest(c, callback, api, Request.Method.GET , task, params, isArray);
     }
 
     /**
@@ -102,19 +103,20 @@ public class HttpVolleyConnector {
      * @param api
      * @param task
      */
-    public void wGet(Context c, VolleyCallback callback, API api, Task task) {
-        createRequest(c, callback, api, Request.Method.GET , task, null);
+    public void wGet(Context c, VolleyCallback callback, API api, Task task, boolean isArray) {
+        createRequest(c, callback, api, Request.Method.GET , task, null, isArray);
     }
 
     /**
      * This creates a request {POST,GET}
      * @param c - the context of caller object/class.
+     * @param api - values for this are our web api controllers
+     * @param method - values for this are constants Request.Method interface.
      * @param task - method inside controller. ex. server/agent_api/{login}
      * @param params - these are the values to be passed on to server.
-     * @param method - values for this are constants Request.Method interface.
-     * @param api - values for this are our web api controllers
+     * @param isArray
      */
-    private void createRequest(Context c, VolleyCallback callback, API api, int method, Task task, ContentValues params) {
+    private void createRequest(Context c, VolleyCallback callback, API api, int method, Task task, ContentValues params, boolean isArray) {
         this.context = c;
         System.setProperty("http.keepAlive", "false");
         if(!Connectivity.isConnected(c)) {
@@ -123,14 +125,21 @@ public class HttpVolleyConnector {
             try {
                 obj = (JSONObject) new JSONTokener(error_response.trim()).nextValue();
                 map = JSONObjectParser.parseFromSimpleJSONObject(obj);
+                hashMapList.add(map);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            callback.onResponseReady(task, map);
+            if (isArray)
+                callback.onResponseReady(task, hashMapList);
+            else
+                callback.onResponseReady(task, map);
             return;
         }
        // Log.i("HttpConnectVolley","pointed to: "+ ServerConstants.SERVER_URL + task.getValue());
-        connectUsingVolley(c,task,params,callback,method,api);
+        if (isArray)
+            connectUsingVolleyArray(c,task,params,callback,method,api);
+        else
+            connectUsingVolley(c,task,params,callback,method,api);
     }
 
     private void connectUsingVolley(Context c, final Task task, final ContentValues params, final VolleyCallback callback, final int method, API api) {
@@ -138,7 +147,11 @@ public class HttpVolleyConnector {
         String url = GlobalVariables.URL + api.getApi() + "/" +task.getValue() + "/";
         Log.i(TAG,"URL = "+url);
         if(method == Request.Method.GET) {
-            url += assembleUrlForGet(params);
+            url += assembleUrlForGet(params, task);
+            Log.i(TAG,"URL = "+url);
+        } else {
+//            url += assembleUrlForGet(params, task);
+//            Log.i(TAG,"URL_POST = "+url);
         }
         Log.i("method","after method");
         StringRequest stringRequest = new StringRequest
@@ -148,13 +161,118 @@ public class HttpVolleyConnector {
                         Log.i("HTTPConnect_volley","Response: "+response);
                         JSONObject obj;
                         JSONArray jsonArray;
-                        map = new HashMap<>();
+                        map = new LinkedHashMap<>();
+                        hashMapList = new LinkedList<>();
+                        try {
+//                            jsonArray = new JSONArray(response);
+//                            for(int i=0;i<jsonArray.length();i++) {
+//                                obj = jsonArray.getJSONObject(i);
+                                obj = (JSONObject) new JSONTokener(response.trim()).nextValue();
+                                map = JSONObjectParser.parseFromSimpleJSONObject(obj);
+//                                hashMapList.add(map);
+//                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        callback.onResponseReady(task, map);
+//                        callback.onResponseReady(task, hashMapList);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("HTTPConnect_volley","VolleyError: "+error.getLocalizedMessage());
+                        JSONObject obj = null;
+                        try {
+                            obj = (JSONObject) new JSONTokener(error_response.trim()).nextValue();
+                            map = JSONObjectParser.parseFromSimpleJSONObject(obj);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        callback.onResponseReady(task, map);
+                        error.printStackTrace();
+                    }
+                })
+        {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                Map<String, String> headers = new HashMap<>();
+                if (method == Method.POST)
+                    headers.put("Content-Type", "application/json");
+                else
+                    headers.put("Content-Type", "application/x-www-form-urlencoded");
+                headers.put("Authorization", GlobalVariables.BASIC_AUTH);
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                if(method == Request.Method.GET) {
+                    return super.getParams();
+                }
+
+                Map<String, String> map = new HashMap<>();
+                    for(String key : params.keySet()) {
+//                        if (task.getValue().equalsIgnoreCase(Task.SAVE_NEW_STOCK.getValue())){
+//                            if (!key.equalsIgnoreCase(Parameters.USERNAME.getValue())){
+//                                map.put(key,params.getAsString(key));
+//                            }
+//                        } else {
+//                            map.put(key, params.getAsString(key));
+//                        }
+                        map.put(key,params.getAsString(key));
+                    }
+                Log.i(getClass().getSimpleName(),"params = "+map);
+                return map;
+            }
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutSocket,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        if(isHttps) {
+            requestQueue = Volley.newRequestQueue(c, hurlStack);
+        } else {
+            requestQueue = Volley.newRequestQueue(c);
+        }
+        stringRequest.setTag(task);
+        requestQueue.add(stringRequest);
+
+        try {
+            Log.i("HTTPConnect_volley","body = "+stringRequest.getBody());
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
+
+        try {
+            Log.i("HTTPConnect_volley","headers = "+stringRequest.getHeaders());
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
+    }
+
+    private void connectUsingVolleyArray(Context c, final Task task, final ContentValues params, final VolleyCallback callback, final int method, API api) {
+        Log.i("connectUsingVolley","postData = "+params);
+        String url = GlobalVariables.URL + api.getApi() + "/" +task.getValue() + "/";
+        Log.i(TAG,"URL = "+url);
+        if(method == Request.Method.GET) {
+            url += assembleUrlForGet(params, task);
+            Log.i(TAG,"URL = "+url);
+        }
+        Log.i("method","after method");
+        StringRequest stringRequest = new StringRequest
+                (method, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("HTTPConnect_volley","Response: "+response);
+                        JSONObject obj;
+                        JSONArray jsonArray;
+                        map = new LinkedHashMap<>();
                         hashMapList = new LinkedList<>();
                         try {
                             jsonArray = new JSONArray(response);
                             for(int i=0;i<jsonArray.length();i++) {
                                 obj = jsonArray.getJSONObject(i);
-//                                obj = (JSONObject) new JSONTokener(response.trim()).nextValue();
+//                            obj = (JSONObject) new JSONTokener(response.trim()).nextValue();
                                 map = JSONObjectParser.parseFromSimpleJSONObject(obj);
                                 hashMapList.add(map);
                             }
@@ -197,8 +315,8 @@ public class HttpVolleyConnector {
                 }
 
                 Map<String, String> map = new HashMap<>();
-                    for(String key : params.keySet()) {
-                        map.put(key,params.getAsString(key));
+                for(String key : params.keySet()) {
+                    map.put(key, params.getAsString(key));
                 }
                 Log.i(getClass().getSimpleName(),"params = "+map);
                 return map;
@@ -231,15 +349,23 @@ public class HttpVolleyConnector {
         requestQueue.cancelAll(task);
     }
 
-    private String assembleUrlForGet(ContentValues params) {
-        String getParams = "";
+    private String assembleUrlForGet(ContentValues params, Task task) {
+        String getParams = "?";
         if(params==null) {
             return "";
         }
-        for(String key : params.keySet()) {
-            getParams += key + "/" + params.getAsString(key) + "/";
+        if (task.getValue().equalsIgnoreCase(Task.STORE_DETAILS.getValue())){
+            getParams += Parameters.USERNAME.getValue() + "=" + params.getAsString(Parameters.USERNAME.getValue()) + "&";
+            getParams += Parameters.PASSWORD.getValue() + "=" + params.getAsString(Parameters.PASSWORD.getValue()) + "&";
+            getParams += Parameters.MAC_ADDRESS.getValue() + "=" + params.getAsString(Parameters.MAC_ADDRESS.getValue()) + "&";
+        } else if (task.getValue().equalsIgnoreCase(Task.SAVE_NEW_STOCK.getValue())) {
+            getParams += Parameters.USERNAME.getValue() + "=" + params.getAsString(Parameters.USERNAME.getValue()) + "&";
+        } else {
+            for (String key : params.keySet()) {
+                getParams += key + "=" + params.getAsString(key) + "&";
+            }
         }
-        return getParams;
+        return getParams.substring(0, getParams.length()-1);
     }
 
     private HurlStack hurlStack = new HurlStack() {

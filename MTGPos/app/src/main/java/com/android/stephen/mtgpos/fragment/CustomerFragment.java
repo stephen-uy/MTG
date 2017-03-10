@@ -59,10 +59,8 @@ public class CustomerFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem item;
-        item = menu.findItem(R.id.action_save);
-        item.setVisible(false);
-        item = menu.findItem(R.id.action_search);
-        item.setVisible(false);
+        item = menu.findItem(R.id.action_add);
+        item.setVisible(true);
     }
 
     @Override

@@ -40,7 +40,7 @@
                 android:layout_marginTop="12dp"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:text="@string/prod_item"/>
+                android:text="@string/prod_items"/>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_marginTop="10dp"

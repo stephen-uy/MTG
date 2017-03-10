@@ -41,6 +41,14 @@
         <activity
             android:name=".activity.ProductItems"
             android:label="@string/title_activity_product_items"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.SplashScreen"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".activity.RegisterStock"
+            android:label="@string/title_activity_register_stock"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

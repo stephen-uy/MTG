@@ -10,7 +10,7 @@ public class StoreModel implements Serializable{
 
     private String recID;
     private String storeID;
-    private String franchiseeName;
+    private String storeName;
     private String street;
     private String city;
     private String municipality;
@@ -25,20 +25,18 @@ public class StoreModel implements Serializable{
     private String isActive;
     private String isUploaded;
     private String userName;
-    private String password;
+    private String pass;
     private String firstName;
     private String middleName;
     private String lastName;
     private String level;
     private String regBy;
-    private String regDate;
     private String totalPoints;
     private String remainingPoints;
     private String totalWDPoints;
     private String pointsRef;
     private String modeOfPayment;
     private String amount;
-    private String points;
     private String dateDeposited;
     private String receivedDate;
     private String stocksRef;
@@ -53,21 +51,42 @@ public class StoreModel implements Serializable{
     private String totalAmt;
     private String totalQty;
     private String itemID;
-    private String rebatePoints;
-    private String sharePoints;
+    private String totalRPoints;
+    private String totalSPoints;
     private String itemDesc;
+    private String itemType;
+    //new columns
+    private String region;
+    private String island;
+    private String isMTGStore;
+    private String appType;
+    private String dateLastUpdated;
+    private String saltPass;
+    private String amountDeposited;
+    private String uPoints;
+    private String sPoints;
+    private String rPoints;
+    private String amtPurchased;
+    private String isOwner;
+    private String module;
+    private String qtyPerItemType;
+    private String oldTotalRemainingPoints;
+    private String oldTotalPoints;
+    private String newTotalRemainingPoints;
+    private String newTotalPoints;
+    private String isAddToStore;
+    private String tranType;
 
     public StoreModel (){
 
     }
 
-    public StoreModel (String storeID, String itemID, String quantity, String remarks, String isActive, String isUploaded){
+    public StoreModel (String storeID, String itemID, String quantity, String remarks, String isActive){
         this.storeID = storeID;
         this.itemID = itemID;
         this.quantity = quantity;
         this.remarks = remarks;
         this.isActive = isActive;
-        this.isUploaded = isUploaded;
     }
 
     public StoreModel (String storeID, String stocksRef, String itemID, String quantity, String dateReg, String remarks, String isActive){
@@ -80,6 +99,18 @@ public class StoreModel implements Serializable{
         this.isActive = isActive;
     }
 
+    public StoreModel (String storeID, String itemID, String quantity, String itemDesc, String itemType,
+                       String qtyPerItemType, String remarks, String isActive){
+        this.storeID = storeID;
+        this.itemID = itemID;
+        this.quantity = quantity;
+        this.itemDesc = itemDesc;
+        this.itemType = itemType;
+        this.qtyPerItemType = qtyPerItemType;
+        this.remarks = remarks;
+        this.isActive = isActive;
+    }
+
     public String getRecID() {
         return recID;
     }
@@ -88,12 +119,12 @@ public class StoreModel implements Serializable{
         this.recID = recID;
     }
 
-    public String getFranchiseeName() {
-        return franchiseeName;
+    public String getStoreName() {
+        return storeName;
     }
 
-    public void setFranchiseeName(String franchiseeName) {
-        this.franchiseeName = franchiseeName;
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 
     public String getStreet() {
@@ -208,12 +239,12 @@ public class StoreModel implements Serializable{
         this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPass() {
+        return pass;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 
     public String getFirstName() {
@@ -264,14 +295,6 @@ public class StoreModel implements Serializable{
         this.regBy = regBy;
     }
 
-    public String getRegDate() {
-        return regDate;
-    }
-
-    public void setRegDate(String regDate) {
-        this.regDate = regDate;
-    }
-
     public String getPointsRef() {
         return pointsRef;
     }
@@ -286,14 +309,6 @@ public class StoreModel implements Serializable{
 
     public void setModeOfPayment(String modeOfPayment) {
         this.modeOfPayment = modeOfPayment;
-    }
-
-    public String getPoints() {
-        return points;
-    }
-
-    public void setPoints(String points) {
-        this.points = points;
     }
 
     public String getDateDeposited() {
@@ -440,20 +455,20 @@ public class StoreModel implements Serializable{
         this.itemID = itemID;
     }
 
-    public String getRebatePoints() {
-        return rebatePoints;
+    public String getTotalRPoints() {
+        return totalRPoints;
     }
 
-    public void setRebatePoints(String rebatePoints) {
-        this.rebatePoints = rebatePoints;
+    public void setTotalRPoints(String totalRPoints) {
+        this.totalRPoints = totalRPoints;
     }
 
-    public String getSharePoints() {
-        return sharePoints;
+    public String getTotalSPoints() {
+        return totalSPoints;
     }
 
-    public void setSharePoints(String sharePoints) {
-        this.sharePoints = sharePoints;
+    public void setTotalSPoints(String totalSPoints) {
+        this.totalSPoints = totalSPoints;
     }
 
     public String getItemDesc() {
@@ -462,5 +477,173 @@ public class StoreModel implements Serializable{
 
     public void setItemDesc(String itemDesc) {
         this.itemDesc = itemDesc;
+    }
+
+    public String getAppType() {
+        return appType;
+    }
+
+    public void setAppType(String appType) {
+        this.appType = appType;
+    }
+
+    public String getDateLastUpdated() {
+        return dateLastUpdated;
+    }
+
+    public void setDateLastUpdated(String dateLastUpdated) {
+        this.dateLastUpdated = dateLastUpdated;
+    }
+
+    public String getSaltPass() {
+        return saltPass;
+    }
+
+    public void setSaltPass(String saltPass) {
+        this.saltPass = saltPass;
+    }
+
+    public String getAmountDeposited() {
+        return amountDeposited;
+    }
+
+    public void setAmountDeposited(String amountDeposited) {
+        this.amountDeposited = amountDeposited;
+    }
+
+    public String getuPoints() {
+        return uPoints;
+    }
+
+    public void setuPoints(String uPoints) {
+        this.uPoints = uPoints;
+    }
+
+    public String getsPoints() {
+        return sPoints;
+    }
+
+    public void setsPoints(String sPoints) {
+        this.sPoints = sPoints;
+    }
+
+    public String getrPoints() {
+        return rPoints;
+    }
+
+    public void setrPoints(String rPoints) {
+        this.rPoints = rPoints;
+    }
+
+    public String getAmtPurchased() {
+        return amtPurchased;
+    }
+
+    public void setAmtPurchased(String amtPurchased) {
+        this.amtPurchased = amtPurchased;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getIsland() {
+        return island;
+    }
+
+    public void setIsland(String island) {
+        this.island = island;
+    }
+
+    public String getIsMTGStore() {
+        return isMTGStore;
+    }
+
+    public void setIsMTGStore(String isMTGStore) {
+        this.isMTGStore = isMTGStore;
+    }
+
+    public String getIsOwner() {
+        return isOwner;
+    }
+
+    public void setIsOwner(String isOwner) {
+        this.isOwner = isOwner;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
+    public String getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
+    }
+
+    public String getQtyPerItemType() {
+        return qtyPerItemType;
+    }
+
+    public void setQtyPerItemType(String qtyPerItemType) {
+        this.qtyPerItemType = qtyPerItemType;
+    }
+
+    public String getOldTotalRemainingPoints() {
+        return oldTotalRemainingPoints;
+    }
+
+    public void setOldTotalRemainingPoints(String oldTotalRemainingPoints) {
+        this.oldTotalRemainingPoints = oldTotalRemainingPoints;
+    }
+
+    public String getOldTotalPoints() {
+        return oldTotalPoints;
+    }
+
+    public void setOldTotalPoints(String oldTotalPoints) {
+        this.oldTotalPoints = oldTotalPoints;
+    }
+
+    public String getNewTotalRemainingPoints() {
+        return newTotalRemainingPoints;
+    }
+
+    public void setNewTotalRemainingPoints(String newTotalRemainingPoints) {
+        this.newTotalRemainingPoints = newTotalRemainingPoints;
+    }
+
+    public String getNewTotalPoints() {
+        return newTotalPoints;
+    }
+
+    public void setNewTotalPoints(String newTotalPoints) {
+        this.newTotalPoints = newTotalPoints;
+    }
+
+    public String getIsAddToStore() {
+        return isAddToStore;
+    }
+
+    public void setIsAddToStore(String isAddToStore) {
+        this.isAddToStore = isAddToStore;
+    }
+
+    public String getTranType() {
+        return tranType;
+    }
+
+    public void setTranType(String tranType) {
+        this.tranType = tranType;
     }
 }

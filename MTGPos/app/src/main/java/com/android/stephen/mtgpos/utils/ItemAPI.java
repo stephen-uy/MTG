@@ -1,5 +1,6 @@
 package com.android.stephen.mtgpos.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 
 import com.android.stephen.mtgpos.callback.VolleyCallback;
@@ -15,8 +16,10 @@ public class ItemAPI {
         this.context = c;
     }
 
-    public void getItemTypeLookUp(VolleyCallback callback){
+    public void getItemTypeLookUp(VolleyCallback callback, String storeID){
         HttpVolleyConnector con = new HttpVolleyConnector();
-        con.wGet(context, callback, API.ITEM, Task.ITEM_TYPE);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Parameters.STORE_ID.getValue(),storeID);
+        con.wGet(context, callback, API.ITEM, Task.ITEM_TYPE, true);
     }
 }

@@ -38,12 +38,14 @@ public class StoreHandler extends SQLiteDBHandler {
 
         ContentValues values = new ContentValues();
         values.put(DBModels.enumStore.StoreID.toString(), storeModel.getStoreID());
-        values.put(DBModels.enumStore.FranName.toString(), storeModel.getFranchiseeName());
+        values.put(DBModels.enumStore.StoreName.toString(), storeModel.getStoreName());
         values.put(DBModels.enumStore.Street.toString(), storeModel.getStreet());
         values.put(DBModels.enumStore.City.toString(), storeModel.getCity());
         values.put(DBModels.enumStore.Municipality.toString(), storeModel.getMunicipality());
         values.put(DBModels.enumStore.Province.toString(), storeModel.getProvince());
         values.put(DBModels.enumStore.ZipCode.toString(), storeModel.getZipCode());
+        values.put(DBModels.enumStore.Region.toString(), storeModel.getRegion());
+        values.put(DBModels.enumStore.Island.toString(), storeModel.getIsland());
         values.put(DBModels.enumStore.Longitude.toString(), storeModel.getLongitude());
         values.put(DBModels.enumStore.Latitude.toString(), storeModel.getLatitude());
         values.put(DBModels.enumStore.Email.toString(), storeModel.getEmailAddress());
@@ -51,13 +53,17 @@ public class StoreHandler extends SQLiteDBHandler {
         values.put(DBModels.enumStore.Phone.toString(), storeModel.getPhone());
         values.put(DBModels.enumStore.Remarks.toString(), storeModel.getRemarks());
         values.put(DBModels.enumStore.IsActive.toString(), storeModel.getIsActive());
-        values.put(DBModels.enumStore.IsUploaded.toString(), storeModel.getIsUploaded());
+        values.put(DBModels.enumStore.IsMTGStore.toString(), storeModel.getIsMTGStore());
+        values.put(DBModels.enumStore.AppType.toString(), storeModel.getAppType());
+        values.put(DBModels.enumStore.DateReg.toString(), storeModel.getDateReg());
+        values.put(DBModels.enumStore.RegBy.toString(), storeModel.getRegBy());
+        values.put(DBModels.enumStore.DateLastUpdated.toString(), storeModel.getDateLastUpdated());
 
         // Inserting Row
         long result = db.insert(DBModels.enumTables.Store.toString(), null, values);
         Log.d("addStore-result","" + result);
 //        db.close(); // Closing database connection
-        if (result != -1)
+        if (result > 0)
             return true;
         else
             return false;
@@ -69,16 +75,18 @@ public class StoreHandler extends SQLiteDBHandler {
         ContentValues values = new ContentValues();
         values.put(DBModels.enumStoreUser.StoreID.toString(), storeModel.getStoreID());
         values.put(DBModels.enumStoreUser.UserName.toString(), storeModel.getUserName());
-        values.put(DBModels.enumStoreUser.Password.toString(), storeModel.getPassword());
-        values.put(DBModels.enumStoreUser.Fname.toString(), storeModel.getFirstName());
-        values.put(DBModels.enumStoreUser.Mname.toString(), storeModel.getMiddleName());
-        values.put(DBModels.enumStoreUser.Lname.toString(), storeModel.getLastName());
+        values.put(DBModels.enumStoreUser.SaltPass.toString(), storeModel.getSaltPass());
+        values.put(DBModels.enumStoreUser.Pass.toString(), storeModel.getPass());
+        values.put(DBModels.enumStoreUser.FName.toString(), storeModel.getFirstName());
+        values.put(DBModels.enumStoreUser.MName.toString(), storeModel.getMiddleName());
+        values.put(DBModels.enumStoreUser.LName.toString(), storeModel.getLastName());
         values.put(DBModels.enumStoreUser.Level.toString(), storeModel.getLevel());
         values.put(DBModels.enumStoreUser.RegBy.toString(), storeModel.getRegBy());
-        values.put(DBModels.enumStoreUser.RegDate.toString(), storeModel.getRegDate());
+        values.put(DBModels.enumStoreUser.DateReg.toString(), storeModel.getDateReg());
         values.put(DBModels.enumStoreUser.Remarks.toString(), storeModel.getRemarks());
         values.put(DBModels.enumStoreUser.IsActive.toString(), storeModel.getIsActive());
-        values.put(DBModels.enumStoreUser.IsUploaded.toString(), storeModel.getIsUploaded());
+        values.put(DBModels.enumStoreUser.IsOwner.toString(), storeModel.getIsOwner());
+        values.put(DBModels.enumStoreUser.DateLastUpdated.toString(), storeModel.getDateLastUpdated());
 
         // Inserting Row
         db.insert(DBModels.enumTables.StoreUser.toString(), null, values);
@@ -91,141 +99,163 @@ public class StoreHandler extends SQLiteDBHandler {
         ContentValues values = new ContentValues();
         values.put(DBModels.enumStoreUser.StoreID.toString(), storeModel.getStoreID());
         values.put(DBModels.enumStoreUser.UserName.toString(), storeModel.getUserName());
-        values.put(DBModels.enumStoreUser.Password.toString(), storeModel.getPassword());
-        values.put(DBModels.enumStoreUser.Fname.toString(), storeModel.getFirstName());
-        values.put(DBModels.enumStoreUser.Mname.toString(), storeModel.getMiddleName());
-        values.put(DBModels.enumStoreUser.Lname.toString(), storeModel.getLastName());
+        values.put(DBModels.enumStoreUser.Pass.toString(), storeModel.getPass());
+        values.put(DBModels.enumStoreUser.FName.toString(), storeModel.getFirstName());
+        values.put(DBModels.enumStoreUser.MName.toString(), storeModel.getMiddleName());
+        values.put(DBModels.enumStoreUser.LName.toString(), storeModel.getLastName());
         values.put(DBModels.enumStoreUser.Level.toString(), storeModel.getLevel());
         values.put(DBModels.enumStoreUser.RegBy.toString(), storeModel.getRegBy());
-        values.put(DBModels.enumStoreUser.RegDate.toString(), storeModel.getRegDate());
+        values.put(DBModels.enumStoreUser.DateReg.toString(), storeModel.getDateReg());
         values.put(DBModels.enumStoreUser.Remarks.toString(), storeModel.getRemarks());
         values.put(DBModels.enumStoreUser.IsActive.toString(), storeModel.getIsActive());
-        values.put(DBModels.enumStoreUser.IsUploaded.toString(), storeModel.getIsUploaded());
+        values.put(DBModels.enumStoreUser.IsOwner.toString(), storeModel.getIsOwner());
+        values.put(DBModels.enumStoreUser.DateLastUpdated.toString(), storeModel.getDateLastUpdated());
 
 //        db.close(); // Closing database connection
         return db.update(DBModels.enumTables.StoreUser.toString(), values, DBModels.recID.toString() + " = ?",
                 new String[] { storeModel.getRecID() });
     }
 
-    public void addStoreAccount(StoreModel storeModel) {
+    public void addStoreUPoints(StoreModel storeModel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(DBModels.enumStoreAccount.StoreID.toString(), storeModel.getStoreID());
-        values.put(DBModels.enumStoreAccount.TotalPoints.toString(), storeModel.getTotalPoints());
-        values.put(DBModels.enumStoreAccount.RemainingPoints.toString(), storeModel.getRemainingPoints());
-        values.put(DBModels.enumStoreAccount.TotalWDPoints.toString(), storeModel.getTotalWDPoints());
+        values.put(DBModels.enumStoreUPoints.StoreID.toString(), storeModel.getStoreID());
+        values.put(DBModels.enumStoreUPoints.TotalPoints.toString(), storeModel.getTotalPoints());
+        values.put(DBModels.enumStoreUPoints.RemainingPoints.toString(), storeModel.getRemainingPoints());
+        values.put(DBModels.enumStoreUPoints.TotalWDPoints.toString(), storeModel.getTotalWDPoints());
 
         // Inserting Row
-        db.insert(DBModels.enumTables.StoreAccount.toString(), null, values);
+        db.insert(DBModels.enumTables.StoreUPoints.toString(), null, values);
 //        db.close(); // Closing database connection
     }
 
-    public void addStorePointsHistory(StoreModel storeModel) {
+    public void addStoreUPointsHistory(StoreModel storeModel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(DBModels.enumStorePointsHistory.StoreID.toString(), storeModel.getStoreID());
-        values.put(DBModels.enumStorePointsHistory.PointsRef.toString(), storeModel.getPointsRef());
-        values.put(DBModels.enumStorePointsHistory.ModeOfPayment.toString(), storeModel.getModeOfPayment());
-        values.put(DBModels.enumStorePointsHistory.Amount.toString(), storeModel.getAmount());
-        values.put(DBModels.enumStorePointsHistory.Points.toString(), storeModel.getPoints());
-        values.put(DBModels.enumStorePointsHistory.DateDeposited.toString(), storeModel.getDateDeposited());
-        values.put(DBModels.enumStorePointsHistory.ReceivedDate.toString(), storeModel.getReceivedDate());
-        values.put(DBModels.enumStorePointsHistory.Remarks.toString(), storeModel.getRemarks());
-        values.put(DBModels.enumStorePointsHistory.IsActive.toString(), storeModel.getIsActive());
-        values.put(DBModels.enumStorePointsHistory.IsUploaded.toString(), storeModel.getIsUploaded());
+        values.put(DBModels.enumStoreUPointsHistory.StoreID.toString(), storeModel.getStoreID());
+        values.put(DBModels.enumStoreUPointsHistory.PointsRef.toString(), storeModel.getPointsRef());
+        values.put(DBModels.enumStoreUPointsHistory.ModeOfPayment.toString(), storeModel.getModeOfPayment());
+        values.put(DBModels.enumStoreUPointsHistory.Amount.toString(), storeModel.getAmount());
+        values.put(DBModels.enumStoreUPointsHistory.UPoints.toString(), storeModel.getuPoints());
+        values.put(DBModels.enumStoreUPointsHistory.DateOfTransaction.toString(), storeModel.getDateDeposited());
+        values.put(DBModels.enumStoreUPointsHistory.DateReg.toString(), storeModel.getReceivedDate());
+        values.put(DBModels.enumStoreUPointsHistory.RegBy.toString(), storeModel.getRegBy());
+        values.put(DBModels.enumStoreUPointsHistory.Remarks.toString(), storeModel.getRemarks());
+        values.put(DBModels.enumStoreUPointsHistory.IsActive.toString(), storeModel.getIsActive());
+        values.put(DBModels.enumStoreUPointsHistory.OldTotalRemainingPoints.toString(), storeModel.getOldTotalRemainingPoints());
+        values.put(DBModels.enumStoreUPointsHistory.OldTotalPoints.toString(), storeModel.getOldTotalPoints());
+        values.put(DBModels.enumStoreUPointsHistory.NewTotalRemainingPoints.toString(), storeModel.getNewTotalRemainingPoints());
+        values.put(DBModels.enumStoreUPointsHistory.NewTotalPoints.toString(), storeModel.getNewTotalPoints());
+        values.put(DBModels.enumStoreUPointsHistory.IsAddToStore.toString(), storeModel.getIsAddToStore());
+        values.put(DBModels.enumStoreUPointsHistory.TranType.toString(), storeModel.getTranType());
+//        values.put(DBModels.enumStoreUPointsHistory.DateLastUpdated.toString(), storeModel.getDateLastUpdated());
 
         // Inserting Row
-        db.insert(DBModels.enumTables.StorePointsHistory.toString(), null, values);
+        db.insert(DBModels.enumTables.StoreUPointsHistory.toString(), null, values);
 //        db.close(); // Closing database connection
     }
 
-    public void addStoreStocksReg(StoreModel storeModel) {
+    public void addStocksRegistration(StoreModel storeModel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(DBModels.enumStoreStocksReg.StoreID.toString(), storeModel.getStoreID());
-        values.put(DBModels.enumStoreStocksReg.StocksRef.toString(), storeModel.getStocksRef());
-        values.put(DBModels.enumStoreStocksReg.ItemID.toString(), storeModel.getItemID());
-        values.put(DBModels.enumStoreStocksReg.Quantity.toString(), storeModel.getQuantity());
-        values.put(DBModels.enumStoreStocksReg.DateReg.toString(), storeModel.getDateReg());
-        values.put(DBModels.enumStoreStocksReg.Remarks.toString(), storeModel.getRemarks());
-        values.put(DBModels.enumStoreStocksReg.IsActive.toString(), storeModel.getIsActive());
+        values.put(DBModels.enumStocksRegistration.StoreID.toString(), storeModel.getStoreID());
+        values.put(DBModels.enumStocksRegistration.StocksRef.toString(), storeModel.getStocksRef());
+        values.put(DBModels.enumStocksRegistration.ItemID.toString(), storeModel.getItemID());
+        values.put(DBModels.enumStocksRegistration.Quantity.toString(), storeModel.getQuantity());
+        values.put(DBModels.enumStocksRegistration.DateReg.toString(), storeModel.getDateReg());
+        values.put(DBModels.enumStocksRegistration.RegBy.toString(), storeModel.getRegBy());
+        values.put(DBModels.enumStocksRegistration.Remarks.toString(), storeModel.getRemarks());
+        values.put(DBModels.enumStocksRegistration.IsActive.toString(), storeModel.getIsActive());
 
         // Inserting Row
-        db.insert(DBModels.enumTables.StoreStocksReg.toString(), null, values);
+        db.insert(DBModels.enumTables.StocksRegistration.toString(), null, values);
 //        db.close(); // Closing database connection
     }
 
-    public void addStoreStocks(StoreModel storeModel) {
+    public void addStocks(StoreModel storeModel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(DBModels.enumStoreStocks.StoreID.toString(), storeModel.getStoreID());
-        values.put(DBModels.enumStoreStocks.ItemID.toString(), storeModel.getItemID());
-        values.put(DBModels.enumStoreStocks.Quantity.toString(), storeModel.getQuantity());
-        values.put(DBModels.enumStoreStocks.Remarks.toString(), storeModel.getRemarks());
-        values.put(DBModels.enumStoreStocks.IsActive.toString(), storeModel.getIsActive());
-        values.put(DBModels.enumStoreStocks.IsUploaded.toString(), storeModel.getIsUploaded());
+        values.put(DBModels.enumStocks.StoreID.toString(), storeModel.getStoreID());
+        values.put(DBModels.enumStocks.ItemID.toString(), storeModel.getItemID());
+        values.put(DBModels.enumStocks.Quantity.toString(), storeModel.getQuantity());
+        values.put(DBModels.enumStocks.Remarks.toString(), storeModel.getRemarks());
+        values.put(DBModels.enumStocks.IsActive.toString(), storeModel.getIsActive());
 
         // Inserting Row
-        db.insert(DBModels.enumTables.StoreStocks.toString(), null, values);
+        db.insert(DBModels.enumTables.Stocks.toString(), null, values);
 //        db.close(); // Closing database connection
     }
 
-    public void addStoreLogs(StoreModel storeModel) {
+    public void addAuditLogs(StoreModel storeModel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(DBModels.enumStoreLogs.StoreID.toString(), storeModel.getStoreID());
-        values.put(DBModels.enumStoreLogs.UserName.toString(), storeModel.getUserName());
-        values.put(DBModels.enumStoreLogs.AuditDate.toString(), storeModel.getAuditDate());
-        values.put(DBModels.enumStoreLogs.AuditDesc.toString(), storeModel.getAuditDesc());
-        values.put(DBModels.enumStoreLogs.StocksRef.toString(), storeModel.getStocksRef());
-        values.put(DBModels.enumStoreLogs.PurRef.toString(), storeModel.getPurchaseRef());
-        values.put(DBModels.enumStoreLogs.CustID.toString(), storeModel.getCustomerID());
-        values.put(DBModels.enumStoreLogs.IsUploaded.toString(), storeModel.getIsUploaded());
+        values.put(DBModels.enumAuditLogs.StoreID.toString(), storeModel.getStoreID());
+        values.put(DBModels.enumAuditLogs.AuditDate.toString(), storeModel.getAuditDate());
+        values.put(DBModels.enumAuditLogs.AuditDesc.toString(), storeModel.getAuditDesc());
+        values.put(DBModels.enumAuditLogs.Module.toString(), storeModel.getModule());
+        values.put(DBModels.enumAuditLogs.PurRef.toString(), storeModel.getPurchaseRef());
+        values.put(DBModels.enumAuditLogs.RegBy.toString(), storeModel.getRegBy());
 
         // Inserting Row
-        db.insert(DBModels.enumTables.StoreLogs.toString(), null, values);
+        db.insert(DBModels.enumTables.AuditLogs.toString(), null, values);
 //        db.close(); // Closing database connection
     }
 
-    public void addStorePurchased(StoreModel storeModel) {
+    public void addPurchased(StoreModel storeModel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(DBModels.enumStorePurchased.StoreID.toString(), storeModel.getStoreID());
-        values.put(DBModels.enumStorePurchased.PurRef.toString(), storeModel.getPurchaseRef());
-        values.put(DBModels.enumStorePurchased.PurDate.toString(), storeModel.getPurchaseDate());
-        values.put(DBModels.enumStorePurchased.TotalAmt.toString(), storeModel.getTotalAmt());
-        values.put(DBModels.enumStorePurchased.TotalQty.toString(), storeModel.getTotalQty());
-        values.put(DBModels.enumStorePurchased.RebatePoints.toString(), storeModel.getRebatePoints());
-        values.put(DBModels.enumStorePurchased.SharePoints.toString(), storeModel.getSharePoints());
-        values.put(DBModels.enumStorePurchased.RegBy.toString(), storeModel.getRegBy());
-        values.put(DBModels.enumStorePurchased.Remarks.toString(), storeModel.getRemarks());
-        values.put(DBModels.enumStorePurchased.IsActive.toString(), storeModel.getIsActive());
-        values.put(DBModels.enumStorePurchased.IsUploaded.toString(), storeModel.getIsUploaded());
+        values.put(DBModels.enumPurchased.StoreID.toString(), storeModel.getStoreID());
+        values.put(DBModels.enumPurchased.PurRef.toString(), storeModel.getPurchaseRef());
+        values.put(DBModels.enumPurchased.PurDate.toString(), storeModel.getPurchaseDate());
+        values.put(DBModels.enumPurchased.TotalAmt.toString(), storeModel.getTotalAmt());
+        values.put(DBModels.enumPurchased.TotalQty.toString(), storeModel.getTotalQty());
+        values.put(DBModels.enumPurchased.TotalRPoints.toString(), storeModel.getTotalRPoints());
+        values.put(DBModels.enumPurchased.TotalSPoints.toString(), storeModel.getTotalSPoints());
+        values.put(DBModels.enumPurchased.RegBy.toString(), storeModel.getRegBy());
+        values.put(DBModels.enumPurchased.DateReg.toString(), storeModel.getDateReg());
+        values.put(DBModels.enumPurchased.Remarks.toString(), storeModel.getRemarks());
+        values.put(DBModels.enumPurchased.IsActive.toString(), storeModel.getIsActive());
 
         // Inserting Row
-        db.insert(DBModels.enumTables.StorePurchased.toString(), null, values);
+        db.insert(DBModels.enumTables.Purchased.toString(), null, values);
 //        db.close(); // Closing database connection
     }
 
-    public void addStorePurchasedDetails(StoreModel storeModel) {
+    public void addPurchasedProductDetails(StoreModel storeModel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(DBModels.enumStorePurchasedDetails.StoreID.toString(), storeModel.getStoreID());
-        values.put(DBModels.enumStorePurchasedDetails.PurRef.toString(), storeModel.getPurchaseRef());
-        values.put(DBModels.enumStorePurchasedDetails.ProductID.toString(), storeModel.getProductID());
-        values.put(DBModels.enumStorePurchasedDetails.Quantity.toString(), storeModel.getQuantity());
-        values.put(DBModels.enumStorePurchasedDetails.IsActive.toString(), storeModel.getIsActive());
-        values.put(DBModels.enumStorePurchasedDetails.IsUploaded.toString(), storeModel.getIsUploaded());
+        values.put(DBModels.enumPurchasedProductDetails.StoreID.toString(), storeModel.getStoreID());
+        values.put(DBModels.enumPurchasedProductDetails.PurRef.toString(), storeModel.getPurchaseRef());
+        values.put(DBModels.enumPurchasedProductDetails.ProductID.toString(), storeModel.getProductID());
+        values.put(DBModels.enumPurchasedProductDetails.Quantity.toString(), storeModel.getQuantity());
+        values.put(DBModels.enumPurchasedProductDetails.RPoints.toString(), storeModel.getrPoints());
+        values.put(DBModels.enumPurchasedProductDetails.SPoints.toString(), storeModel.getsPoints());
+        values.put(DBModels.enumPurchasedProductDetails.AmtPurchased.toString(), storeModel.getAmtPurchased());
+        values.put(DBModels.enumPurchasedProductDetails.IsActive.toString(), storeModel.getIsActive());
 
         // Inserting Row
-        db.insert(DBModels.enumTables.StorePurchasedDetails.toString(), null, values);
+        db.insert(DBModels.enumTables.PurchasedProductDetails.toString(), null, values);
+//        db.close(); // Closing database connection
+    }
+
+    public void addPurchasedItemDetails(StoreModel storeModel) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DBModels.enumPurchasedItemDetails.StoreID.toString(), storeModel.getStoreID());
+        values.put(DBModels.enumPurchasedItemDetails.PurRef.toString(), storeModel.getPurchaseRef());
+        values.put(DBModels.enumPurchasedItemDetails.ProductID.toString(), storeModel.getProductID());
+        values.put(DBModels.enumPurchasedItemDetails.ItemID.toString(), storeModel.getItemID());
+
+        // Inserting Row
+        db.insert(DBModels.enumTables.PurchasedItemDetails.toString(), null, values);
 //        db.close(); // Closing database connection
     }
 
@@ -243,12 +273,14 @@ public class StoreHandler extends SQLiteDBHandler {
                 StoreModel storeModel = new StoreModel();
                 storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
                 storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.StoreID.toString())));
-                storeModel.setFranchiseeName(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.FranName.toString())));
+                storeModel.setStoreName(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.StoreName.toString())));
                 storeModel.setStreet(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.Street.toString())));
                 storeModel.setCity(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.City.toString())));
                 storeModel.setMunicipality(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.Municipality.toString())));
                 storeModel.setProvince(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.Province.toString())));
                 storeModel.setZipCode(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.ZipCode.toString())));
+                storeModel.setRegion(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.Region.toString())));
+                storeModel.setIsland(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.Island.toString())));
                 storeModel.setLongitude(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.Longitude.toString())));
                 storeModel.setLatitude(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.Latitude.toString())));
                 storeModel.setEmailAddress(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.Email.toString())));
@@ -256,8 +288,12 @@ public class StoreHandler extends SQLiteDBHandler {
                 storeModel.setPhone(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.Phone.toString())));
                 storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.Remarks.toString())));
                 storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.IsActive.toString())));
-                storeModel.setIsUploaded(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.IsUploaded.toString())));
-                // Adding contact to list
+                storeModel.setIsMTGStore(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.IsMTGStore.toString())));
+                storeModel.setAppType(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.AppType.toString())));
+                storeModel.setDateReg(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.DateReg.toString())));
+                storeModel.setRegBy(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.RegBy.toString())));
+                storeModel.setDateLastUpdated(cursor.getString(cursor.getColumnIndex(DBModels.enumStore.DateLastUpdated.toString())));
+                // Adding store to list
                 storeModelLinkedList.add(storeModel);
             } while (cursor.moveToNext());
         }
@@ -272,28 +308,29 @@ public class StoreHandler extends SQLiteDBHandler {
         StoreModel storeModel = new StoreModel();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StoreUser.toString() +
-                " WHERE " + DBModels.enumStoreUser.UserName.toString() + " = '" + username + "' AND "
-                + DBModels.enumStoreUser.Password + " = '" + password + "';";
+                " WHERE " + DBModels.enumStoreUser.UserName.toString() + " = '" + username.toUpperCase() + "' AND "
+                + DBModels.enumStoreUser.Pass.toString() + " = '" + password + "';";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
+        if (cursor.moveToFirst()) {
             storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
             storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.StoreID.toString())));
             storeModel.setUserName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.UserName.toString())));
-            storeModel.setPassword(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Password.toString())));
-            storeModel.setFirstName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Fname.toString())));
-            storeModel.setMiddleName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Mname.toString())));
-            storeModel.setLastName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Lname.toString())));
+            storeModel.setSaltPass(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.SaltPass.toString())));
+            storeModel.setPass(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Pass.toString())));
+            storeModel.setFirstName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.FName.toString())));
+            storeModel.setMiddleName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.MName.toString())));
+            storeModel.setLastName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.LName.toString())));
             storeModel.setLevel(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Level.toString())));
             storeModel.setRegBy(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.RegBy.toString())));
-            storeModel.setRegDate(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.RegDate.toString())));
+            storeModel.setDateReg(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.DateReg.toString())));
             storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Remarks.toString())));
             storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.IsActive.toString())));
-            storeModel.setIsUploaded(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.IsUploaded.toString())));
+            storeModel.setIsOwner(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.IsOwner.toString())));
+            storeModel.setDateLastUpdated(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.DateLastUpdated.toString())));
         } else {
             storeModel = null;
         }
@@ -319,16 +356,17 @@ public class StoreHandler extends SQLiteDBHandler {
                 storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
                 storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.StoreID.toString())));
                 storeModel.setUserName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.UserName.toString())));
-                storeModel.setPassword(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Password.toString())));
-                storeModel.setFirstName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Fname.toString())));
-                storeModel.setMiddleName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Mname.toString())));
-                storeModel.setLastName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Lname.toString())));
+                storeModel.setPass(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Pass.toString())));
+                storeModel.setFirstName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.FName.toString())));
+                storeModel.setMiddleName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.MName.toString())));
+                storeModel.setLastName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.LName.toString())));
                 storeModel.setLevel(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Level.toString())));
                 storeModel.setRegBy(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.RegBy.toString())));
-                storeModel.setRegDate(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.RegDate.toString())));
+                storeModel.setDateReg(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.DateReg.toString())));
                 storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.Remarks.toString())));
                 storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.IsActive.toString())));
-                storeModel.setIsUploaded(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.IsUploaded.toString())));
+                storeModel.setIsOwner(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.IsOwner.toString())));
+                storeModel.setDateLastUpdated(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUser.DateLastUpdated.toString())));
                 // Adding contact to list
                 storeModelLinkedList.add(storeModel);
             } while (cursor.moveToNext());
@@ -340,10 +378,10 @@ public class StoreHandler extends SQLiteDBHandler {
         return storeModelLinkedList;
     }
 
-    public LinkedList<StoreModel> getAllStoreAccount() {
+    public LinkedList<StoreModel> getAllStoreUPoints() {
         LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StoreAccount.toString();
+        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StoreUPoints.toString();
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -353,10 +391,10 @@ public class StoreHandler extends SQLiteDBHandler {
             do {
                 StoreModel storeModel = new StoreModel();
                 storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
-                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreAccount.StoreID.toString())));
-                storeModel.setTotalPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreAccount.TotalPoints.toString())));
-                storeModel.setRemainingPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreAccount.RemainingPoints.toString())));
-                storeModel.setTotalWDPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreAccount.TotalWDPoints.toString())));
+                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPoints.StoreID.toString())));
+                storeModel.setTotalPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPoints.TotalPoints.toString())));
+                storeModel.setRemainingPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPoints.RemainingPoints.toString())));
+                storeModel.setTotalWDPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPoints.TotalWDPoints.toString())));
                 // Adding contact to list
                 storeModelLinkedList.add(storeModel);
             } while (cursor.moveToNext());
@@ -368,10 +406,10 @@ public class StoreHandler extends SQLiteDBHandler {
         return storeModelLinkedList;
     }
 
-    public LinkedList<StoreModel> getAllStorePointsHistory() {
+    public LinkedList<StoreModel> getAllStoreUPointsHistory() {
         LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StorePointsHistory.toString();
+        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StoreUPointsHistory.toString();
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -381,16 +419,23 @@ public class StoreHandler extends SQLiteDBHandler {
             do {
                 StoreModel storeModel = new StoreModel();
                 storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
-                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePointsHistory.StoreID.toString())));
-                storeModel.setPointsRef(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePointsHistory.PointsRef.toString())));
-                storeModel.setModeOfPayment(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePointsHistory.ModeOfPayment.toString())));
-                storeModel.setAmount(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePointsHistory.Amount.toString())));
-                storeModel.setPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePointsHistory.Points.toString())));
-                storeModel.setDateDeposited(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePointsHistory.DateDeposited.toString())));
-                storeModel.setReceivedDate(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePointsHistory.ReceivedDate.toString())));
-                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePointsHistory.Remarks.toString())));
-                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePointsHistory.IsActive.toString())));
-                storeModel.setIsUploaded(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePointsHistory.IsUploaded.toString())));
+                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.StoreID.toString())));
+                storeModel.setPointsRef(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.PointsRef.toString())));
+                storeModel.setModeOfPayment(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.ModeOfPayment.toString())));
+                storeModel.setAmountDeposited(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.Amount.toString())));
+                storeModel.setuPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.UPoints.toString())));
+                storeModel.setDateDeposited(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.DateOfTransaction.toString())));
+                storeModel.setDateReg(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.DateReg.toString())));
+                storeModel.setRegBy(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.RegBy.toString())));
+                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.Remarks.toString())));
+                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.IsActive.toString())));
+                storeModel.setOldTotalRemainingPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.OldTotalRemainingPoints.toString())));
+                storeModel.setOldTotalPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.OldTotalPoints.toString())));
+                storeModel.setNewTotalRemainingPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.NewTotalRemainingPoints.toString())));
+                storeModel.setNewTotalPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.NewTotalPoints.toString())));
+                storeModel.setIsAddToStore(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.IsAddToStore.toString())));
+                storeModel.setTranType(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.TranType.toString())));
+//                storeModel.setDateLastUpdated(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreUPointsHistory.DateLastUpdated.toString())));
                 // Adding contact to list
                 storeModelLinkedList.add(storeModel);
             } while (cursor.moveToNext());
@@ -402,10 +447,10 @@ public class StoreHandler extends SQLiteDBHandler {
         return storeModelLinkedList;
     }
 
-    public LinkedList<StoreModel> getAllStoreStocksReg() {
+    public LinkedList<StoreModel> getAllStocksRegistration() {
         LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StoreStocksReg.toString();
+        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StocksRegistration.toString();
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -415,13 +460,14 @@ public class StoreHandler extends SQLiteDBHandler {
             do {
                 StoreModel storeModel = new StoreModel();
                 storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
-                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.StoreID.toString())));
-                storeModel.setStocksRef(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.StocksRef.toString())));
-                storeModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.ItemID.toString())));
-                storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.Quantity.toString())));
-                storeModel.setDateReg(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.DateReg.toString())));
-                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.Remarks.toString())));
-                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.IsActive.toString())));
+                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.StoreID.toString())));
+                storeModel.setStocksRef(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.StocksRef.toString())));
+                storeModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.ItemID.toString())));
+                storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.Quantity.toString())));
+                storeModel.setDateReg(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.DateReg.toString())));
+                storeModel.setRegBy(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.RegBy.toString())));
+                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.Remarks.toString())));
+                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.IsActive.toString())));
                 // Adding contact to list
                 storeModelLinkedList.add(storeModel);
             } while (cursor.moveToNext());
@@ -436,8 +482,8 @@ public class StoreHandler extends SQLiteDBHandler {
     public LinkedList<StoreModel> getAllStoreStocksRegWithItems() {
         LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
         // Select All Query
-        String selectQuery = "SELECT * FROM "+ DBModels.enumTables.StoreStocksReg + " a INNER JOIN "+
-                DBModels.enumTables.Item + " b ON a."+ DBModels.enumStoreStocksReg.ItemID + "=b." +
+        String selectQuery = "SELECT * FROM "+ DBModels.enumTables.StocksRegistration + " a INNER JOIN "+
+                DBModels.enumTables.StoreItem + " b ON a."+ DBModels.enumStocksRegistration.ItemID + "=b." +
                 DBModels.enumItem.ItemID;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -448,14 +494,14 @@ public class StoreHandler extends SQLiteDBHandler {
             do {
                 StoreModel storeModel = new StoreModel();
                 storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
-                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.StoreID.toString())));
-                storeModel.setStocksRef(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.StocksRef.toString())));
-                storeModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.ItemID.toString())));
+                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.StoreID.toString())));
+                storeModel.setStocksRef(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.StocksRef.toString())));
+                storeModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.ItemID.toString())));
                 storeModel.setItemDesc(cursor.getString(cursor.getColumnIndex(DBModels.enumItem.ItemDesc.toString())));
-                storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.Quantity.toString())));
-                storeModel.setDateReg(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.DateReg.toString())));
-                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.Remarks.toString())));
-                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.IsActive.toString())));
+                storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.Quantity.toString())));
+                storeModel.setDateReg(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.DateReg.toString())));
+                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.Remarks.toString())));
+                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.IsActive.toString())));
                 // Adding contact to list
                 storeModelLinkedList.add(storeModel);
             } while (cursor.moveToNext());
@@ -470,8 +516,8 @@ public class StoreHandler extends SQLiteDBHandler {
     public String getStoreStocksRef() {
         String stocksRef;
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StoreStocksReg.toString() + " ORDER BY "
-                + DBModels.enumStoreStocksReg.StocksRef + " DESC";
+        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StocksRegistration.toString() + " ORDER BY "
+                + DBModels.enumStocksRegistration.StocksRef + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -480,7 +526,7 @@ public class StoreHandler extends SQLiteDBHandler {
         if (cursor != null)
             cursor.moveToFirst();
 
-        stocksRef = cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocksReg.StocksRef.toString()));
+        stocksRef = cursor.getString(cursor.getColumnIndex(DBModels.enumStocksRegistration.StocksRef.toString()));
 
         cursor.close();
         db.close();
@@ -488,10 +534,10 @@ public class StoreHandler extends SQLiteDBHandler {
         return stocksRef;
     }
 
-    public LinkedList<StoreModel> getAllStoreStocks() {
+    public LinkedList<StoreModel> getAllStocks() {
         LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StoreStocks.toString();
+        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.Stocks.toString();
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -501,12 +547,11 @@ public class StoreHandler extends SQLiteDBHandler {
             do {
                 StoreModel storeModel = new StoreModel();
                 storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
-                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.StoreID.toString())));
-                storeModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.ItemID.toString())));
-                storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.Quantity.toString())));
-                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.Remarks.toString())));
-                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.IsActive.toString())));
-                storeModel.setIsUploaded(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.IsUploaded.toString())));
+                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStocks.StoreID.toString())));
+                storeModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumStocks.ItemID.toString())));
+                storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumStocks.Quantity.toString())));
+                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStocks.Remarks.toString())));
+                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStocks.IsActive.toString())));
                 // Adding contact to list
                 storeModelLinkedList.add(storeModel);
             } while (cursor.moveToNext());
@@ -521,8 +566,8 @@ public class StoreHandler extends SQLiteDBHandler {
     public LinkedList<StoreModel> getAllStoreStocksWithItems() {
         LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
         // Select All Query
-        String selectQuery = "SELECT * FROM "+ DBModels.enumTables.StoreStocks + " a INNER JOIN "+
-                DBModels.enumTables.Item + " b ON a."+ DBModels.enumStoreStocks.ItemID + "=b." +
+        String selectQuery = "SELECT * FROM "+ DBModels.enumTables.Stocks + " a INNER JOIN "+
+                DBModels.enumTables.StoreItem + " b ON a."+ DBModels.enumStocks.ItemID + "=b." +
                 DBModels.enumItem.ItemID;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -533,13 +578,13 @@ public class StoreHandler extends SQLiteDBHandler {
             do {
                 StoreModel storeModel = new StoreModel();
                 storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
-                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.StoreID.toString())));
-                storeModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.ItemID.toString())));
+                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStocks.StoreID.toString())));
+                storeModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumStocks.ItemID.toString())));
                 storeModel.setItemDesc(cursor.getString(cursor.getColumnIndex(DBModels.enumItem.ItemDesc.toString())));
-                storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.Quantity.toString())));
-                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.Remarks.toString())));
-                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.IsActive.toString())));
-                storeModel.setIsUploaded(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreStocks.IsUploaded.toString())));
+                storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumStocks.Quantity.toString())));
+                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStocks.Remarks.toString())));
+                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStocks.IsActive.toString())));
+                storeModel.setItemType(cursor.getString(cursor.getColumnIndex(DBModels.enumItem.ItemType.toString())));
                 // Adding contact to list
                 storeModelLinkedList.add(storeModel);
             } while (cursor.moveToNext());
@@ -551,10 +596,10 @@ public class StoreHandler extends SQLiteDBHandler {
         return storeModelLinkedList;
     }
 
-    public LinkedList<StoreModel> getAllStoreLogs() {
+    public LinkedList<StoreModel> getAllAuditLogs() {
         LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StoreLogs.toString();
+        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.AuditLogs.toString();
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -564,14 +609,12 @@ public class StoreHandler extends SQLiteDBHandler {
             do {
                 StoreModel storeModel = new StoreModel();
                 storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
-                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreLogs.StoreID.toString())));
-                storeModel.setUserName(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreLogs.UserName.toString())));
-                storeModel.setAuditDate(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreLogs.AuditDate.toString())));
-                storeModel.setAuditDesc(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreLogs.AuditDesc.toString())));
-                storeModel.setStocksRef(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreLogs.StocksRef.toString())));
-                storeModel.setPurchaseRef(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreLogs.PurRef.toString())));
-                storeModel.setCustomerID(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreLogs.CustID.toString())));
-                storeModel.setIsUploaded(cursor.getString(cursor.getColumnIndex(DBModels.enumStoreLogs.IsUploaded.toString())));
+                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumAuditLogs.StoreID.toString())));
+                storeModel.setAuditDate(cursor.getString(cursor.getColumnIndex(DBModels.enumAuditLogs.AuditDate.toString())));
+                storeModel.setAuditDesc(cursor.getString(cursor.getColumnIndex(DBModels.enumAuditLogs.AuditDesc.toString())));
+                storeModel.setModule(cursor.getString(cursor.getColumnIndex(DBModels.enumAuditLogs.Module.toString())));
+                storeModel.setPurchaseRef(cursor.getString(cursor.getColumnIndex(DBModels.enumAuditLogs.PurRef.toString())));
+                storeModel.setRegBy(cursor.getString(cursor.getColumnIndex(DBModels.enumAuditLogs.RegBy.toString())));
                 // Adding contact to list
                 storeModelLinkedList.add(storeModel);
             } while (cursor.moveToNext());
@@ -583,10 +626,10 @@ public class StoreHandler extends SQLiteDBHandler {
         return storeModelLinkedList;
     }
 
-    public LinkedList<StoreModel> getAllStorePurchased() {
+    public LinkedList<StoreModel> getAllPurchased() {
         LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StorePurchased.toString();
+        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.Purchased.toString();
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -596,17 +639,17 @@ public class StoreHandler extends SQLiteDBHandler {
             do {
                 StoreModel storeModel = new StoreModel();
                 storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
-                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchased.StoreID.toString())));
-                storeModel.setPurchaseRef(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchased.PurRef.toString())));
-                storeModel.setPurchaseDate(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchased.PurDate.toString())));
-                storeModel.setTotalAmt(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchased.TotalAmt.toString())));
-                storeModel.setTotalQty(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchased.TotalQty.toString())));
-                storeModel.setRebatePoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchased.RebatePoints.toString())));
-                storeModel.setSharePoints(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchased.SharePoints.toString())));
-                storeModel.setRegBy(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchased.RegBy.toString())));
-                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchased.Remarks.toString())));
-                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchased.IsActive.toString())));
-                storeModel.setIsUploaded(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchased.IsUploaded.toString())));
+                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchased.StoreID.toString())));
+                storeModel.setPurchaseRef(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchased.PurRef.toString())));
+                storeModel.setPurchaseDate(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchased.PurDate.toString())));
+                storeModel.setTotalAmt(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchased.TotalAmt.toString())));
+                storeModel.setTotalQty(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchased.TotalQty.toString())));
+                storeModel.setTotalRPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchased.TotalRPoints.toString())));
+                storeModel.setTotalSPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchased.TotalSPoints.toString())));
+                storeModel.setRegBy(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchased.RegBy.toString())));
+                storeModel.setDateReg(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchased.DateReg.toString())));
+                storeModel.setRemarks(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchased.Remarks.toString())));
+                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchased.IsActive.toString())));
                 // Adding contact to list
                 storeModelLinkedList.add(storeModel);
             } while (cursor.moveToNext());
@@ -618,10 +661,10 @@ public class StoreHandler extends SQLiteDBHandler {
         return storeModelLinkedList;
     }
 
-    public LinkedList<StoreModel> getAllStorePurchasedDetails() {
+    public LinkedList<StoreModel> getAllPurchasedProductDetails() {
         LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.StorePurchasedDetails.toString();
+        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.PurchasedProductDetails.toString();
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -631,12 +674,42 @@ public class StoreHandler extends SQLiteDBHandler {
             do {
                 StoreModel storeModel = new StoreModel();
                 storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
-                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchasedDetails.StoreID.toString())));
-                storeModel.setPurchaseRef(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchasedDetails.PurRef.toString())));
-                storeModel.setProductID(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchasedDetails.ProductID.toString())));
-                storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchasedDetails.Quantity.toString())));
-                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchasedDetails.IsActive.toString())));
-                storeModel.setIsUploaded(cursor.getString(cursor.getColumnIndex(DBModels.enumStorePurchasedDetails.IsUploaded.toString())));
+                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchasedProductDetails.StoreID.toString())));
+                storeModel.setPurchaseRef(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchasedProductDetails.PurRef.toString())));
+                storeModel.setProductID(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchasedProductDetails.ProductID.toString())));
+                storeModel.setQuantity(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchasedProductDetails.Quantity.toString())));
+                storeModel.setrPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchasedProductDetails.RPoints.toString())));
+                storeModel.setsPoints(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchasedProductDetails.SPoints.toString())));
+                storeModel.setAmtPurchased(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchasedProductDetails.AmtPurchased.toString())));
+                storeModel.setIsActive(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchasedProductDetails.IsActive.toString())));
+                // Adding contact to list
+                storeModelLinkedList.add(storeModel);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        // return contact list
+        return storeModelLinkedList;
+    }
+
+    public LinkedList<StoreModel> getAllPurchasedItemDetails() {
+        LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DBModels.enumTables.PurchasedItemDetails.toString();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                StoreModel storeModel = new StoreModel();
+                storeModel.setRecID(cursor.getString(cursor.getColumnIndex(DBModels.recID)));
+                storeModel.setStoreID(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchasedItemDetails.StoreID.toString())));
+                storeModel.setPurchaseRef(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchasedItemDetails.PurRef.toString())));
+                storeModel.setProductID(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchasedItemDetails.ProductID.toString())));
+                storeModel.setItemID(cursor.getString(cursor.getColumnIndex(DBModels.enumPurchasedItemDetails.ItemID.toString())));
                 // Adding contact to list
                 storeModelLinkedList.add(storeModel);
             } while (cursor.moveToNext());
@@ -667,5 +740,20 @@ public class StoreHandler extends SQLiteDBHandler {
         db.delete(DBModels.enumTables.StoreUser.toString(), DBModels.recID + " = ?",
                 new String[] { storeModel.getRecID() });
         db.close();
+    }
+
+    public void deleteTable(String table){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DROP TABLE IF EXISTS " + table;
+        db.execSQL(query);
+        db.close();
+        Log.d("deleteTable",query);
+    }
+
+    public void createTable(String query){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+        Log.d("createTable",query);
     }
 }

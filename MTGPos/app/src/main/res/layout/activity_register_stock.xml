@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.android.stephen.mtgpos.activity.RegisterStock">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:elevation="4dp"
+            android:fitsSystemWindows="true"
+            android:background="@color/colorPrimary"
+            app:titleTextColor="@android:color/white"
+            android:layout_height="?attr/actionBarSize" />
+
+        <LinearLayout
+            android:layout_below="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvItemDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_marginBottom="12dp"
+                android:id="@+id/llInputQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvInputQty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=""/>
+                <EditText
+                    android:id="@+id/etInputQuantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="4"
+                    android:inputType="number"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginBottom="16dp"
+                android:id="@+id/llQuantityPerItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvQuantityPerItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=""/>
+                <TextView
+                    android:id="@+id/tvQuantityPerItemValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text=""/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginBottom="16dp"
+                android:id="@+id/llRemainingQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reg_stock_remaining_quantity"/>
+                <TextView
+                    android:id="@+id/tvRemainingQuantityValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text=""/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginBottom="16dp"
+                android:id="@+id/llTotalNewStock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvTotalNewStock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=""/>
+                <TextView
+                    android:id="@+id/tvTotalNewStockValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text=""/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginBottom="12dp"
+                android:id="@+id/llDateDelivered"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reg_stock_date_delivered"/>
+                <TextView
+                    android:id="@+id/tvDateDelivered"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_date"
+                    android:layout_weight="1"
+                    android:text="Select Date"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_button_rounded"
+                android:text="@string/action_save"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

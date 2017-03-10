@@ -16,19 +16,10 @@
     <item
         android:title="User Maintenance"
         android:id="@+id/nav_user" />
-    <item
-        android:title="UPoints">
-        <menu>
-            <item
-                android:id="@+id/nav_upoints_history"
-                android:icon="@drawable/ic_chevron_right_black"
-                android:title="UPoints History" />
-            <item
-                android:id="@+id/nav_update_upoints"
-                android:icon="@drawable/ic_chevron_right_black"
-                android:title="Update UPoints" />
-        </menu>
-    </item>
+
+    <item android:id="@+id/nav_upoints_history"
+        android:title="UPoints History" />
+
     <item
         android:title="Inventory">
         <menu>
@@ -49,19 +40,12 @@
                 android:icon="@drawable/ic_chevron_right_black"
                 android:title="Transaction" />
             <item
-                android:id="@+id/nav_registered_stocks"
+                android:id="@+id/nav_register_stocks"
+                android:visible="false"
                 android:icon="@drawable/ic_chevron_right_black"
-                android:title="Registered Stocks" />
+                android:title="Register Stocks" />
         </menu>
     </item>
-
-    <item
-        android:id="@+id/nav_upload"
-        android:title="Upload" />
-
-    <item
-        android:id="@+id/nav_download"
-        android:title="Download Update" />
 
     <item
         android:id="@+id/nav_logout"

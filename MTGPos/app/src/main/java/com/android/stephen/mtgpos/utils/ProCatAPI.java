@@ -17,6 +17,6 @@ public class ProCatAPI {
 
     public void getProductCategoryList(VolleyCallback callback){
         HttpVolleyConnector con = new HttpVolleyConnector();
-        con.wGet(context, callback, API.PROCAT, Task.PRODUCT_CATEGORY_LIST);
+        con.wGet(context, callback, API.PROCAT, Task.PRODUCT_CATEGORY_LIST, true);
     }
 }

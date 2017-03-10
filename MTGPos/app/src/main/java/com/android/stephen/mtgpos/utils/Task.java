@@ -9,11 +9,11 @@ public enum Task {
     ITEM_TYPE("getitemtypelookup"),
     UPOINTS_HISTORY("getupointshistory"),
     STORE_UPOINTS("getstoreupoints"),
-    STOCKS_LIST("getlistofallstocks"),
+    STOCKS_LIST("getlistofallstorestocks"),
     PRODUCT_LIST("getlistofallproducts"),
     PRODUCT_CATEGORY_LIST("getlistofallprocat"),
     STORE_STOCKS_LIST("getlistofallstorestocks"),
-    SAVE_NEW_STOCK("savenewstock"),
+    SAVE_NEW_STOCK("postsavenewstock"),
     GENERATE_CUSTOMER_ID("generatecustomerid"),
     GET_UPLINE("getupline"),
     SAVE_NEW_CUSTOMER("savenewcustomer");

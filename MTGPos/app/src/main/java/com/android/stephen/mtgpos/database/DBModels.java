@@ -8,69 +8,81 @@ public class DBModels {
 
     public static String recID = "RecID";
     // Table names
-    public enum enumTables{ Product, Store, StoreUser, StoreAccount, StorePointsHistory, StoreStocksReg, StoreStocks, StoreLogs,
-        StorePurchased, StorePurchasedDetails, Customer, CustomerUpline, CustomerPoints, CustomerBonusPoints,
-        CustomerPicture, CustomerPictureHistory, Item, ProductItem}
+    public enum enumTables{ Store, StoreUser, StoreUPoints, StoreUPointsHistory,
+        Purchased, PurchasedProductDetails, PurchasedItemDetails,
+        StocksRegistration, Stocks,
+        Customer, CustomerUpline, CustomerUPoints, CustomerReceivedUPoints, CustomerPicture, CustomerPictureHistory,
+        StoreItem, ItemTypeLookUp,
+        Product, ProductItem, ProductCategory,
+        AuditLogs,}
 
-    //Look Up tables
-    public enum enumProduct{ StoreID, ProductID, ProductDesc, SellingPrice, RebatePoints, SharePoints, Picture, IsActive}
-    public enum enumItem { StoreID, ItemID, ItemDesc, QtyPerPack, IsActive}
+    //Item tables
+    public enum enumItem { StoreID, ItemID, ItemDesc, QtyPerItemType, ItemType, IsActive, DateLastUpdated}
+    public enum enumItemTypeLookUp { Type, Description, IsActive}
+
+    //Product tables
+    public enum enumProduct{ StoreID, ProductID, ProductDesc, SellingPrice, RebatePoints, SharePoints, Picture, IsActive, NoOfServing}
     public enum enumProductItem { StoreID, ProductID, ItemID, QtyPerServe, IsActive}
+    public enum enumProductCategory { CatID, CatDesc, IsActive}
 
     //Store tables
-    public enum enumStore {StoreID, FranName, Street, City, Municipality, Province, ZipCode,
-        Longitude, Latitude, Email, Mobile, Phone, Remarks, IsActive, IsUploaded}
-    public enum enumStoreUser {StoreID, UserName, Password, Fname, Mname, Lname, Level,
-        RegBy, RegDate, Remarks, IsActive, IsUploaded}
-    public enum enumStoreAccount{StoreID, TotalPoints, RemainingPoints, TotalWDPoints}
-    public enum enumStorePointsHistory{StoreID, PointsRef, ModeOfPayment, Amount, Points, DateDeposited,
-        ReceivedDate, Remarks, IsActive, IsUploaded}
-    public enum enumStoreStocksReg {StoreID, StocksRef, ItemID, Quantity, DateReg, Remarks, IsActive}
-    public enum enumStoreStocks {StoreID, ItemID, Quantity, Remarks, IsActive, IsUploaded}
-    public enum enumStoreLogs {StoreID, UserName, AuditDate, AuditDesc, StocksRef, PurRef, CustID, IsUploaded}
-    public enum enumStorePurchased {StoreID, PurRef, PurDate, TotalAmt, TotalQty, RebatePoints, SharePoints, RegBy,
-        Remarks, IsActive, IsUploaded}
-    public enum enumStorePurchasedDetails {StoreID, PurRef, ProductID, Quantity, IsActive, IsUploaded}
+    public enum enumStore {StoreID, StoreName, Street, City, Municipality, Province, ZipCode, Region, Island,
+        Longitude, Latitude, Email, Mobile, Phone, Remarks, IsActive, IsMTGStore, AppType, DateReg, RegBy, DateLastUpdated}
+    public enum enumStoreUser {StoreID, UserName, SaltPass, Pass, FName, MName, LName, Level,
+        RegBy, DateReg, Remarks, IsActive, IsOwner, DateLastUpdated}
+    public enum enumStoreUPoints {StoreID, TotalPoints, RemainingPoints, TotalWDPoints}
+    public enum enumStoreUPointsHistory {StoreID, PointsRef, ModeOfPayment, Amount, UPoints, DateOfTransaction,
+        DateReg, RegBy, Remarks, OldTotalRemainingPoints, OldTotalPoints, NewTotalRemainingPoints, NewTotalPoints,
+        IsAddToStore, TranType, IsActive}
+    public enum enumPurchased {StoreID, PurRef, PurDate, TotalAmt, TotalQty, TotalRPoints, TotalSPoints, RegBy,
+        DateReg, Remarks, CustID, IsActive}
+    public enum enumPurchasedProductDetails {StoreID, PurRef, ProductID, Quantity, RPoints, SPoints, AmtPurchased, IsActive}
+    public enum enumPurchasedItemDetails{StoreID, PurRef, ProductID, ItemID}
+
+    //Stocks tables
+    public enum enumStocksRegistration {StoreID, StocksRef, ItemID, Quantity, DateReg, RegBy, Remarks, IsActive}
+    public enum enumStocks {StoreID, ItemID, Quantity, Remarks, IsActive}
 
     //Customer tables
     public enum enumCustomer {StoreID, CustID, UpCustID, Fname, Mname, Lname, BirthDate,
-        Email, Mobile, Remarks, IsStoreOwner, IsActive, IsUploaded, Password}
+        Email, Mobile, Remarks, IsStoreOwner, IsActive, Password}
     public enum enumCustomerPicture{CustID, Picture, DateCaptured}
-    public enum enumCustomerPictureHistory{CustID, Picture, DateCaptured}
-    public enum enumCustomerUpline {StoreID, CustID, CustIDUp1, CustIDUp2, CustIDUp3, CustIDUp4, IsUploaded}
-    public enum enumCustomerPoints {StoreID, CustID, TotalPoints, RemainingPoints, WithdrawPoints, IsUploaded}
-    public enum enumCustomerBonusPoints {StoreID, PurRef, CustID, FromCustID, Points, DateReceived, PointsType, IsUploaded}
+//    public enum enumCustomerPictureHistory{RegBy, Picture, DateCaptured}
+    public enum enumCustomerUpline {CustID, CustIDUp1, CustIDUp2, CustIDUp3, CustIDUp4}
+    public enum enumCustomerUPoints {CustID, TotalPoints, RemainingPoints, WithdrawPoints}
+    public enum enumCustomerReceivedUPoints {StoreID, PurRef, CustID, FromCustID, Points, DateReceived, PointsType, IsUploaded}
+
+    //User & Logs tables
+    public enum enumAuditLogs {StoreID, AuditDate, AuditDesc, Module, PurRef, RegBy}
 
     //Customer tables
-    public static String createTableCustomerBonusPoints = "CREATE TABLE " + enumTables.CustomerBonusPoints.toString() + "("
+    public static String createTableCustomerReceivedUPoints = "CREATE TABLE " + enumTables.CustomerReceivedUPoints.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + enumCustomerBonusPoints.StoreID.toString() + " TEXT,"
-            + enumCustomerBonusPoints.PurRef.toString() + " TEXT,"
-            + enumCustomerBonusPoints.CustID.toString() + " TEXT,"
-            + enumCustomerBonusPoints.FromCustID.toString() + " TEXT,"
-            + enumCustomerBonusPoints.Points.toString() + " TEXT,"
-            + enumCustomerBonusPoints.DateReceived.toString() + " TEXT,"
-            + enumCustomerBonusPoints.PointsType.toString() + " TEXT,"
-            + enumCustomerBonusPoints.IsUploaded.toString() + " TEXT" + ")";
+            + enumCustomerReceivedUPoints.StoreID.toString() + " TEXT,"
+            + enumCustomerReceivedUPoints.PurRef.toString() + " TEXT,"
+            + enumCustomerReceivedUPoints.CustID.toString() + " TEXT,"
+            + enumCustomerReceivedUPoints.FromCustID.toString() + " TEXT,"
+            + enumCustomerReceivedUPoints.Points.toString() + " TEXT,"
+            + enumCustomerReceivedUPoints.DateReceived.toString() + " TEXT,"
+            + enumCustomerReceivedUPoints.PointsType.toString() + " TEXT,"
+            + enumCustomerReceivedUPoints.IsUploaded.toString() + " TEXT" + ")";
 
-    public static String createTableCustomerPoints = "CREATE TABLE " + enumTables.CustomerPoints.toString() + "("
+    public static String createTableCustomerUPoints = "CREATE TABLE " + enumTables.CustomerUPoints.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + enumCustomerPoints.StoreID.toString() + " TEXT,"
-            + enumCustomerPoints.CustID.toString() + " TEXT,"
-            + enumCustomerPoints.TotalPoints.toString() + " TEXT,"
-            + enumCustomerPoints.RemainingPoints.toString() + " TEXT,"
-            + enumCustomerPoints.WithdrawPoints.toString() + " TEXT,"
-            + enumCustomerPoints.IsUploaded.toString() + " TEXT" + ")";
+//            + enumCustomerUPoints.StoreID.toString() + " TEXT,"
+            + enumCustomerUPoints.CustID.toString() + " TEXT,"
+            + enumCustomerUPoints.TotalPoints.toString() + " TEXT,"
+            + enumCustomerUPoints.RemainingPoints.toString() + " TEXT,"
+            + enumCustomerUPoints.WithdrawPoints.toString() + " TEXT" + ")";
 
     public static String createTableCustomerUpline = "CREATE TABLE " + enumTables.CustomerUpline.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + enumCustomerUpline.StoreID.toString() + " TEXT,"
+//            + enumCustomerUpline.StoreID.toString() + " TEXT,"
             + enumCustomerUpline.CustID.toString() + " TEXT,"
             + enumCustomerUpline.CustIDUp1.toString() + " TEXT,"
             + enumCustomerUpline.CustIDUp2.toString() + " TEXT,"
             + enumCustomerUpline.CustIDUp3.toString() + " TEXT,"
-            + enumCustomerUpline.CustIDUp4.toString() + " TEXT,"
-            + enumCustomerUpline.IsUploaded.toString() + " TEXT" + ")";
+            + enumCustomerUpline.CustIDUp4.toString() + " TEXT" + ")";
 
     public static String createTableCustomerPicture = "CREATE TABLE " + enumTables.CustomerPicture.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -78,11 +90,11 @@ public class DBModels {
             + enumCustomerPicture.Picture.toString() + " TEXT,"
             + enumCustomerPicture.DateCaptured.toString() + " TEXT" + ")";
 
-    public static String createTableCustomerPictureHistory = "CREATE TABLE " + enumTables.CustomerPictureHistory.toString() + "("
-            + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + enumCustomerPictureHistory.CustID.toString() + " TEXT,"
-            + enumCustomerPictureHistory.Picture.toString() + " TEXT,"
-            + enumCustomerPictureHistory.DateCaptured.toString() + " TEXT" + ")";
+//    public static String createTableCustomerPictureHistory = "CREATE TABLE " + enumTables.CustomerPictureHistory.toString() + "("
+//            + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+//            + enumCustomerPictureHistory.RegBy.toString() + " TEXT,"
+//            + enumCustomerPictureHistory.Picture.toString() + " TEXT,"
+//            + enumCustomerPictureHistory.DateCaptured.toString() + " TEXT" + ")";
 
     public static String createTableCustomer = "CREATE TABLE " + enumTables.Customer.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -98,107 +110,125 @@ public class DBModels {
             + enumCustomer.Remarks.toString() + " TEXT,"
             + enumCustomer.Password.toString() + " TEXT,"
             + enumCustomer.IsStoreOwner.toString() + " TEXT,"
-            + enumCustomer.IsActive.toString() + " TEXT,"
-            + enumCustomer.IsUploaded.toString() + " TEXT" + ")";
+            + enumCustomer.IsActive.toString() + " TEXT" + ")";
 
     //Store tables
-    public static String createTableStorePurchasedDetails = "CREATE TABLE " + enumTables.StorePurchasedDetails.toString() + "("
+    public static String createTablePurchasedItemDetails = "CREATE TABLE " + enumTables.PurchasedItemDetails.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + enumStorePurchasedDetails.StoreID.toString() + " TEXT,"
-            + enumStorePurchasedDetails.PurRef.toString() + " TEXT,"
-            + enumStorePurchasedDetails.ProductID.toString() + " TEXT,"
-            + enumStorePurchasedDetails.Quantity.toString() + " TEXT,"
-            + enumStorePurchasedDetails.IsActive.toString() + " TEXT,"
-            + enumStorePurchasedDetails.IsUploaded.toString() + " TEXT" + ")";
+            + enumPurchasedItemDetails.StoreID.toString() + " TEXT,"
+            + enumPurchasedItemDetails.PurRef.toString() + " TEXT,"
+            + enumPurchasedItemDetails.ProductID.toString() + " TEXT,"
+            + enumPurchasedItemDetails.ItemID.toString() + " TEXT" + ")";
 
-    public static String createTableStorePurchased = "CREATE TABLE " + enumTables.StorePurchased.toString() + "("
+    public static String createTablePurchasedProductDetails = "CREATE TABLE " + enumTables.PurchasedProductDetails.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + enumStorePurchased.StoreID.toString() + " TEXT,"
-            + enumStorePurchased.PurRef.toString() + " TEXT,"
-            + enumStorePurchased.PurDate.toString() + " TEXT,"
-            + enumStorePurchased.TotalAmt.toString() + " TEXT,"
-            + enumStorePurchased.TotalQty.toString() + " TEXT,"
-            + enumStorePurchased.RebatePoints.toString() + " TEXT,"
-            + enumStorePurchased.SharePoints.toString() + " TEXT,"
-            + enumStorePurchased.RegBy.toString() + " TEXT,"
-            + enumStorePurchased.Remarks.toString() + " TEXT,"
-            + enumStorePurchased.IsActive.toString() + " TEXT,"
-            + enumStorePurchased.IsUploaded.toString() + " TEXT" + ")";
+            + enumPurchasedProductDetails.StoreID.toString() + " TEXT,"
+            + enumPurchasedProductDetails.PurRef.toString() + " TEXT,"
+            + enumPurchasedProductDetails.ProductID.toString() + " TEXT,"
+            + enumPurchasedProductDetails.Quantity.toString() + " TEXT,"
+            + enumPurchasedProductDetails.RPoints.toString() + " TEXT,"
+            + enumPurchasedProductDetails.SPoints.toString() + " TEXT,"
+            + enumPurchasedProductDetails.AmtPurchased.toString() + " TEXT,"
+            + enumPurchasedProductDetails.IsActive.toString() + " TEXT" + ")";
 
-    public static String createTableStoreLogs = "CREATE TABLE " + enumTables.StoreLogs.toString() + "("
+    public static String createTablePurchased = "CREATE TABLE " + enumTables.Purchased.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + enumStoreLogs.StoreID.toString() + " TEXT,"
-            + enumStoreLogs.UserName.toString() + " TEXT,"
-            + enumStoreLogs.AuditDate.toString() + " TEXT,"
-            + enumStoreLogs.AuditDesc.toString() + " TEXT,"
-            + enumStoreLogs.StocksRef.toString() + " TEXT,"
-            + enumStoreLogs.PurRef.toString() + " TEXT,"
-            + enumStoreLogs.CustID.toString() + " TEXT,"
-            + enumStoreLogs.IsUploaded.toString() + " TEXT" + ")";
+            + enumPurchased.StoreID.toString() + " TEXT,"
+            + enumPurchased.PurRef.toString() + " TEXT,"
+            + enumPurchased.PurDate.toString() + " TEXT,"
+            + enumPurchased.TotalAmt.toString() + " TEXT,"
+            + enumPurchased.TotalQty.toString() + " TEXT,"
+            + enumPurchased.TotalRPoints.toString() + " TEXT,"
+            + enumPurchased.TotalSPoints.toString() + " TEXT,"
+            + enumPurchased.RegBy.toString() + " TEXT,"
+            + enumPurchased.Remarks.toString() + " TEXT,"
+            + enumPurchased.CustID.toString() + " TEXT,"
+            + enumPurchased.IsActive.toString() + " TEXT,"
+            + enumPurchased.DateReg.toString() + " TEXT" + ")";
 
-    public static String createTableStoreStocks = "CREATE TABLE " + enumTables.StoreStocks.toString() + "("
+    public static String createTableAuditLogs = "CREATE TABLE " + enumTables.AuditLogs.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + enumStoreStocks.StoreID.toString() + " TEXT,"
-            + enumStoreStocks.ItemID.toString() + " TEXT,"
-            + enumStoreStocks.Quantity.toString() + " TEXT,"
-            + enumStoreStocks.Remarks.toString() + " TEXT,"
-            + enumStoreStocks.IsActive.toString() + " TEXT,"
-            + enumStoreStocks.IsUploaded.toString() + " TEXT" + ")";
+            + enumAuditLogs.StoreID.toString() + " TEXT,"
+            + enumAuditLogs.AuditDate.toString() + " TEXT,"
+            + enumAuditLogs.AuditDesc.toString() + " TEXT,"
+            + enumAuditLogs.Module.toString() + " TEXT,"
+            + enumAuditLogs.PurRef.toString() + " TEXT,"
+            + enumAuditLogs.RegBy.toString() + " TEXT" + ")";
 
-    public static String createTableStoreStocksReg = "CREATE TABLE " + enumTables.StoreStocksReg.toString() + "("
+    public static String createTableStocks = "CREATE TABLE " + enumTables.Stocks.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + enumStoreStocksReg.StoreID.toString() + " TEXT,"
-            + enumStoreStocksReg.StocksRef.toString() + " TEXT,"
-            + enumStoreStocksReg.ItemID.toString() + " TEXT,"
-            + enumStoreStocksReg.Quantity.toString() + " TEXT,"
-            + enumStoreStocksReg.DateReg.toString() + " TEXT,"
-            + enumStoreStocksReg.Remarks.toString() + " TEXT,"
-            + enumStoreStocksReg.IsActive.toString() + " TEXT" + ")";
+            + enumStocks.StoreID.toString() + " TEXT,"
+            + enumStocks.ItemID.toString() + " TEXT,"
+            + enumStocks.Quantity.toString() + " TEXT,"
+            + enumStocks.Remarks.toString() + " TEXT,"
+            + enumStocks.IsActive.toString() + " TEXT" + ")";
 
-    public static String createTableStorePointsHistory = "CREATE TABLE " + enumTables.StorePointsHistory.toString() + "("
+    public static String createTableStocksRegistration = "CREATE TABLE " + enumTables.StocksRegistration.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + enumStorePointsHistory.StoreID.toString() + " TEXT,"
-            + enumStorePointsHistory.PointsRef.toString() + " TEXT,"
-            + enumStorePointsHistory.ModeOfPayment.toString() + " TEXT,"
-            + enumStorePointsHistory.Amount.toString() + " TEXT,"
-            + enumStorePointsHistory.Points.toString() + " TEXT,"
-            + enumStorePointsHistory.DateDeposited.toString() + " TEXT,"
-            + enumStorePointsHistory.ReceivedDate.toString() + " TEXT,"
-            + enumStorePointsHistory.Remarks.toString() + " TEXT,"
-            + enumStorePointsHistory.IsActive.toString() + " TEXT,"
-            + enumStorePointsHistory.IsUploaded.toString() + " TEXT" + ")";
+            + enumStocksRegistration.StoreID.toString() + " TEXT,"
+            + enumStocksRegistration.StocksRef.toString() + " TEXT,"
+            + enumStocksRegistration.ItemID.toString() + " TEXT,"
+            + enumStocksRegistration.Quantity.toString() + " TEXT,"
+            + enumStocksRegistration.DateReg.toString() + " TEXT,"
+            + enumStocksRegistration.RegBy.toString() + " TEXT,"
+            + enumStocksRegistration.Remarks.toString() + " TEXT,"
+            + enumStocksRegistration.IsActive.toString() + " TEXT" + ")";
 
-    public static String createTableStoreAccount= "CREATE TABLE " + enumTables.StoreAccount.toString() + "("
+    public static String createTableStoreUPointsHistory = "CREATE TABLE " + enumTables.StoreUPointsHistory.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + enumStoreAccount.StoreID.toString() + " TEXT,"
-            + enumStoreAccount.TotalPoints.toString() + " TEXT,"
-            + enumStoreAccount.RemainingPoints.toString() + " TEXT,"
-            + enumStoreAccount.TotalWDPoints.toString() + " TEXT" + ")";
+            + enumStoreUPointsHistory.StoreID.toString() + " TEXT,"
+            + enumStoreUPointsHistory.PointsRef.toString() + " TEXT,"
+            + enumStoreUPointsHistory.ModeOfPayment.toString() + " TEXT,"
+            + enumStoreUPointsHistory.Amount.toString() + " TEXT,"
+            + enumStoreUPointsHistory.UPoints.toString() + " TEXT,"
+            + enumStoreUPointsHistory.DateOfTransaction.toString() + " TEXT,"
+            + enumStoreUPointsHistory.DateReg.toString() + " TEXT,"
+            + enumStoreUPointsHistory.RegBy.toString() + " TEXT,"
+            + enumStoreUPointsHistory.Remarks.toString() + " TEXT,"
+            + enumStoreUPointsHistory.OldTotalRemainingPoints.toString() + " TEXT,"
+            + enumStoreUPointsHistory.OldTotalPoints.toString() + " TEXT,"
+            + enumStoreUPointsHistory.NewTotalRemainingPoints.toString() + " TEXT,"
+            + enumStoreUPointsHistory.NewTotalPoints.toString() + " TEXT,"
+            + enumStoreUPointsHistory.IsAddToStore.toString() + " TEXT,"
+            + enumStoreUPointsHistory.TranType.toString() + " TEXT,"
+//            + enumStoreUPointsHistory.DateLastUpdated.toString() + " TEXT,"
+            + enumStoreUPointsHistory.IsActive.toString() + " TEXT" + ")";
+
+    public static String createTableStoreUPoints = "CREATE TABLE " + enumTables.StoreUPoints.toString() + "("
+            + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + enumStoreUPoints.StoreID.toString() + " TEXT,"
+            + enumStoreUPoints.TotalPoints.toString() + " TEXT,"
+            + enumStoreUPoints.RemainingPoints.toString() + " TEXT,"
+            + enumStoreUPoints.TotalWDPoints.toString() + " TEXT" + ")";
 
     public static String createTableStoreUser = "CREATE TABLE " + enumTables.StoreUser.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + enumStoreUser.StoreID.toString() + " TEXT,"
             + enumStoreUser.UserName.toString() + " TEXT,"
-            + enumStoreUser.Password.toString() + " TEXT,"
-            + enumStoreUser.Fname.toString() + " TEXT,"
-            + enumStoreUser.Mname.toString() + " TEXT,"
-            + enumStoreUser.Lname.toString() + " TEXT,"
+            + enumStoreUser.SaltPass.toString() + " TEXT,"
+            + enumStoreUser.Pass.toString() + " TEXT,"
+            + enumStoreUser.FName.toString() + " TEXT,"
+            + enumStoreUser.MName.toString() + " TEXT,"
+            + enumStoreUser.LName.toString() + " TEXT,"
             + enumStoreUser.Level.toString() + " TEXT,"
             + enumStoreUser.RegBy.toString() + " TEXT,"
-            + enumStoreUser.RegDate.toString() + " TEXT,"
+            + enumStoreUser.DateReg.toString() + " TEXT,"
             + enumStoreUser.Remarks.toString() + " TEXT,"
             + enumStoreUser.IsActive.toString() + " TEXT,"
-            + enumStoreUser.IsUploaded.toString() + " TEXT" + ")";
+            + enumStoreUser.IsOwner.toString() + " TEXT,"
+            + enumStoreUser.DateLastUpdated.toString() + " TEXT" + ")";
 
     public static String createTableStore = "CREATE TABLE " + enumTables.Store.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + enumStore.StoreID.toString() + " TEXT,"
-            + enumStore.FranName.toString() + " TEXT,"
+            + enumStore.StoreName.toString() + " TEXT,"
             + enumStore.Street.toString() + " TEXT,"
             + enumStore.City.toString() + " TEXT,"
             + enumStore.Municipality.toString() + " TEXT,"
             + enumStore.Province.toString() + " TEXT,"
             + enumStore.ZipCode.toString() + " TEXT,"
+            + enumStore.Region.toString() + " TEXT,"
+            + enumStore.Island.toString() + " TEXT,"
             + enumStore.Longitude.toString() + " TEXT,"
             + enumStore.Latitude.toString() + " TEXT,"
             + enumStore.Email.toString() + " TEXT,"
@@ -206,9 +236,28 @@ public class DBModels {
             + enumStore.Phone.toString() + " TEXT,"
             + enumStore.Remarks.toString() + " TEXT,"
             + enumStore.IsActive.toString() + " TEXT,"
-            + enumStore.IsUploaded.toString() + " TEXT" + ")";
+            + enumStore.IsMTGStore.toString() + " TEXT,"
+            + enumStore.AppType.toString() + " TEXT,"
+            + enumStore.DateReg.toString() + " TEXT,"
+            + enumStore.RegBy.toString() + " TEXT,"
+            + enumStore.DateLastUpdated.toString() + " TEXT" + ")";
 
-    //Look Up tables
+    public static String createTableItem = "CREATE TABLE " + enumTables.StoreItem.toString() + "("
+            + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + enumItem.StoreID.toString() + " TEXT,"
+            + enumItem.ItemID.toString() + " TEXT,"
+            + enumItem.ItemDesc.toString() + " TEXT,"
+            + enumItem.QtyPerItemType.toString() + " TEXT,"
+            + enumItem.ItemType.toString() + " TEXT,"
+            + enumItem.IsActive.toString() + " TEXT,"
+            + enumItem.DateLastUpdated.toString() + " TEXT" + ")";
+
+    public static String createTableItemTypeLookUp = "CREATE TABLE " + enumTables.ItemTypeLookUp.toString() + "("
+            + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + enumItemTypeLookUp.Type.toString() + " TEXT,"
+            + enumItemTypeLookUp.Description.toString() + " TEXT,"
+            + enumItemTypeLookUp.IsActive.toString() + " TEXT" + ")";
+
     public static String createTableProduct = "CREATE TABLE " + enumTables.Product.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + enumProduct.StoreID.toString() + " TEXT,"
@@ -218,15 +267,8 @@ public class DBModels {
             + enumProduct.RebatePoints.toString() + " TEXT,"
             + enumProduct.SharePoints.toString() + " TEXT,"
             + enumProduct.Picture.toString() + " TEXT,"
+            + enumProduct.NoOfServing.toString() + " TEXT,"
             + enumProduct.IsActive.toString() + " TEXT" + ")";
-
-    public static String createTableItem = "CREATE TABLE " + enumTables.Item.toString() + "("
-            + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + enumItem.StoreID.toString() + " TEXT,"
-            + enumItem.ItemID.toString() + " TEXT,"
-            + enumItem.ItemDesc.toString() + " TEXT,"
-            + enumItem.QtyPerPack.toString() + " TEXT,"
-            + enumItem.IsActive.toString() + " TEXT" + ")";
 
     public static String createTableProductItem = "CREATE TABLE " + enumTables.ProductItem.toString() + "("
             + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -235,6 +277,12 @@ public class DBModels {
             + enumProductItem.ItemID.toString() + " TEXT,"
             + enumProductItem.QtyPerServe.toString() + " TEXT,"
             + enumProductItem.IsActive.toString() + " TEXT" + ")";
+
+    public static String createTableProductCategory = "CREATE TABLE " + enumTables.ProductCategory.toString() + "("
+            + recID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + enumProductCategory.CatID.toString() + " TEXT,"
+            + enumProductCategory.CatDesc.toString() + " TEXT,"
+            + enumProductCategory.IsActive.toString() + " TEXT" + ")";
 
     //For upgrade version of sqlite db
 //    public static final String alterTableCategory = "ALTER TABLE " + enumTables.Category.toString() + " ADD COLUMN " + enumCategory.CatDesc.toString() + " TEXT";

@@ -9,8 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:visibility="gone"
             android:id="@+id/id"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="textStart"
@@ -18,7 +19,7 @@
 
         <TextView
             android:id="@+id/content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
@@ -26,11 +27,19 @@
 
         <TextView
             android:id="@+id/qty"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="textEnd"
             android:text="@string/stock_qty"/>
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd"
+            android:text="@string/stock_type"/>
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="2dp"

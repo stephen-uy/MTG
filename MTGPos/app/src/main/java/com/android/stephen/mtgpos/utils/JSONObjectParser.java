@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 /**
  * Created by Mark Ferdie Catabona on 6/13/2016.
@@ -117,10 +118,10 @@ public class JSONObjectParser {
      * @param jsonResponse
      * @return
      */
-    public static HashMap<String, String> parseFromSimpleJSONObject(JSONObject jsonResponse){
+    public static LinkedHashMap<String, String> parseFromSimpleJSONObject(JSONObject jsonResponse){
         Iterator<String> iter = jsonResponse.keys();
 
-        HashMap<String,String> map = new HashMap<>();
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
 
         while(iter.hasNext()) {
             String temp = iter.next();
