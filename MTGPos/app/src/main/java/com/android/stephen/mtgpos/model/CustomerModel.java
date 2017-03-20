@@ -38,6 +38,18 @@ public class CustomerModel implements Serializable{
     private String dateReceived;
     private String pointsType;
 
+    public CustomerModel(){
+
+    }
+
+    public CustomerModel(String customerID, String customerUpID1, String customerUpID2, String customerUpID3, String customerUpID4){
+        this.customerID = customerID;
+        this.customerUpID1 = customerUpID1;
+        this.customerUpID2 = customerUpID2;
+        this.customerUpID3 = customerUpID3;
+        this.customerUpID4 = customerUpID4;
+    }
+
     public String getRecID() {
         return recID;
     }

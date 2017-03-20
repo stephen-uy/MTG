@@ -20,6 +20,6 @@ public class ItemAPI {
         HttpVolleyConnector con = new HttpVolleyConnector();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Parameters.STORE_ID.getValue(),storeID);
-        con.wGet(context, callback, API.ITEM, Task.ITEM_TYPE, true);
+        con.wGet(context, callback, API.ITEM, Task.ITEM_TYPE, contentValues, true);
     }
 }

@@ -20,7 +20,7 @@
         android:id="@+id/tilReferralCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/etReferralCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         android:layout_marginTop="30dp">
 
         <Button
-            android:id="@+id/btnOK"
+            android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -45,7 +45,7 @@
             android:background="@drawable/bg_button_rounded"
             android:textColor="@android:color/white"
             android:textSize="14dp"
-            android:text="@string/btn_ok"/>
+            android:text="@string/btn_submit"/>
 
         <Button
             android:id="@+id/btnCancel"
@@ -55,8 +55,8 @@
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/btn_cancel"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/btnOK"
-            android:layout_toStartOf="@+id/btnOK" />
+            android:layout_toLeftOf="@+id/btnSubmit"
+            android:layout_toStartOf="@+id/btnSubmit" />
 
     </RelativeLayout>
 

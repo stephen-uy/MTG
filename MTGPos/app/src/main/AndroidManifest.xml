@@ -20,9 +20,11 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,23 +35,28 @@
         <activity
             android:name=".activity.CustomerRegistration"
             android:label="@string/title_activity_customer_registration"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.UserRegistration"
             android:label="@string/title_activity_user_registration"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ProductItems"
             android:label="@string/title_activity_product_items"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.SplashScreen"
             android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".activity.RegisterStock"
             android:label="@string/title_activity_register_stock"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

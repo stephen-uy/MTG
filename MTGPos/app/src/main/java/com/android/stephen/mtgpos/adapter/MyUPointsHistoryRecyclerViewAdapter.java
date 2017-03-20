@@ -1,4 +1,4 @@
-package com.android.stephen.mtgpos.fragment;
+package com.android.stephen.mtgpos.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,22 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.stephen.mtgpos.fragment.ItemFragment.OnListFragmentInteractionListener;
-import com.android.stephen.mtgpos.fragment.dummy.DummyContent.DummyItem;
+import com.android.stephen.mtgpos.R;
+import com.android.stephen.mtgpos.fragment.UPointsHistoryFragment.OnListUPointsFragmentInteractionListener;
+import com.android.stephen.mtgpos.model.StoreModel;
 
-import java.util.List;
+import java.util.LinkedList;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyUPointsHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyUPointsHistoryRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private LinkedList<StoreModel> mValues;
+    private OnListUPointsFragmentInteractionListener mListener;
 
-    public MyUPointsHistoryRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyUPointsHistoryRecyclerViewAdapter(LinkedList<StoreModel> items, OnListUPointsFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -29,15 +25,17 @@ public class MyUPointsHistoryRecyclerViewAdapter extends RecyclerView.Adapter<My
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_item, parent, false);
+                .inflate(R.layout.fragment_upointshistory, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).getPointsRef());
+        holder.mContentView.setText(mValues.get(position).getAmount());
+        holder.mUPointsView.setText(mValues.get(position).getuPoints());
+        holder.mDateView.setText(mValues.get(position).getDateOfTransaction());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,10 +43,21 @@ public class MyUPointsHistoryRecyclerViewAdapter extends RecyclerView.Adapter<My
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListUPointsFragmentInteraction(holder.mItem);
                 }
             }
         });
+    }
+
+    public void swap(LinkedList<StoreModel> list) {
+        if (mValues != null) {
+            mValues.clear();
+            mValues = list;
+        }
+        else {
+            mValues = list;
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -60,13 +69,17 @@ public class MyUPointsHistoryRecyclerViewAdapter extends RecyclerView.Adapter<My
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView mUPointsView;
+        public final TextView mDateView;
+        public StoreModel mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mContentView = (TextView) view.findViewById(R.id.amount);
+            mUPointsView = (TextView) view.findViewById(R.id.upoints);
+            mDateView = (TextView) view.findViewById(R.id.date);
         }
 
         @Override

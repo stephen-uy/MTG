@@ -139,6 +139,8 @@ public class SplashScreen extends AppCompatActivity implements VolleyCallback{
                 goToNext();
             else
                 showProgress(false);
+        } else {
+            goToNext();
         }
     }
 
@@ -150,6 +152,8 @@ public class SplashScreen extends AppCompatActivity implements VolleyCallback{
                 callAPI(Task.PRODUCT_CATEGORY_LIST);
             else
                 showProgress(false);
+        } else {
+            callAPI(Task.PRODUCT_CATEGORY_LIST);
         }
     }
 

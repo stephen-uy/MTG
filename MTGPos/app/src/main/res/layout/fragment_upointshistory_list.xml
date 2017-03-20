@@ -1,13 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="com.android.stephen.mtgpos.fragment.UPointsHistoryFragment"
-    android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context="com.android.stephen.mtgpos.fragment.UPointsHistoryFragment"
-    tools:listitem="@layout/fragment_upointshistory" />
+    android:layout_width="match_parent"
+    android:name="com.android.stephen.mtgpos.fragment.UPointsHistoryFragment" >
+    <TextView
+        android:layout_marginTop="8dp"
+        android:id="@+id/tvDepositDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/upoints_deposit_date"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"/>
+    <LinearLayout
+        android:layout_below="@+id/tvDepositDate"
+        android:id="@+id/llSearchUPointsHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tvFromLabel"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:text="@string/upoints_from"/>
+                <TextView
+                    android:id="@+id/tvFrom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Select Date"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tvToLabel"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:text="@string/upoints_to"/>
+                <TextView
+                    android:id="@+id/tvTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Select Date"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+                </LinearLayout>
+        </LinearLayout>
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_button_rounded"
+            android:textColor="@android:color/white"
+            android:text="@string/action_search"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/llSearchUPointsHistory"
+        android:id="@+id/llTitle"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textAlignment="textStart"
+            android:text="@string/upoints_reference"
+            android:textAppearance="?attr/textAppearanceListItem" />
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="@string/upoints_amount"
+            android:textAppearance="?attr/textAppearanceListItem" />
+        <TextView
+            android:id="@+id/qty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="@string/upoints_upoints"
+            android:textAppearance="?attr/textAppearanceListItem" />
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="@string/upoints_date"
+            android:textAppearance="?attr/textAppearanceListItem" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/llSearchUPointsHistory"
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/llTitle"
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

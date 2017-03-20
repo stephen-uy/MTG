@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textAlignment="textEnd"
+            android:textAlignment="center"
             android:text="@string/reg_stock_qty" />
         <TextView
             android:visibility="gone"

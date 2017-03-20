@@ -56,7 +56,7 @@ public class HttpVolleyConnector {
     private static Context context;
     public LinkedHashMap<String, String> map;
     public LinkedList<LinkedHashMap<String, String>> hashMapList;
-    private String error_response = "{\"response_code\":\"2\",\"response_message\":\"Server Error\"}";
+    private String error_response = "{\"response_code\":\"2\",\"response_message\":\"Unable to connect to server. Please check internet connection.\"}";
     private RequestQueue requestQueue;
 
     private boolean isHttps = false;
@@ -120,9 +120,11 @@ public class HttpVolleyConnector {
         this.context = c;
         System.setProperty("http.keepAlive", "false");
         if(!Connectivity.isConnected(c)) {
-            JSONObject obj = null;
+            JSONObject obj;
 //            Log.i("params",params.toString());
             try {
+                map = new LinkedHashMap<>();
+                hashMapList = new LinkedList<>();
                 obj = (JSONObject) new JSONTokener(error_response.trim()).nextValue();
                 map = JSONObjectParser.parseFromSimpleJSONObject(obj);
                 hashMapList.add(map);
@@ -149,9 +151,6 @@ public class HttpVolleyConnector {
         if(method == Request.Method.GET) {
             url += assembleUrlForGet(params, task);
             Log.i(TAG,"URL = "+url);
-        } else {
-//            url += assembleUrlForGet(params, task);
-//            Log.i(TAG,"URL_POST = "+url);
         }
         Log.i("method","after method");
         StringRequest stringRequest = new StringRequest
@@ -160,22 +159,22 @@ public class HttpVolleyConnector {
                     public void onResponse(String response) {
                         Log.i("HTTPConnect_volley","Response: "+response);
                         JSONObject obj;
-                        JSONArray jsonArray;
                         map = new LinkedHashMap<>();
                         hashMapList = new LinkedList<>();
-                        try {
-//                            jsonArray = new JSONArray(response);
-//                            for(int i=0;i<jsonArray.length();i++) {
-//                                obj = jsonArray.getJSONObject(i);
+//                        if (task.getValue().equalsIgnoreCase(Task.SAVE_NEW_STOCK.getValue())){
+//                            map.put("response", response.toString());
+//                        } else
+//                        if (task.getValue().equalsIgnoreCase(Task.GENERATE_CUSTOMER_ID.getValue())){
+//                            map.put("response", response.toString());
+//                        } else {
+                            try {
                                 obj = (JSONObject) new JSONTokener(response.trim()).nextValue();
                                 map = JSONObjectParser.parseFromSimpleJSONObject(obj);
-//                                hashMapList.add(map);
-//                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+//                        }
                         callback.onResponseReady(task, map);
-//                        callback.onResponseReady(task, hashMapList);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -198,12 +197,25 @@ public class HttpVolleyConnector {
             public Map<String, String> getHeaders() throws AuthFailureError
             {
                 Map<String, String> headers = new HashMap<>();
-                if (method == Method.POST)
-                    headers.put("Content-Type", "application/json");
-                else
-                    headers.put("Content-Type", "application/x-www-form-urlencoded");
+                headers.put("Content-Type", "application/json");
                 headers.put("Authorization", GlobalVariables.BASIC_AUTH);
                 return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                LinkedHashMap<String, String> params2 = new LinkedHashMap<>();
+                String body = "{";
+                for(String key : params.keySet()) {
+                    params2.put(key,params.getAsString(key));
+                    body += "\"" + key + "\":" + params.getAsString(key).replace("\\","") + ",";
+                }
+
+                body = body.substring(0, body.length() - 1) + "}";
+                Log.i("getBody", params2.toString());
+                Log.i("getBody2", body);
+//                JSONArray jsonArray = new JSONArray().put(params2.toString());
+                return body.getBytes();
             }
 
             @Override
@@ -214,17 +226,16 @@ public class HttpVolleyConnector {
 
                 Map<String, String> map = new HashMap<>();
                     for(String key : params.keySet()) {
-//                        if (task.getValue().equalsIgnoreCase(Task.SAVE_NEW_STOCK.getValue())){
-//                            if (!key.equalsIgnoreCase(Parameters.USERNAME.getValue())){
-//                                map.put(key,params.getAsString(key));
-//                            }
-//                        } else {
-//                            map.put(key, params.getAsString(key));
-//                        }
                         map.put(key,params.getAsString(key));
                     }
                 Log.i(getClass().getSimpleName(),"params = "+map);
                 return map;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+//                return super.getBodyContentType();
             }
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutSocket,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -286,6 +297,8 @@ public class HttpVolleyConnector {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i("HTTPConnect_volley","VolleyError: "+error.getLocalizedMessage());
+                        map = new LinkedHashMap<>();
+                        hashMapList = new LinkedList<>();
                         JSONObject obj = null;
                         try {
                             obj = (JSONObject) new JSONTokener(error_response.trim()).nextValue();
@@ -293,7 +306,8 @@ public class HttpVolleyConnector {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        callback.onResponseReady(task, map);
+                        hashMapList.add(map);
+                        callback.onResponseReady(task, hashMapList);
                         error.printStackTrace();
                     }
                 })
@@ -303,10 +317,26 @@ public class HttpVolleyConnector {
             public Map<String, String> getHeaders() throws AuthFailureError
             {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
+//                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                headers.put("Content-Type", "application/json");
                 headers.put("Authorization", GlobalVariables.BASIC_AUTH);
                 return headers;
             }
+
+//            @Override
+//            public byte[] getBody() throws AuthFailureError {
+//                HashMap<String, String> params2 = new HashMap<>();
+//                String body = "";
+//                for(String key : params.keySet()) {
+//                    params2.put(key,params.getAsString(key));
+//                    body = "{\"" + key + "\":" + params.getAsString(key).replace("\\","") + "}";
+//                }
+//
+//                Log.i("getBody", params2.toString());
+//                Log.i("getBody2", body);
+////                JSONArray jsonArray = new JSONArray().put(params2.toString());
+//                return body.getBytes();
+//            }
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -320,6 +350,12 @@ public class HttpVolleyConnector {
                 }
                 Log.i(getClass().getSimpleName(),"params = "+map);
                 return map;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+//                return super.getBodyContentType();
             }
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutSocket,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -358,8 +394,14 @@ public class HttpVolleyConnector {
             getParams += Parameters.USERNAME.getValue() + "=" + params.getAsString(Parameters.USERNAME.getValue()) + "&";
             getParams += Parameters.PASSWORD.getValue() + "=" + params.getAsString(Parameters.PASSWORD.getValue()) + "&";
             getParams += Parameters.MAC_ADDRESS.getValue() + "=" + params.getAsString(Parameters.MAC_ADDRESS.getValue()) + "&";
-        } else if (task.getValue().equalsIgnoreCase(Task.SAVE_NEW_STOCK.getValue())) {
-            getParams += Parameters.USERNAME.getValue() + "=" + params.getAsString(Parameters.USERNAME.getValue()) + "&";
+        } else if (task.getValue().equalsIgnoreCase(Task.UPOINTS_HISTORY.getValue())) {
+            getParams += Parameters.STORE_ID.getValue() + "=" + params.getAsString(Parameters.STORE_ID.getValue()) + "&";
+            getParams += Parameters.FROM.getValue() + "=" + params.getAsString(Parameters.FROM.getValue()) + "&";
+            getParams += Parameters.TO.getValue() + "=" + params.getAsString(Parameters.TO.getValue()) + "&";
+        } else if (task.getValue().equalsIgnoreCase(Task.PRODUCT_LIST.getValue())) {
+            getParams += Parameters.STORE_ID.getValue() + "=" + params.getAsString(Parameters.STORE_ID.getValue()) + "&";
+            getParams += Parameters.PRODUCT_ID.getValue() + "=" + params.getAsString(Parameters.PRODUCT_ID.getValue()) + "&";
+            getParams += Parameters.CATEGORY_ID.getValue() + "=" + params.getAsString(Parameters.CATEGORY_ID.getValue()) + "&";
         } else {
             for (String key : params.keySet()) {
                 getParams += key + "=" + params.getAsString(key) + "&";

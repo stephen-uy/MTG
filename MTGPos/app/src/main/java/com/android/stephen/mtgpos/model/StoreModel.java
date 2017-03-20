@@ -76,6 +76,7 @@ public class StoreModel implements Serializable{
     private String newTotalPoints;
     private String isAddToStore;
     private String tranType;
+    private String dateOfTransaction;
 
     public StoreModel (){
 
@@ -108,6 +109,19 @@ public class StoreModel implements Serializable{
         this.itemType = itemType;
         this.qtyPerItemType = qtyPerItemType;
         this.remarks = remarks;
+        this.isActive = isActive;
+    }
+
+    public StoreModel (String pointsRef, String amount, String uPoints, String dateOfTransaction, String oldTotalPoints,
+                       String oldTotalRemainingPoints, String newTotalPoints, String newTotalRemainingPoints, String isActive){
+        this.pointsRef = pointsRef;
+        this.amount = amount;
+        this.uPoints = uPoints;
+        this.dateOfTransaction = dateOfTransaction;
+        this.oldTotalPoints = oldTotalPoints;
+        this.oldTotalRemainingPoints = oldTotalRemainingPoints;
+        this.newTotalPoints = newTotalPoints;
+        this.newTotalRemainingPoints = newTotalRemainingPoints;
         this.isActive = isActive;
     }
 
@@ -645,5 +659,13 @@ public class StoreModel implements Serializable{
 
     public void setTranType(String tranType) {
         this.tranType = tranType;
+    }
+
+    public String getDateOfTransaction() {
+        return dateOfTransaction;
+    }
+
+    public void setDateOfTransaction(String dateOfTransaction) {
+        this.dateOfTransaction = dateOfTransaction;
     }
 }

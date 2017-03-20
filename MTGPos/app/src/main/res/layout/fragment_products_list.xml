@@ -5,7 +5,67 @@
     android:layout_width="match_parent"
     android:name="com.android.stephen.mtgpos.fragment.ProductsFragment" >
     <LinearLayout
+        android:id="@+id/llSearchProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="@string/prod_product"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <Spinner
+                    android:id="@+id/spnrProduct"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"/>
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prod_category"
+                    android:layout_weight="4"
+                    android:textAppearance="?attr/textAppearanceListItem"/>
+
+                <Spinner
+                    android:id="@+id/spnrCategory"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnSearch"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_button_rounded"
+            android:src="@drawable/ic_search"/>
+    </LinearLayout>
+    <LinearLayout
         android:visibility="gone"
+        android:layout_below="@+id/llSearchProduct"
         android:id="@+id/llTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,8 +115,16 @@
             android:text="@string/prod_share"
             android:textAppearance="?attr/textAppearanceListItem" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/llSearchProduct"
+        android:id="@+id/llLine"
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        android:background="@android:color/darker_gray"/>
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@+id/llTitle"
+        android:layout_below="@+id/llLine"
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

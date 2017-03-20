@@ -7,7 +7,7 @@ public enum Task {
     PRODUCT_ITEM("getstoreproductitem"),
     STOCKS("getstorestock"),
     ITEM_TYPE("getitemtypelookup"),
-    UPOINTS_HISTORY("getupointshistory"),
+    UPOINTS_HISTORY("getstoreupointshistory"),
     STORE_UPOINTS("getstoreupoints"),
     STOCKS_LIST("getlistofallstorestocks"),
     PRODUCT_LIST("getlistofallproducts"),

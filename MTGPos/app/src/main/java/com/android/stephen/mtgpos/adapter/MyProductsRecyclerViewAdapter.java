@@ -1,14 +1,17 @@
 package com.android.stephen.mtgpos.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.stephen.mtgpos.R;
 import com.android.stephen.mtgpos.fragment.ProductsFragment.OnListProductsFragmentInteractionListener;
 import com.android.stephen.mtgpos.model.LookUpModel;
+import com.android.stephen.mtgpos.utils.Helper;
 
 import java.util.LinkedList;
 
@@ -38,6 +41,10 @@ public class MyProductsRecyclerViewAdapter extends RecyclerView.Adapter<MyProduc
         holder.mRebateView.setText(mValues.get(position).getRebatePoints());
         holder.mShareView.setText(mValues.get(position).getSharePoints());
         holder.mServingView.setText(mValues.get(position).getNoOfServing());
+        if (!TextUtils.isEmpty(mValues.get(position).getPicture()))
+            holder.mPictureView.setImageBitmap(Helper.decodeBase64(mValues.get(position).getPicture()));
+        else
+            holder.mPictureView.setImageResource(R.drawable.ic_image);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +82,7 @@ public class MyProductsRecyclerViewAdapter extends RecyclerView.Adapter<MyProduc
         public final TextView mRebateView;
         public final TextView mShareView;
         public final TextView mServingView;
+        public final ImageView mPictureView;
         public LookUpModel mItem;
 
         public ViewHolder(View view) {
@@ -86,6 +94,7 @@ public class MyProductsRecyclerViewAdapter extends RecyclerView.Adapter<MyProduc
             mRebateView = (TextView) view.findViewById(R.id.rebate_points);
             mShareView = (TextView) view.findViewById(R.id.share_points);
             mServingView = (TextView) view.findViewById(R.id.serving);
+            mPictureView = (ImageView) view.findViewById(R.id.imgProductPic);
         }
 
         @Override

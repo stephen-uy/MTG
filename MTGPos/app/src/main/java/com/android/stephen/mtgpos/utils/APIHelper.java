@@ -325,4 +325,37 @@ public class APIHelper {
         Log.d("setUpStocksReg-size","" + storeModelLinkedList.size());
         return storeModelLinkedList;
     }
+
+    public static LinkedList<StoreModel> setUpStoreUPointsHistoryData(LinkedList<LinkedHashMap<String, String>> hashMaps) {
+        LinkedList<StoreModel> storeModelLinkedList = new LinkedList<>();
+        //Stocks
+        for (int i = 0; i < hashMaps.size(); i++) {
+            storeModelLinkedList.add(new StoreModel(hashMaps.get(i).get(DBModels.enumStoreUPointsHistory.PointsRef.toString()),
+                    hashMaps.get(i).get(DBModels.enumStoreUPointsHistory.Amount.toString()),
+                    hashMaps.get(i).get(DBModels.enumStoreUPointsHistory.UPoints.toString()),
+                    hashMaps.get(i).get(DBModels.enumStoreUPointsHistory.DateOfTransaction.toString()),
+                    hashMaps.get(i).get(DBModels.enumStoreUPointsHistory.OldTotalPoints.toString()),
+                    hashMaps.get(i).get(DBModels.enumStoreUPointsHistory.OldTotalRemainingPoints.toString()),
+                    hashMaps.get(i).get(DBModels.enumStoreUPointsHistory.NewTotalPoints.toString()),
+                    hashMaps.get(i).get(DBModels.enumStoreUPointsHistory.NewTotalRemainingPoints.toString()),
+                    hashMaps.get(i).get(DBModels.enumStoreUPointsHistory.IsActive.toString())
+            ));
+        }
+
+        Log.d("setUPointsHistory-size","" + storeModelLinkedList.size());
+        return storeModelLinkedList;
+    }
+
+    public static CustomerModel setUpCustomerUplineData(LinkedHashMap<String, String> hashMaps) {
+        CustomerModel customerModel;
+        //Customer Upline
+        customerModel = new CustomerModel(hashMaps.get(DBModels.enumCustomerUpline.CustID.toString()),
+                hashMaps.get(DBModels.enumCustomerUpline.CustIDUp1.toString()),
+                hashMaps.get(DBModels.enumCustomerUpline.CustIDUp2.toString()),
+                hashMaps.get(DBModels.enumCustomerUpline.CustIDUp3.toString()),
+                hashMaps.get(DBModels.enumCustomerUpline.CustIDUp4.toString()));
+
+        Log.d("setUpCustUpline-size","" + customerModel.getCustomerUpID1());
+        return customerModel;
+    }
 }

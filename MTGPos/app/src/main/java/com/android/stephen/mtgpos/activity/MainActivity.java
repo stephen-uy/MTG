@@ -1,11 +1,20 @@
 package com.android.stephen.mtgpos.activity;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,6 +43,7 @@ import com.android.stephen.mtgpos.fragment.ProductsFragment;
 import com.android.stephen.mtgpos.fragment.RegisteredStocksFragment;
 import com.android.stephen.mtgpos.fragment.StocksFragment;
 import com.android.stephen.mtgpos.fragment.TransactionFragment;
+import com.android.stephen.mtgpos.fragment.UPointsHistoryFragment;
 import com.android.stephen.mtgpos.fragment.UserFragment;
 import com.android.stephen.mtgpos.model.CustomerModel;
 import com.android.stephen.mtgpos.model.LookUpModel;
@@ -48,12 +58,16 @@ import com.android.stephen.mtgpos.utils.Task;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback, DashboardFragment.OnDashboardFragmentInteractionListener,
         CustomerFragment.OnListCustomerFragmentInteractionListener, UserFragment.OnListUserFragmentInteractionListener,
         InventoryFragment.OnListInventoryFragmentInteractionListener, ProductsFragment.OnListProductsFragmentInteractionListener,
         TransactionFragment.OnListTransactionFragmentInteractionListener, StocksFragment.OnListStocksFragmentInteractionListener,
-        RegisteredStocksFragment.OnListRegisteredStocksFragmentInteractionListener, VolleyCallback{
+        RegisteredStocksFragment.OnListRegisteredStocksFragmentInteractionListener, UPointsHistoryFragment.OnListUPointsFragmentInteractionListener,
+        VolleyCallback{
 
     private NavigationView navigationView;
     POSFragment posFragment;
@@ -65,6 +79,7 @@ public class MainActivity extends AppCompatActivity
     StocksFragment stocksFragment;
     RegisteredStocksFragment registeredStocksFragment;
     DashboardFragment dashboardFragment;
+    UPointsHistoryFragment uPointsHistoryFragment;
     private String username;
     private String storeID;
     private String level;
@@ -73,7 +88,10 @@ public class MainActivity extends AppCompatActivity
     StoreHandler storeHandler;
     StoreAPI storeAPI;
     StoreModel storeModel;
+    LookUpModel productModel;
     private ProgressDialog progressDialog;
+    private static final int REQUEST_CAMERA = 0;
+    private static final int REQUEST_PERMISSION_SETTING = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +111,7 @@ public class MainActivity extends AppCompatActivity
         transactionFragment = new TransactionFragment();
         stocksFragment = new StocksFragment();
         registeredStocksFragment = new RegisteredStocksFragment();
+        uPointsHistoryFragment = new UPointsHistoryFragment();
         Helper.addFragment(this, dashboardFragment, R.id.content_main, FragmentTag.DASHBOARD.toString());
         dashboardFragment.setValues(username, password, macaddress, storeID);
     }
@@ -249,6 +268,7 @@ public class MainActivity extends AppCompatActivity
             Helper.replaceFragment(this, transactionFragment, R.id.content_main, FragmentTag.TRANSACTION.toString());
         } else if (id == R.id.nav_products) {
             Helper.replaceFragment(this, productsFragment, R.id.content_main, FragmentTag.PRODUCT.toString());
+            productsFragment.storeID = storeID;
         } else if (id == R.id.nav_stocks) {
 //            Helper.replaceFragment(this, stocksFragment, R.id.content_main, FragmentTag.STOCKS.toString());
             Helper.replaceFragment(this, registeredStocksFragment, R.id.content_main, FragmentTag.REGISTER_STOCKS.toString());
@@ -261,11 +281,15 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_user) {
             Helper.replaceFragment(this, userFragment, R.id.content_main, FragmentTag.USER_MAINTENANCE.toString());
         } else if (id == R.id.nav_upoints_history) {
-            Helper.showDialog(this, "", "This feature is not available.");
+//            Helper.showDialog(this, "", "This feature is not available.");
+            Helper.replaceFragment(this, uPointsHistoryFragment, R.id.content_main, FragmentTag.UPOINTS.toString());
+            uPointsHistoryFragment.storeID = storeID;
         } else if (id == R.id.nav_logout) {
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();
+        } else {
+            Helper.showDialog(this, "", "This feature is not available.");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -298,6 +322,32 @@ public class MainActivity extends AppCompatActivity
                     registeredStocksFragment.searchStockList(itemID, storeID);
                 }
                 break;
+            case GlobalVariables.ADD_PHOTO:
+                if (resultCode == RESULT_OK){
+//                    activityCustomerRegistrationBinding.imgPicture.setImageBitmap(Helper.setPic(picFileName, activityCustomerRegistrationBinding.imgPicture));
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                        Uri selectedImage = data.getData();
+                        String[] orientationColumn = {MediaStore.Images.Media.ORIENTATION};
+                        Cursor cur = getContentResolver().query(selectedImage, orientationColumn, null, null, null);
+                        int orientation = -1;
+                        if (cur != null && cur.moveToFirst()) {
+                            orientation = cur.getInt(cur.getColumnIndex(orientationColumn[0]));
+                        }
+                        cur.close();
+                        if (!Helper.isTablet(this))
+                            imageBitmap = Helper.rotateImage(imageBitmap, orientation);
+                    }
+
+                    String pictureByteString = Helper.encodeToBase64(imageBitmap, Bitmap.CompressFormat.PNG,100);
+//                    activityCustomerRegistrationBinding.imgPicture.setImageBitmap(Helper.decodeBase64(pictureByteString));
+                    if (productsFragment.isVisible()){
+                        productModel.setPicture(pictureByteString);
+                        productsFragment.updateProduct(productModel);
+                    }
+                }
+                break;
         }
     }
 
@@ -321,7 +371,10 @@ public class MainActivity extends AppCompatActivity
                                 public void onClick(View view) {
                                     Helper.alertDialogCancel();
                                     if (username.equalsIgnoreCase(storeModel.getUserName())){
-                                        Helper.showDialog(MainActivity.this, "", "Cannot delete logged in user.");
+                                        if (storeModel.getIsOwner().equalsIgnoreCase("Y"))
+                                            Helper.showDialog(MainActivity.this, "", getString(R.string.error_delete_owner_user));
+                                        else
+                                            Helper.showDialog(MainActivity.this, "", getString(R.string.error_delete_logged_user));
                                     } else {
                                         StoreHandler.getInstance(MainActivity.this).deleteStoreUser(storeModel);
                                     }
@@ -337,6 +390,65 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
         return builder.create();
+    }
+
+    public Dialog showProductMenu(String title, final LookUpModel lookUpModel) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setItems(R.array.product_dialog_menu, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        if (which == 0){
+                            if (mayRequestCamera()) {
+                                productModel = lookUpModel;
+                                Helper.captureImage(MainActivity.this);
+                            } else
+                                Helper.showDialog(MainActivity.this, "", getString(R.string.camera_permission, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                        intent.setData(uri);
+                                        startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                                    }
+                                }));
+                        }
+                    }
+                });
+        return builder.create();
+    }
+
+    private boolean mayRequestCamera() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        if (checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (shouldShowRequestPermissionRationale(CAMERA)) {
+            Snackbar.make(navigationView, R.string.permission_rationale_camera, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        @TargetApi(Build.VERSION_CODES.M)
+                        public void onClick(View v) {
+                            requestPermissions(new String[]{CAMERA, WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA);
+                        }
+                    });
+        } else {
+            requestPermissions(new String[]{CAMERA, WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA);
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CAMERA) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showProductMenu(productModel.getProductDesc(), productModel).show();
+            }
+        }
     }
 
     @Override
@@ -360,10 +472,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void OnListProductsFragmentInteractionListener(LookUpModel item) {
-//        Intent i = new Intent(this, ProductItems.class);
-//        i.putExtra("product", item.getProductDesc());
-//        i.putExtra("id", item.getProductID());
-//        startActivity(i);
+        productModel = item;
+        if (mayRequestCamera())
+            showProductMenu(item.getProductDesc(), item).show();
     }
 
     @Override
@@ -390,8 +501,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onListUPointsFragmentInteraction(StoreModel item) {
+        String message;
+        message = getString(R.string.upoints_reference) + " : " + item.getPointsRef() + "\n";
+        message += DBModels.enumStoreUPointsHistory.Amount.toString() + " : " + item.getAmount() + "\n";
+        message += DBModels.enumStoreUPointsHistory.UPoints.toString() + " : " + item.getuPoints() + "\n";
+        message += getString(R.string.upoints_date) + " : " + item.getDateOfTransaction() + "\n";
+        message += DBModels.enumStoreUPointsHistory.OldTotalRemainingPoints.toString() + " : " + item.getOldTotalRemainingPoints() + "\n";
+        message += DBModels.enumStoreUPointsHistory.NewTotalRemainingPoints.toString() + " : " + item.getNewTotalRemainingPoints() + "\n";
+        Helper.showDialog(this, "", message);
+    }
+
+    @Override
     public void onResponseReady(Task task, LinkedHashMap<String, String> response) {
-        Log.i("MainActivity_volley", "response : "+  task.getValue().toString() + response.toString());
+//        Log.i("MainActivity_volley", "response : "+  task.getValue().toString() + response.toString());
         switch (task){
             case STORE_DETAILS:
                 parseStoreDetails(response);
@@ -401,7 +524,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onResponseReady(Task task, LinkedList<LinkedHashMap<String, String>> hashMaps) {
-        Log.i("MainActivity_volley", "response : "+  task.getValue().toString() + hashMaps.get(0).toString());
+//        Log.i("MainActivity_volley", "response : "+  task.getValue().toString() + hashMaps.get(0).toString());
         switch (task) {
             case ITEMS:
                 parseItems(hashMaps);
@@ -409,16 +532,44 @@ public class MainActivity extends AppCompatActivity
             case STOCKS_LIST:
                 parseStocksList(hashMaps);
                 break;
+            case UPOINTS_HISTORY:
+                parseUPointsHistory(hashMaps);
+                break;
+            case PRODUCT_LIST:
+                parseProductList(hashMaps);
+                break;
         }
     }
 
+    private void parseProductList(LinkedList<LinkedHashMap<String, String>> hashMaps) {
+        LinkedList<LookUpModel> modelList = new LinkedList<>();
+        if (Helper.checkResponse(this, hashMaps.get(0)))
+            modelList = APIHelper.setUpProductsData(hashMaps);
+
+        productsFragment.setUpList(modelList);
+    }
+
+    private void parseUPointsHistory(LinkedList<LinkedHashMap<String, String>> hashMaps) {
+        LinkedList<StoreModel> modelList = new LinkedList<>();
+        if (Helper.checkResponse(this, hashMaps.get(0)))
+            modelList = APIHelper.setUpStoreUPointsHistoryData(hashMaps);
+
+        uPointsHistoryFragment.setUpList(modelList);
+    }
+
     private void parseStocksList(LinkedList<LinkedHashMap<String, String>> hashMaps) {
-        LinkedList<StoreModel> modelList = APIHelper.setUpStockList(hashMaps);
+        LinkedList<StoreModel> modelList = new LinkedList<>();
+        if (Helper.checkResponse(this, hashMaps.get(0)))
+            modelList = APIHelper.setUpStockList(hashMaps);
+
         registeredStocksFragment.setUpList(modelList);
     }
 
     private void parseStoreDetails(LinkedHashMap<String, String> hashMaps) {
-        StoreModel model = APIHelper.setUpStoreDetails(hashMaps);
+        StoreModel model;
+//        if (checkResponse(hashMaps))
+            model = APIHelper.setUpStoreDetails(hashMaps);
+
         if (!TextUtils.isEmpty(model.getStoreID())){
             model.setPass(password);
             APIHelper.insertStoreDetails(this, model);
@@ -426,18 +577,25 @@ public class MainActivity extends AppCompatActivity
             dashboardFragment.setUpDashboard();
             progressDialog.dismiss();
             Toast.makeText(this, getString(R.string.success_update_store), Toast.LENGTH_SHORT).show();
-        } else
+        } else {
+            progressDialog.dismiss();
             Toast.makeText(this, getString(R.string.failed_to_update_store), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void parseItems(LinkedList<LinkedHashMap<String, String>> hashMaps) {
-        LinkedList<LookUpModel> lookUpModelLinkedList = APIHelper.setUpItemsData(hashMaps);
+        LinkedList<LookUpModel> lookUpModelLinkedList = new LinkedList<>();
+//        if (checkResponse(hashMaps.get(0)))
+            lookUpModelLinkedList= APIHelper.setUpItemsData(hashMaps);
+
         if (lookUpModelLinkedList.size() > 0) {
             APIHelper.insertItemData(this, lookUpModelLinkedList);
             inventoryFragment.loadInventory();
             progressDialog.dismiss();
             Toast.makeText(this, getString(R.string.success_update_list), Toast.LENGTH_SHORT).show();
-        } else
+        } else {
+            progressDialog.dismiss();
             Toast.makeText(this, getString(R.string.failed_to_update), Toast.LENGTH_SHORT).show();
+        }
     }
 }

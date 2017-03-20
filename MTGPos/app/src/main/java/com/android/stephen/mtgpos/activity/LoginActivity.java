@@ -41,6 +41,8 @@ import java.util.LinkedList;
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.ACCESS_WIFI_STATE;
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * A login screen that offers login via email/password.
@@ -113,11 +115,13 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
                         public void onClick(View v) {
-                            requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_WIFI_STATE, ACCESS_COARSE_LOCATION}, REQUEST_INTERNET);
+                            requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_WIFI_STATE, ACCESS_COARSE_LOCATION, CAMERA, WRITE_EXTERNAL_STORAGE}
+                                    , REQUEST_INTERNET);
                         }
                     });
         } else {
-            requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_WIFI_STATE, ACCESS_COARSE_LOCATION}, REQUEST_INTERNET);
+            requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_WIFI_STATE, ACCESS_COARSE_LOCATION, CAMERA, WRITE_EXTERNAL_STORAGE}
+                    , REQUEST_INTERNET);
         }
         return false;
     }

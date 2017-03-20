@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -52,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -310,6 +312,12 @@ public class Helper {
         }
     }
 
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
@@ -393,15 +401,29 @@ public class Helper {
         return progressDialog;
     }
 
-    public static String computeAmount(String amount, String oldAmount){
+    public static String computeAmount(String amount, String oldAmount, String qtyPerItemType){
         int sum = 0;
         try{
             int amt = Integer.parseInt(amount);
             int oldAmt = Integer.parseInt(oldAmount);
-            sum = amt + oldAmt;
+            int multiplier = Integer.parseInt(qtyPerItemType);
+            sum = (amt * multiplier) + oldAmt;
         } catch (Exception e){
 
         }
         return String.valueOf(sum);
+    }
+
+    public static boolean checkResponse(Context context, LinkedHashMap<String, String> hashMap){
+        if (!TextUtils.isEmpty(hashMap.get("response_code"))){
+            if (hashMap.get("response_code").isEmpty())
+                return true;
+            else {
+                String message = hashMap.get("response_message");
+                Helper.showDialog(context, "", message);
+                return false;
+            }
+        } else
+            return true;
     }
 }

@@ -29,6 +29,7 @@
     <string name="title_register_stocks">Stocks</string>
     <string name="title_upload">Upload</string>
     <string name="title_download">Download Update</string>
+    <string name="title_upoints_history">UPoints History</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Username</string>
@@ -66,6 +67,7 @@
     <string name="error_birth_date">Birth Date is required. \n</string>
     <string name="error_user_name">Username is required. \n</string>
     <string name="error_password">Password is required. \n</string>
+    <string name="error_email">Email Address is required. \n</string>
     <string name="error_user_level">User Role is required. \n</string>
     <string name="error_picture">Picture is required. \n</string>
     <string name="error_date_delivered">Please select date delivered.</string>
@@ -73,6 +75,20 @@
     <string name="failed_to_add">Failed to add new customer. Please try again.</string>
     <string name="failed_to_update">Failed to update list. Please try again.</string>
     <string name="failed_to_update_store">Failed to update store details. Please try again.</string>
+    <string name="failed_to_add_stock">Failed to add new stock. Please try again.</string>
+    <string name="no_connection">Unable to connect to server. Please check internet connection.</string>
+    <string name="error_select_date">Please select date range.</string>
+    <string name="error_date_from">Date from must be less than or equal to date today.</string>
+    <string name="error_date_from_greater_to">Date from cannot be greater than date to.</string>
+    <string name="error_date_to">Date to must be less than or equal to date today.</string>
+    <string name="error_date_to_less_from">Date to cannot be less than date from.</string>
+    <string name="error_delete_logged_user">Cannot delete logged in user.</string>
+    <string name="error_delete_owner_user">Cannot delete owner\'s user.</string>
+    <string name="error_category">Please select category.</string>
+    <string name="error_add_stock">Failed to add new stock.</string>
+    <string name="error_add_product_pic">Failed to add picture.</string>
+    <string name="error_referral_code">Please provide referral code.</string>
+    <string name="error_referral_invalid">Invalid referral code.\n\nUse your referral code to continue registration? </string>
 
     <!-- Successful messages -->
     <string name="success_add_customer">Successfully added new customer.</string>
@@ -80,6 +96,8 @@
     <string name="success_update_user">Successfully updated user.</string>
     <string name="success_update_list">Successfully updated list.</string>
     <string name="success_update_store">Successfully updated store details.</string>
+    <string name="success_add_stock">Successfully added new stock.</string>
+    <string name="success_add_product_pic">Successfully added picture.</string>
 
     <!-- other text -->
     <string name="no_records_found">No records found.</string>
@@ -94,6 +112,7 @@
 
     <!-- button text -->
     <string name="btn_ok">OK</string>
+    <string name="btn_submit">Submit</string>
     <string name="btn_yes">Yes</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_no">No</string>
@@ -121,6 +140,13 @@
         <item>Edit</item>
         <item>Delete</item>
     </string-array>
+    <string-array name="product_dialog_menu">
+        <item>Add Picture</item>
+    </string-array>
+
+    <string-array name="product_menu">
+        <item>Add Picture</item>
+    </string-array>
 
     <!-- Image text -->
     <string name="add_image_text">Click camera icon below to add/change customer photo.</string>
@@ -143,10 +169,14 @@
     <string name="prod_id">Product ID: </string>
     <string name="prod_desc">Description:</string>
     <string name="prod_price">Selling Price:</string>
-    <string name="prod_rebate">Rebate Points:</string>
-    <string name="prod_share">Share Points:</string>
+    <string name="prod_rebate">Personal:</string>
+    <string name="prod_share">Share:</string>
     <string name="prod_serving">No. of Serving:</string>
     <string name="prod_items">Items:</string>
+    <string name="prod_product">Product:</string>
+    <string name="prod_category">Category:</string>
+    <string name="prod_select_all">Select All</string>
+    <string name="prod_select_one">Select One</string>
 
     <!-- Transaction List text -->
     <string name="tran_pur_ref">Purchase Ref.</string>
@@ -171,9 +201,21 @@
     <string name="reg_stock_id">Item ID</string>
     <string name="reg_stock_desc">Description</string>
     <string name="reg_stock_qty">Qty</string>
+    <string name="reg_stock_remaining_qty">Remaining Quantity</string>
     <string name="reg_stock_date">Date</string>
     <string name="reg_stock_date_delivered">Date delivered:</string>
     <string name="reg_stock_remaining_quantity">Remaining quantity:</string>
+
+    <!-- UPoints History text -->
+    <string name="upoints_reference">Reference</string>
+    <string name="upoints_amount">Amt</string>
+    <string name="upoints_upoints">UPoints</string>
+    <string name="upoints_date">Date</string>
+    <string name="upoints_old_upoints">Old UPoints</string>
+    <string name="upoints_new_points">New UPoints</string>
+    <string name="upoints_deposit_date">Deposit Date </string>
+    <string name="upoints_from">From: </string>
+    <string name="upoints_to">To: </string>
 
     <!-- Item Type text -->
     <string name="packs">Packs</string>

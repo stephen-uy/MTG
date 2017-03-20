@@ -12,24 +12,34 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.android.stephen.mtgpos.R;
 import com.android.stephen.mtgpos.callback.VolleyCallback;
+import com.android.stephen.mtgpos.database.DBModels;
 import com.android.stephen.mtgpos.databinding.ActivityRegisterStockBinding;
 import com.android.stephen.mtgpos.model.StoreModel;
 import com.android.stephen.mtgpos.utils.GlobalVariables;
 import com.android.stephen.mtgpos.utils.Helper;
+import com.android.stephen.mtgpos.utils.Parameters;
 import com.android.stephen.mtgpos.utils.StoreAPI;
 import com.android.stephen.mtgpos.utils.Task;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Map;
 
 public class RegisterStock extends AppCompatActivity implements TextWatcher, View.OnClickListener, VolleyCallback {
     ActivityRegisterStockBinding activityRegisterStockBinding;
@@ -124,7 +134,8 @@ public class RegisterStock extends AppCompatActivity implements TextWatcher, Vie
             } else {
                 activityRegisterStockBinding.tvTotalNewStockValue.setText(
                         Helper.computeAmount(activityRegisterStockBinding.etInputQuantity.getText().toString(),
-                                activityRegisterStockBinding.tvRemainingQuantityValue.getText().toString()));
+                                activityRegisterStockBinding.tvRemainingQuantityValue.getText().toString(),
+                                storeModel.getQtyPerItemType()));
             }
         } else
             activityRegisterStockBinding.tvTotalNewStockValue.setText("");
@@ -164,18 +175,22 @@ public class RegisterStock extends AppCompatActivity implements TextWatcher, Vie
         }
     }
 
-    private String setItemENvalues(){
-        String itemEN = "{";
-        itemEN += "\"StoreID\":" + "\"" + storeModel.getStoreID() + "\"" +  ",";
-        itemEN += "\"StockRef\":" + "\"" +Helper.generateStocksRef(this, storeModel.getStoreID()) + "\"" +  ",";
-        itemEN += "\"ItemID\":" + "\"" +storeModel.getItemID() + "\"" +  ",";
-        itemEN += "\"Quantity\":" + "\"" +activityRegisterStockBinding.etInputQuantity.getText().toString() + "\"" +  ",";
-        itemEN += "\"OldQuantity\":" + "\"" +storeModel.getQuantity() + "\"" +  ",";
-        itemEN += "\"TotalQuantity\":" + "\"" +activityRegisterStockBinding.tvTotalNewStockValue.getText().toString() + "\"" +  ",";
-        itemEN += "\"DateDelivered\":" + "\"" +dateDelivered + "\"" + ",";
-        itemEN += "\"RegBy\":" + "\"" +userName + "\"" + "}";
+    private String setItemENvalues() {
+        JSONObject itemENMap = new JSONObject();
+        try {
+            itemENMap.put(DBModels.enumStocks.StoreID.toString(), storeModel.getStoreID());
+            itemENMap.put(Parameters.Stocks_Ref.getValue(), Helper.generateStocksRef(this, storeModel.getStoreID()));
+            itemENMap.put(Parameters.Item_ID.getValue(), storeModel.getItemID());
+            itemENMap.put(Parameters.Quantity.getValue(), activityRegisterStockBinding.etInputQuantity.getText().toString());
+            itemENMap.put(Parameters.Old_Quantity.getValue(), storeModel.getQuantity());
+            itemENMap.put(Parameters.Total_Quantity.getValue(), activityRegisterStockBinding.tvTotalNewStockValue.getText().toString());
+            itemENMap.put(Parameters.Date_Delivered.getValue(), dateDelivered);
+            itemENMap.put(Parameters.Reg_By.getValue(), userName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        return itemEN;
+        return itemENMap.toString();
     }
 
     private void showDate() {
@@ -195,12 +210,18 @@ public class RegisterStock extends AppCompatActivity implements TextWatcher, Vie
     public void onResponseReady(Task task, LinkedHashMap<String, String> response) {
         progressDialog.dismiss();
         Log.d("RegisterStock","response" + response);
-
-        Intent output = new Intent();
-        output.putExtra("itemID", storeModel.getItemID());
-        output.putExtra("storeID", storeModel.getStoreID());
-        setResult(RESULT_OK, output);
-        finish();
+        if (response.size() > 0) {
+            Intent output = new Intent();
+            output.putExtra("itemID", storeModel.getItemID());
+            output.putExtra("storeID", storeModel.getStoreID());
+            setResult(RESULT_OK, output);
+            Toast.makeText(this, getString(R.string.success_add_stock), Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Toast.makeText(this, getString(R.string.error_add_stock), Toast.LENGTH_SHORT).show();
+            setResult(RESULT_CANCELED);
+            finish();
+        }
     }
 
     @Override

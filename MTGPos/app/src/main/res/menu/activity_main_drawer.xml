@@ -46,7 +46,18 @@
                 android:title="Register Stocks" />
         </menu>
     </item>
-
+    <item
+        android:id="@+id/nav_load"
+        android:title="Load" />
+    <item
+        android:id="@+id/nav_money_transfer"
+        android:title="Money Transfer" />
+    <item
+        android:id="@+id/nav_bills_payment"
+        android:title="Bills Payment" />
+    <item
+        android:id="@+id/nav_uask"
+        android:title="Uask" />
     <item
         android:id="@+id/nav_logout"
         android:title="Log Out" />

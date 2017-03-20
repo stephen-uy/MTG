@@ -56,9 +56,9 @@ public class StoreAPI{
     public void getUPointsHistory(VolleyCallback callback, String storeID, String from, String to){
         HttpVolleyConnector con = new HttpVolleyConnector();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(Parameters.STORE_ID.getValue(),storeID);
-        contentValues.put(Parameters.FROM.getValue(),from);
         contentValues.put(Parameters.TO.getValue(),to);
+        contentValues.put(Parameters.FROM.getValue(),from);
+        contentValues.put(Parameters.STORE_ID.getValue(),storeID);
         con.wGet(context, callback, API.STORE, Task.UPOINTS_HISTORY, contentValues, true);
     }
 

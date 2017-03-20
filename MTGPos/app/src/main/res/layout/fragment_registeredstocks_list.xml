@@ -60,8 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textAlignment="textEnd"
-            android:text="@string/reg_stock_qty"
+            android:textAlignment="center"
+            android:text="@string/reg_stock_remaining_qty"
             android:textAppearance="?attr/textAppearanceListItem" />
         <TextView
             android:visibility="gone"
@@ -73,6 +73,12 @@
             android:text="@string/reg_stock_date"
             android:textAppearance="?attr/textAppearanceListItem" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/llSearchStock"
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
     <android.support.v7.widget.RecyclerView
         android:layout_below="@+id/llTitle"
         android:id="@+id/list"
